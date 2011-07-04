@@ -3,8 +3,8 @@ Feature: Generate Interface
 	As a installation owner
 	I want be able to generate interfaces with the TouchOSC editor
 
-	Scenario: Upload valid interface
-		Given I am on the upload points page
+	Scenario: Upload Valid Interface
+		Given I am on the upload interface page
 		When I fill in "name" with "A super cool interface"
 		And I fill in "file" with "/usr/whatever"
 		And I press "Upload"
