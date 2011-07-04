@@ -150,5 +150,6 @@ DEPENDENCIES
   rails!
   rspec
   rspec-rails
+  rubyzip
   sqlite3
   webrat
