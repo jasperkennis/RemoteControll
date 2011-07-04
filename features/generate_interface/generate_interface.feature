@@ -4,7 +4,6 @@ Feature: Generate Interface
 	I want be able to generate interfaces with the TouchOSC editor
 
 	Scenario: Upload valid file
-		Given I am on home
-		And I go to upload interface
+		Given I am on upload-interface
 		When I upload the TouchOSC file
 		Then I should see a message confirming the upload was successfully transfered
