@@ -5,5 +5,6 @@ Feature: Generate Interface
 
 	Scenario: Upload valid file
 		Given I am on the upload points page
-		When I upload the TouchOSC file
-		Then I should see a message confirming the upload was successfully transfered
+		When I fill in "file" with "/usr/whatever"	
+		And I press "Upload"
+		Then I should see "The interface was uploaded succesfully."
