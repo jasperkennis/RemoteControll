@@ -10,5 +10,10 @@
 #
 
 class Interface < ActiveRecord::Base
-  attr_accessible :name
+  attr_accessible :name, :json
+  
+  validates :name,  :presence => true,
+                    :length   => { :minimum => 3,
+                                   :maximum => 40 },
+                    :uniqueness => true
 end
