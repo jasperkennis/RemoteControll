@@ -1,5 +1,14 @@
+# == Schema Information
+#
+# Table name: interfaces
+#
+#  id         :integer         not null, primary key
+#  name       :string(255)
+#  json       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Interface < ActiveRecord::Base
-  def self.save(upload)
-    name =  upload['datafile'].original_filename
-  end
+  attr_accessible :name
 end
