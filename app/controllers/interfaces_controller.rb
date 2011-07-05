@@ -9,7 +9,24 @@ class InterfacesController < ApplicationController
 	end
 
 	def create
+		@interface = Interface.new(params[:interface])
 
+		respond_to do |format|
+			if @interface.save
+				format.html { redirect_to(@interface,
+                      :notice => 'The interface was uploaded succesfully.') }
+				format.xml  { render :xml => @interface,
+                      :status => :created, :location => @interface }
+			else
+				format.html { render :action => "new" }
+				format.xml  { render :xml => @interface.errors,
+                      :status => :unprocessable_entity }
+			end
+		end
+	end
+	
+	def show
+	  
 	end
 end
 
