@@ -3,7 +3,7 @@ require 'spec_helper'
 describe InterfacesController do
 
   before(:each) do
-    @attr = { :name => "Example User", :json => "{}" }
+    @attr = { :name => "Example User", :json => '{"somestring":[]}' }
   end
 
   it "should create a new instance given valid attributes" do
@@ -33,8 +33,19 @@ describe InterfacesController do
     interface_with_duplicate_name.should_not be_valid
   end
   
-  it "should require a json string"
+  it "should require a json valid string"
   
-  it "should require a non json string"
+  it "should reject a non json string"
   
+  
+end
+
+module JSON
+  def is_json?(string)
+    begin
+      parse(string).all?
+    rescue ParserError
+      false
+    end
+  end
 end
