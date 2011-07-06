@@ -13,6 +13,9 @@ module NavigationHelpers
       
     when /^the upload interface\s?page$/
       '/interfaces/new'
+      
+    when /^an interface\s?page$/
+      '/interfaces/1'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
