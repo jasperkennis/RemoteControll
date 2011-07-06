@@ -59,7 +59,7 @@ describe InterfacesController do
   end
   
   it "should reject an interface without a json string" do
-    empty_json_string = "2" * 10
+    empty_json_string = ""
     empty_json_string_interface = Interface.new(@attr.merge(:json => empty_json_string))
     empty_json_string_interface.should_not be_valid
   end
@@ -68,17 +68,5 @@ describe InterfacesController do
     invalid_json_string = "2" * 10
     invalid_json_string_interface = Interface.new(@attr.merge(:json => invalid_json_string))
     invalid_json_string_interface.should_not be_valid
-  end
-  
-  
-end
-
-module JSON
-  def is_json?(string)
-    begin
-      parse(string).all?
-    rescue ParserError
-      false
-    end
   end
 end
