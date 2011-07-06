@@ -12,7 +12,7 @@ class InterfacesController < ApplicationController
 
     # Prepare the names and paths
 		name =  params[:interface]["json"].original_filename.gsub('touchosc','zip')
-		directory = File.join(Rails.root, "tmp/uploads")
+		directory = File.join(Rails.root, "public/uploads")
 		path = File.join(directory, name)
 		
 		# Prepare the uploads dir to receive files
