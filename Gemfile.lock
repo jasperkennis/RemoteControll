@@ -149,6 +149,7 @@ DEPENDENCIES
   cucumber
   cucumber-rails
   database_cleaner
+  json
   rails!
   rspec
   rspec-rails

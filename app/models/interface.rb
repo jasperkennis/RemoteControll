@@ -9,10 +9,6 @@
 #  updated_at :datetime
 #
 
-require 'json'
-
-
-
 class Interface < ActiveRecord::Base
 	attr_accessible :name, :json
 
@@ -25,19 +21,9 @@ class Interface < ActiveRecord::Base
 
 	validate :json_format
 
-	def json_format
-		errors[:base] << "not in json format" unless json.is_json?
-	end
-end
+protected
 
-
-
-class String
-	def is_json?
-		begin
-			!!JSON.parse(self)
-		rescue
-		false
-		end
-	end
+  def json_format
+    errors[:base] << "not in json format" unless json.is_json?
+  end
 end
