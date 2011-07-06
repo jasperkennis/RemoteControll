@@ -10,10 +10,15 @@ class InterfacesController < ApplicationController
 
 	def create
 
-    # Write the received file and save it to tmp/uploads
+    # Prepare the names and paths
 		name =  params[:interface]["json"].original_filename.gsub('touchosc','zip')
 		directory = "tmp/uploads"
 		path = File.join(Rails.root, directory, name)
+		
+		# Prepare the uploads dir to receive files
+		File.chmod( 0777 , File.join(Rails.root, directory ) )
+		
+		# Write the files to the directory
 		File.open(path, "wb") { |f| f.write(params[:interface]["json"].read) }
 
     #Unzip the file to its own name, minus .zip
@@ -29,9 +34,12 @@ class InterfacesController < ApplicationController
 		@json << ']}'
 		
 		# Make the files public and delete them
-		File.chmod( 0777 , path , path.gsub('.zip','') , File.join(Rails.root, directory ) )
+		File.chmod( 0777 , path , path.gsub('.zip','') )
 		File.delete(path )
 		FileUtils.rm_rf(path.gsub('.zip',''))
+		
+		# Close the upload directory again
+		File.chmod( 0555 , File.join(Rails.root, directory ) )
 
     @interface = Interface.new(params[:interface].merge(:json => @json))
 
