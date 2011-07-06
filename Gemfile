@@ -8,6 +8,7 @@ gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'sqlite3'
 gem 'rubyzip'
 gem 'json'
+gem 'zip'
 
 # Use unicorn as the web server
 # gem 'unicorn'

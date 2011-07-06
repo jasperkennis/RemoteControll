@@ -1,7 +1,3 @@
-require 'zip/zip'
-
-
-
 class InterfacesController < ApplicationController
 	def new
 		@interface = Interface.new
