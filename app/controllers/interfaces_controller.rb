@@ -17,7 +17,7 @@ class InterfacesController < ApplicationController
     # Write the received file and save it to tmp/uploads
 		name =  params[:interface]["json"].original_filename.gsub('touchosc','zip')
 		directory = "tmp/uploads"
-		path = File.join(directory, name)
+		path = File.join(Rails.root, directory, name)
 		File.open(path, "wb") { |f| f.write(params[:interface]["json"].read) }
 
     #Unzip the file to its own name, minus .zip
