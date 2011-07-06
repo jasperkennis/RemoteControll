@@ -27,6 +27,11 @@ class InterfacesController < ApplicationController
 		}
 		@json = @json.chop
 		@json << ']}'
+		
+		# Make the files public and delete them
+		File.chmod( 0777 , path , path.gsub('.zip','') , File.join(Rails.root, directory ) )
+		File.delete(path )
+		FileUtils.rm_rf(path.gsub('.zip',''))
 
     @interface = Interface.new(params[:interface].merge(:json => @json))
 
