@@ -3,7 +3,12 @@ Feature: Use Interface
 	As a visitor
 	I want be able to send input to that installation trough an interface
 
+	Scenario: Viewing an Interface
+		Given I am on an interface page
+		Then I should see a green button
+		And I should see a red button
+
 	Scenario: Voting Green
 		Given I am on an interface page
-		And I press "Green"
-		Then I should see "Thanks for voting."
+		When I press "Green"
+		Then I should see "Thanks for voting!"
