@@ -9,6 +9,7 @@ gem 'sqlite3'
 gem 'rubyzip'
 gem 'json'
 gem 'zip'
+gem 'pg'
 
 # Use unicorn as the web server
 # gem 'unicorn'
