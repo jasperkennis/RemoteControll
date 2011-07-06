@@ -49,8 +49,13 @@ class InterfacesController < ApplicationController
 	end
 
 	def show
-
-	end
+    @interface = Interface.find(params[:id])
+   
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @interface }
+    end
+end
 
 	def unzip_file (file, destination)
 		Zip::ZipFile.open(file) { |zip_file|
