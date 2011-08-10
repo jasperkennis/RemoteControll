@@ -52,25 +52,18 @@ var Control = Class.create({
  * 
  * @param controls An array of the controls to construct.
  */
-function InterfaceScreen(controls){
-	this.controls = Array(); // Contains the controls that are on this screen.
-	
-	/**
-	 * init
-	 * 
-	 * Initializes the interface screen.
-	 * 
-	 * @param controls An array of controls to construct.
-	 */
-	this.init = function(controls){
-		
+var InterfaceScreen = Class.create({
+	initialize: function(controls){
 		if(!self){ var self = this; } // Need this becuase the each iterator is going to overwirte this.
+		
+		this.controls = Array(); // Contains the controls that are on this screen.
 		
 		controls.each(function(control){
 			self.addControl(control);
 		});
 		
 	}
+});
 	
 	/**
 	 * createControll
