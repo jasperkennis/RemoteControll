@@ -52,6 +52,7 @@ var InterfaceController = {
 		if(!self){ var self = this; }
 		
 		log(_interface[0].layout);
+		
 		// Build all elements:
 		_interface[0].layout.tabpage.control.each(function(widget){
 			self.buildWidget(
@@ -61,12 +62,11 @@ var InterfaceController = {
 				widget.color,
 				widget.name,
 				false);
-			//log(widget);
 		});
 	},
-	
-	
-	
+
+
+
 	/**
 	 * buildWidget
 	 * Takes a number of arguments and constructs the
