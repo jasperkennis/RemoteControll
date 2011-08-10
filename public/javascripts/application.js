@@ -21,6 +21,35 @@ setDebug(true);
 
 
 /**
+ * Non program funcions
+ */
+
+/**
+ * Log 
+ */
+function log(type,text){
+	if(console && getDebug()){
+		switch(type){
+			case 'error':
+				console.error(text);
+				break;
+			case 'info':
+				console.info(text);
+				break;
+			case 'warn':
+				console.warn(text);
+				break;
+			case 'error':
+				console.error(text);
+				break;
+			default:
+				console.log(text);
+				break;
+		}
+	}
+}
+
+/**
  * Control
  * 
  * Class that represents a control on a screen. It is a super class
