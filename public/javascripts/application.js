@@ -11,8 +11,6 @@ var debug = true;
 function InterfaceScreen(controls){
 	this.controls = Array(); // Contains the controls that are on this screen.
 	
-	
-	
 	/**
 	 * init
 	 * 
@@ -21,14 +19,14 @@ function InterfaceScreen(controls){
 	 * @param controls An array of controls to construct.
 	 */
 	this.init = function(controls){
+		
+		if(!self){ var self = this; } // Need this becuase the each iterator is going to overwirte this.
+		
 		controls.each(function(control){
-			//log(control);
-			var _control = new Control(control);
-			this.controls.push(_control);
+			self.addControl(control);
 		});
+		
 	}
-	
-	
 	
 	/**
 	 * createControll
@@ -37,8 +35,9 @@ function InterfaceScreen(controls){
 	 * 
 	 * @param control An object representing a control.
 	 */
-	this.addControll = function(control){
-		
+	this.addControl = function(control){
+		var _control = new Control(control);
+		this.controls.push(_control);
 	}
 	
 	// Run init per default.
