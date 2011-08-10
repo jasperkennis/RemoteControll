@@ -92,8 +92,6 @@ var InterfaceScreen = Class.create({
  */
 var InterfaceController = Class.create({
 	initialize: function(){
-		log("This is a function as suggested by prototype.");
-		
 		// Define self to prevent conflicts with frameworks
 		if(!self){ var self = this; }
 		
