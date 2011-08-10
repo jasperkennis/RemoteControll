@@ -59,6 +59,9 @@ function log(type,text){
  */
 var Control = Class.create({
 	initialize: function(control){
+		log('info','Beginning creation of control using following control object.');
+		log('log',control);
+		
 		// Define self to prevent conflicts with frameworks
 		if(!self){ var self = this; }
 
@@ -88,6 +91,9 @@ var InterfaceScreen = Class.create({
 	 * @param controls An array of the controls to construct.
 	 */
 	initialize: function(controls){
+		log('info','Beginning processing of screen with following controls.');
+		log('log',controls);
+		
 		if(!self){ var self = this; } // Need this becuase the each iterator is going to overwirte this.
 		
 		this.controls = Array(); // Contains the controls that are on this screen.
@@ -95,6 +101,8 @@ var InterfaceScreen = Class.create({
 		controls.each(function(control){
 			self.addControl(control);
 		});
+		log('info','All controls processed into following set.');
+		log('log',this.controls);
 	},
 	
 	/**
@@ -120,8 +128,14 @@ var InterfaceScreen = Class.create({
  * if an interface is present.
  */
 var InterfaceController = Class.create({
+	/**
+	 * initialize
+	 * 
+	 * Constructor method for the InterfaceController class.
+	 */
 	initialize: function(){
-		// Define self to prevent conflicts with frameworks
+		log('info','Initializing an InterfaceController object.');
+		// Define self to prevent conflicts with frameworks:
 		if(!self){ var self = this; }
 		
 		this.screens = Array();
@@ -135,28 +149,39 @@ var InterfaceController = Class.create({
 		
 		if($('interfaces').innerText.isJSON()){
 			
+			log('info','Interface JSON string found.');
+			
 			// Parse the JSON string into an object before clearing body
 			var interfaces = $('interfaces').innerText.evalJSON().interfaces;
+			log('info','JSON string converted to following object.');
+			log('log',interfaces);
 			
 			// Remove all elements from body
 			$$('body')[0].childElements().each(function(e){
 				e.remove();
 			});
+			log('info','Removed all elements from body.');
 			
 			// See if iteration is needed:
 			if(interfaces.length > 1) {
+				log('info','Set of screens found, beginning processing of all screens.');
 				// Iterate over and build all the layouts
 				interfaces.each(function(layout){
 					self.processInterface(layout);
 				});
 			} else {
-				var layout = interfaces;
-				self.processInterface(layout);
+				log('info','One screen found. Beginning processing of screen.');
+				self.processInterface(interfaces);
 			}
+			log('info','All screens processed into following set.');
+			log('log',this.screens);
+			return true;
 
 		} else {
 			alert("This interface is broken. Unfortunately, you can't use this application right now.");
-			log($('interfaces'));
+			log('error','Broken interface. Aborting.');
+			log('log',$('interfaces'));
+			return false;
 		}
 	},
 	
@@ -176,19 +201,14 @@ var InterfaceController = Class.create({
 		
 		var interface_screen = new InterfaceScreen(_interface[0].layout.tabpage.control);
 		self.screens.push(interface_screen);
+		log('log','Screen processed and pushed into screens array.');
 	}
 });
 
-function log(text){
-	if(console && getDebug()){
-		console.log(text);
-	}
-}
-
 document.observe("dom:loaded", function(){
-	
 	// If we're looking at an interface
 	if($('interfaces') != undefined){
+		log('info','Interface detected.');
 		interface_controller = new InterfaceController();
 	}
 });
