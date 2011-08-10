@@ -19,7 +19,11 @@ function InterfaceScreen(controls){
 	 * @param controls An array of controls to construct.
 	 */
 	this.init = function(controls){
-		controls.each(function(control){log(control);});
+		controls.each(function(control){
+			//log(control);
+			
+			
+		});
 	}
 	
 	
@@ -38,6 +42,27 @@ function InterfaceScreen(controls){
 	// Run init per default.
 	this.init(controls);
 }
+
+
+
+
+
+
+/**
+ * Control
+ * 
+ * Class that represents a control on a screen.
+ * 
+ * @param control The control that is to be created and represented.
+ */
+function Control(control){
+	this.init = function(control){}
+	
+	this.init();
+}
+
+
+
 
 
 
