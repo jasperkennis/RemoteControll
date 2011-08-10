@@ -21,6 +21,30 @@ setDebug(true);
 
 
 /**
+ * Control
+ * 
+ * Class that represents a control on a screen. It is a super class
+ * inherited by the specific types of controll classes.
+ * 
+ * @param control The control that is to be created and represented.
+ */
+var Control = Class.create({
+	initialize: function(control){
+		// Define self to prevent conflicts with frameworks
+		if(!self){ var self = this; }
+
+		this.type = null;
+		this.size = { w: control.w, h: control.h };
+		this.position = { x: control.x, y: control.y };
+		this.color = control.color;
+		this.name = control.name;
+		this.active = false;
+	}
+});
+
+
+
+/**
  * InterfaceScreen
  * 
  * The InterfaceScreen class represents a single screen and contains
@@ -63,41 +87,6 @@ function InterfaceScreen(controls){
 	// Run init per default.
 	this.init(controls);
 }
-
-
-
-
-
-
-/**
- * Control
- * 
- * Class that represents a control on a screen.
- * 
- * @param control The control that is to be created and represented.
- */
-function Control(control){
-	this.init = function( type , size , position , color , name , relative ){
-		switch(type){
-			case 'led':
-				break;
-			default:
-				break;
-		}
-	}
-	
-	this.init(
-		'led',
-		{ w: control.w, h: control.h },
-		{ x: control.x, y: control.y },
-		control.color,
-		control.name,
-		false
-	);
-}
-
-
-
 
 
 
