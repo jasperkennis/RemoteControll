@@ -66,25 +66,20 @@ var InterfaceScreen = Class.create({
 		controls.each(function(control){
 			self.addControl(control);
 		});
-		
-	}
-});
+	},
 	
 	/**
-	 * createControll
+	 * addControll
 	 * 
 	 * Constructs a single control and adds it to the controls array.
 	 * 
 	 * @param control An object representing a control.
 	 */
-	this.addControl = function(control){
+	addControl: function(control){
 		var _control = new Control(control);
 		this.controls.push(_control);
 	}
-	
-	// Run init per default.
-	this.init(controls);
-}
+});
 
 
 
