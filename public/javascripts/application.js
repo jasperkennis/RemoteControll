@@ -31,7 +31,7 @@ function InterfaceScreen(controls){
 	 * 
 	 * @param control An object representing a control.
 	 */
-	this.createControll = function(control){
+	this.addControll = function(control){
 		
 	}
 	
