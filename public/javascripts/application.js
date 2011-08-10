@@ -1,3 +1,53 @@
+/**
+ * InterfaceScreen
+ * 
+ * The InterfaceScreen class represents a single screen and contains
+ * its controls.
+ * 
+ * @param controls An array of the controls to construct.
+ */
+function InterfaceScreen(controls){
+	this.controls = Array(); // Contains the controls that are on this screen.
+	
+	
+	
+	/**
+	 * init
+	 * 
+	 * Initializes the interface screen.
+	 * 
+	 * @param controls An array of controls to construct.
+	 */
+	this.init = function(controls){
+		
+	}
+	
+	
+	
+	/**
+	 * createControll
+	 * 
+	 * Constructs a single control and adds it to the controls array.
+	 * 
+	 * @param control An object representing a control.
+	 */
+	this.createControll = function(control){
+		
+	}
+	
+	// Run init per default.
+	this.init(controls);
+}
+
+
+
+/**
+ * InterfaceController
+ * 
+ * The InterfaceController class is a singleton that is used for the
+ * construction of all interfaces and their actions. It is only used
+ * if an interface is present.
+ */
 var InterfaceController = {
 	screens: Array(),
 	
