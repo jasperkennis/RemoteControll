@@ -1,4 +1,26 @@
 /**
+ * Defenition of globals, and their getters and setters
+ */
+
+/* Debug */
+var debug;
+function setDebug(_debug){
+	if(!_debug){ var _debug = false; } 
+	debug = _debug;
+}
+function getDebug(){ return window.debug; }
+
+
+
+/**
+ * Setting non standard globals
+ */
+
+setDebug(true);
+
+
+
+/**
  * InterfaceScreen
  * 
  * The InterfaceScreen class represents a single screen and contains
@@ -149,11 +171,7 @@ var InterfaceController = Class.create({
 });
 
 function log(text){
-	var debug = true;
-	
-	if(!debug){ var debug = false; } // Set debug to false by default.
-	
-	if(console && debug){
+	if(console && getDebug()){
 		console.log(text);
 	}
 }
