@@ -1,4 +1,6 @@
 var InterfaceController = {
+	controlls: Array(),
+	
 	initInterface: function(){
 		
 		// Define self to prevent conflicts with frameworks
