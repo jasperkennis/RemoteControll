@@ -104,8 +104,8 @@ function Control(control){
 /**
  * InterfaceController
  * 
- * The InterfaceController class is a singleton that is used for the
- * construction of all interfaces and their actions. It is only used
+ * The InterfaceController class is a prototype class that is used for 
+ * the construction of all interfaces and their actions. It is only used
  * if an interface is present.
  */
 var InterfaceController = Class.create({
