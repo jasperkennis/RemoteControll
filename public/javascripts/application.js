@@ -141,31 +141,6 @@ var InterfaceController = {
 				widget.name,
 				false);
 		});*/
-	},
-
-
-
-	/**
-	 * buildWidget
-	 * Takes a number of arguments and constructs the
-	 * correct widget.
-	 */
-	buildWidget: function(type,size,position,color,name,relative){
-		
-		// Define self to prevent conflicts with frameworks
-		if(!self){ var self = this; }
-		
-		/*
-		 * Create a widget that responds to user input. Uses the
-		 * paramaters destilled from the TouchOSC file.
-		 */
-		
-		switch(type){
-			case 'led':
-				break;
-			default:
-				break;
-		}
 	}
 }
 
