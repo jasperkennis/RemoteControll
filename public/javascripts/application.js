@@ -103,8 +103,11 @@ var InterfaceController = {
 	processInterface : function(_interface){
 		if(!self){ var self = this; }
 		
+		var interface_screen = new InterfaceScreen(_interface[0].layout.tabpage.control);
+		self.screens.push(interface_screen);
+		
 		// Build all elements:
-		_interface[0].layout.tabpage.control.each(function(widget){
+		/*_interface[0].layout.tabpage.control.each(function(widget){
 			self.buildWidget(
 				'led',
 				{ w: widget.w, h: widget.h },
@@ -112,7 +115,7 @@ var InterfaceController = {
 				widget.color,
 				widget.name,
 				false);
-		});
+		});*/
 	},
 
 
