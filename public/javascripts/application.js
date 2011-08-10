@@ -1,3 +1,5 @@
+var debug = true;
+
 /**
  * InterfaceScreen
  * 
@@ -148,7 +150,9 @@ var InterfaceController = {
 }
 
 function log(text){
-	if(console){
+	if(!debug){ var debug = false; } // Set debug to false by default.
+	
+	if(console && debug){
 		console.log(text);
 	}
 }
