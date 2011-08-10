@@ -103,8 +103,6 @@ var InterfaceController = {
 	processInterface : function(_interface){
 		if(!self){ var self = this; }
 		
-		log(_interface[0].layout);
-		
 		// Build all elements:
 		_interface[0].layout.tabpage.control.each(function(widget){
 			self.buildWidget(
