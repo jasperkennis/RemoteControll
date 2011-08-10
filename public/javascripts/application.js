@@ -90,6 +90,7 @@ function Control(control){
  */
 var InterfaceController = {
 	screens: Array(),
+	canvas: null,
 	
 	initInterface: function(){
 		
@@ -131,7 +132,9 @@ var InterfaceController = {
 		}
 	},
 	
-	
+	initCanvas: function(){
+		
+	},
 	
 	/**
 	 * processInterface
