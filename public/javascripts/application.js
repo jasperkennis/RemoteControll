@@ -1,5 +1,5 @@
 var InterfaceController = {
-	controlls: Array(),
+	screens: Array(),
 	
 	initInterface: function(){
 		
