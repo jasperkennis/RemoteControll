@@ -160,7 +160,6 @@ document.observe("dom:loaded", function(){
 	
 	// If we're looking at an interface
 	if($('interfaces') != undefined){
-		//InterfaceController.initInterface();
 		interface_controller = new InterfaceController();
 	}
 });
