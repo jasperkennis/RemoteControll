@@ -19,7 +19,7 @@ function InterfaceScreen(controls){
 	 * @param controls An array of controls to construct.
 	 */
 	this.init = function(controls){
-		
+		controls.each(function(control){log(control);});
 	}
 	
 	
