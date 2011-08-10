@@ -40,7 +40,7 @@ function InterfaceScreen(controls){
 	}
 	
 	// Run init per default.
-	this.init(control);
+	this.init(controls);
 }
 
 
