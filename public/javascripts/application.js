@@ -144,17 +144,6 @@ var InterfaceController = {
 		
 		var interface_screen = new InterfaceScreen(_interface[0].layout.tabpage.control);
 		self.screens.push(interface_screen);
-		
-		// Build all elements:
-		/*_interface[0].layout.tabpage.control.each(function(widget){
-			self.buildWidget(
-				'led',
-				{ w: widget.w, h: widget.h },
-				{ x: widget.x, y: widget.y },
-				widget.color,
-				widget.name,
-				false);
-		});*/
 	}
 }
 
