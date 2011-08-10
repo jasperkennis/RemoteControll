@@ -21,8 +21,8 @@ function InterfaceScreen(controls){
 	this.init = function(controls){
 		controls.each(function(control){
 			//log(control);
-			
-			
+			var _control = new Control(control);
+			this.controls.push(_control);
 		});
 	}
 	
@@ -40,7 +40,7 @@ function InterfaceScreen(controls){
 	}
 	
 	// Run init per default.
-	this.init(controls);
+	this.init(control);
 }
 
 
@@ -56,9 +56,23 @@ function InterfaceScreen(controls){
  * @param control The control that is to be created and represented.
  */
 function Control(control){
-	this.init = function(control){}
+	this.init = function( type , size , position , color , name , relative ){
+		switch(type){
+			case 'led':
+				break;
+			default:
+				break;
+		}
+	}
 	
-	this.init();
+	this.init(
+		'led',
+		{ w: control.w, h: control.h },
+		{ x: control.x, y: control.y },
+		control.color,
+		control.name,
+		false
+	);
 }
 
 
