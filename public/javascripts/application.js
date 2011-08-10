@@ -1,5 +1,3 @@
-var debug = true;
-
 /**
  * InterfaceScreen
  * 
@@ -149,9 +147,11 @@ var InterfaceController = {
 		var interface_screen = new InterfaceScreen(_interface[0].layout.tabpage.control);
 		self.screens.push(interface_screen);
 	}
-}
+});
 
 function log(text){
+	var debug = true;
+	
 	if(!debug){ var debug = false; } // Set debug to false by default.
 	
 	if(console && debug){
