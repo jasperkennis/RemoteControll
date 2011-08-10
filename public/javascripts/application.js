@@ -49,10 +49,15 @@ var Control = Class.create({
  * 
  * The InterfaceScreen class represents a single screen and contains
  * its controls.
- * 
- * @param controls An array of the controls to construct.
  */
 var InterfaceScreen = Class.create({
+	/**
+	 * initialize
+	 * 
+	 * Constructor method for the InterfaceScreen class.
+	 * 
+	 * @param controls An array of the controls to construct.
+	 */
 	initialize: function(controls){
 		if(!self){ var self = this; } // Need this becuase the each iterator is going to overwirte this.
 		
