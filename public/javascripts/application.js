@@ -86,16 +86,15 @@ function Control(control){
  * construction of all interfaces and their actions. It is only used
  * if an interface is present.
  */
-var InterfaceController = {
-	screens: Array(),
-	canvas: null,
-	
-	initInterface: function(){
+var InterfaceController = Class.create({
+	initialize: function(){
+		log("This is a function as suggested by prototype.");
 		
 		// Define self to prevent conflicts with frameworks
 		if(!self){ var self = this; }
 		
-		
+		this.screens = Array();
+		this.canvas = null;
 		
 		/*
 		 * If an interfaces JSON string is defined, the original screen
@@ -163,6 +162,7 @@ document.observe("dom:loaded", function(){
 	
 	// If we're looking at an interface
 	if($('interfaces') != undefined){
-		InterfaceController.initInterface();
+		//InterfaceController.initInterface();
+		interface_controller = new InterfaceController();
 	}
 });
