@@ -6,3 +6,4 @@ tmp/
 pull.bat
 Gemfile.lock
 db/schema.rb
+push.bat
