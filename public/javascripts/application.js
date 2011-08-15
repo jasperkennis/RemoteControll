@@ -74,6 +74,13 @@ var Control = Class.create({
 	}
 });
 
+var LED = Class.create(Control,{
+	initialize: function($super){
+		$super;
+		this.type = "led";
+	}
+});
+
 
 
 /**
