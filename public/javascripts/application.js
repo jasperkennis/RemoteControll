@@ -120,7 +120,15 @@ var InterfaceScreen = Class.create({
 	 * @param control An object representing a control.
 	 */
 	addControl: function(control){
-		var _control = new Control(control);
+		var _control = null;
+		log('info','Finding out what type of control is to be constructed.');
+		switch(control.type){
+			log('info','Detected a LED control.');
+			case "led":
+				_control = new LED(control);
+				break;
+		}
+		
 		this.controls.push(_control);
 	}
 });
