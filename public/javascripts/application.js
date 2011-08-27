@@ -128,9 +128,12 @@ var InterfaceScreen = Class.create({
 		var _control = null;
 		log('info','Finding out what type of control is to be constructed.');
 		switch(control.type){
-			log('info','Detected a LED control.');
 			case "led":
+				log('info','Detected a LED control.');
 				_control = new LED(control);
+				break;
+			default:
+				log('info','Detected unknown control type. Constructing an instance of Control.');
 				break;
 		}
 		
