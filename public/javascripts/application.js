@@ -105,9 +105,14 @@ var InterfaceScreen = Class.create({
 		
 		this.controls = Array(); // Contains the controls that are on this screen.
 		
-		controls.each(function(control){
-			self.addControl(control);
-		});
+		if( Object.isArray( controls ) ){
+			controls.each(function(control){
+				self.addControl(control);
+			});
+		} else {
+			self.addControl(controls);
+		}
+		
 		log('info','All controls processed into following set.');
 		log('log',this.controls);
 	},
