@@ -110,13 +110,13 @@ var Control = Class.create({
 					( event.pointer().y > ( y - ( h / 2 ) ) ) &&
 					( event.pointer().x < ( ( x + w ) - ( w / 2 ) ) ) &&
 					( event.pointer().y < ( ( y + h ) - ( h / 2 ) ) ) ){
-						new Ajax.Request('/',{
-							onSucces: function(response){
-								log('info', "A succesfull call has been made to the server.");
-								log('log', response);
+						new Ajax.Request('/screen_app_communication/led',{
+							method: 'get',
+							onComplete: function(response){
+								log('info','Some response has been generated.');
+								log('log',response);
 							}
 						});
-						getPusherChannel().trigger( 'client-led-touch', { name: self.name });
 					}
 		});
 	}
