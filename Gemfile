@@ -10,6 +10,7 @@ gem 'rubyzip'
 gem 'json'
 gem 'zip'
 gem 'pg'
+gem 'pusher'
 
 # Use unicorn as the web server
 # gem 'unicorn'
