@@ -375,7 +375,7 @@ document.observe("dom:loaded", function(){
 		log('info','Interface detected.');
 		
 		setPusher('7132d12d5d3ddf34b09e');
-		setPusherChannel('test_chennel');
+		setPusherChannel('test_channel');
 		
     getPusherChannel().bind('my_event', function(data) {
       alert(data);
