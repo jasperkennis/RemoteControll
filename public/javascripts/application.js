@@ -368,6 +368,8 @@ document.observe("dom:loaded", function(){
 	/**
 	 * Here, we perform actions based on what screen is detected:
 	 */
+	
+	/* Interface */
 	if( $('interfaces') != undefined ){
 		
 		log('info','Interface detected.');
@@ -383,5 +385,18 @@ document.observe("dom:loaded", function(){
 			no_canvas: 'This text is displayed if your browser does not support HTML5 Canvas.'
 		}
 		interface_controller = new InterfaceController(args);
+	}
+	
+	/* App */
+	if( $('app') != undefined ){
+		
+		log('info','App detected.');
+		
+		setPusher('7132d12d5d3ddf34b09e');
+		setPusherChannel('myscreen-input');
+		
+    getPusherChannel().bind('led-activated', function(data) {
+      alert(data);
+    });
 	}
 });
