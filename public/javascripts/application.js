@@ -36,8 +36,6 @@ function getPusherChannel() { return window.pusher_channel; }
  */
 
 setDebug(true);
-setPusher('7132d12d5d3ddf34b09e');
-setPusherChannel('test_chennel');
 
 
 
@@ -373,6 +371,9 @@ document.observe("dom:loaded", function(){
 	if( $('interfaces') != undefined ){
 		
 		log('info','Interface detected.');
+		
+		setPusher('7132d12d5d3ddf34b09e');
+		setPusherChannel('test_chennel');
 		
     getPusherChannel().bind('my_event', function(data) {
       alert(data);
