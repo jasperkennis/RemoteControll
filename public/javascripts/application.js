@@ -343,28 +343,36 @@ var InterfaceController = Class.create({
 	}
 });
 
+
+
+/**
+ * Main initiation takes place right here:
+ */
 document.observe("dom:loaded", function(){
-	// If we're looking at an interface
-	if($('interfaces') != undefined){
+	/**
+	 * First, we set debugging requirements if debug is on:
+	 */
+	if(getDebug()){
+	  Pusher.log = function(message) {
+	    if (window.console && window.console.log) window.console.log(message);
+	  };
+	  WEB_SOCKET_DEBUG = true;
+ }
+
+	/**
+	 * Here, we perform actions based on what screen is detected:
+	 */
+	if( $('interfaces') != undefined ){
+		
 		log('info','Interface detected.');
+		
+    getPusherChannel().bind('my_event', function(data) {
+      alert(data);
+    });
+		
 		var args = {
 			no_canvas: 'This text is displayed if your browser does not support HTML5 Canvas.'
 		}
 		interface_controller = new InterfaceController(args);
-		
-		
-		// Enable pusher logging - don't include this in production
-    Pusher.log = function(message) {
-      if (window.console && window.console.log) window.console.log(message);
-    };
-
-    // Flash fallback logging - don't include this in production
-    WEB_SOCKET_DEBUG = true;
-
-    var pusher = new Pusher('7132d12d5d3ddf34b09e');
-    var channel = pusher.subscribe('test_channel');
-    channel.bind('my_event', function(data) {
-      alert(data);
-    });
 	}
 });
