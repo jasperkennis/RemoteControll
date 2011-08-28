@@ -192,7 +192,20 @@ var InterfaceScreen = Class.create({
 		log( 'log' , id );
 		log( 'log' , no_canvas );
 		
-		this.canvas = $('<canvas id="screen-' + id + '" width="100%" height="100%" class="' + ( initial ? ' hidden' : '' ) + '">' + no_canvas + '</canvas>');
+		self.canvas = new Element( 'canvas' , {
+			'id' : id,
+			'width' : '100%',
+			'height' : '100%'
+		}).update(no_canvas);
+		
+		if(!initial){
+			self.canvas.hide();
+		}
+		
+		document.body.appendChild(self.canvas);
+		
+		log( 'info' , "Created following canvas element:" );
+		log( 'log' , self.canvas );
 	}
 });
 
