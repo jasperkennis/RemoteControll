@@ -71,12 +71,17 @@ var Control = Class.create({
 		this.color = control.color;
 		this.name = control.name;
 		this.active = false;
+		this.shape = null;
+	},
+	
+	draw: function(){
+		
 	}
 });
 
 var LED = Class.create(Control,{
-	initialize: function($super){
-		$super;
+	initialize: function($super,control){
+		$super.call(this, control);
 		this.type = "led";
 	}
 });
@@ -97,13 +102,33 @@ var InterfaceScreen = Class.create({
 	 * 
 	 * @param controls An array of the controls to construct.
 	 */
-	initialize: function(controls){
-		log('info','Beginning processing of screen with following controls.');
-		log('log',controls);
+	initialize: function(controls, initial, id, no_canvas){
 		
-		if(!self){ var self = this; } // Need this becuase the each iterator is going to overwirte this.
+		if(!self){ var self = this; } // Need this because the each iterator is going to overwrite this.
 		
 		this.controls = Array(); // Contains the controls that are on this screen.
+		this.canvas = null; // Contains the canvas that represents this screen
+		
+		self.createCanvas(initial, id, no_canvas);
+		self.addControls(controls);
+	},
+
+
+
+	/**
+	 * addControls
+	 * 
+	 * Constructs the array of controls contained  within an instance of InterfaceScreen.
+	 *
+	 * @param controls A single control object or an array of control objects.
+	 * @return Array
+	 */
+	addControls: function(controls) {
+		
+		if(!self){ var self = this; } // Need this because the each iterator is going to overwrite this.
+		
+		log( 'info' , 'Beginning creation of controls with following input:' );
+		log( 'log' , controls );
 		
 		if( Object.isArray( controls ) ){
 			controls.each(function(control){
@@ -116,6 +141,8 @@ var InterfaceScreen = Class.create({
 		log('info','All controls processed into following set.');
 		log('log',this.controls);
 	},
+
+
 	
 	/**
 	 * addControll
@@ -123,9 +150,17 @@ var InterfaceScreen = Class.create({
 	 * Constructs a single control and adds it to the controls array.
 	 * 
 	 * @param control An object representing a control.
+	 * @return Object
 	 */
 	addControl: function(control){
+		
+		if(!self){ var self = this; } // Need this because the each iterator is going to overwrite this.
+		
+		log( 'info' , 'Beginning creation of a single control with the following input:' );
+		log( 'log' , control );
+		
 		var _control = null;
+		
 		log('info','Finding out what type of control is to be constructed.');
 		switch(control.type){
 			case "led":
@@ -138,6 +173,26 @@ var InterfaceScreen = Class.create({
 		}
 		
 		this.controls.push(_control);
+		
+		log( 'info' , 'The following single control element has been created.' );
+		log( 'log' , _control );
+	},
+	
+	
+	
+	/**
+	 * 
+	 */
+	createCanvas: function( initial, id, no_canvas){
+		
+		if(!self){ var self = this; } // Need this because the each iterator is going to overwrite this.
+		
+		log( 'info' , 'Beginning creation of a screens canvas with, respectivly, the following initial, id and no_canvas arguments:' );
+		log( 'log' , initial );
+		log( 'log' , id );
+		log( 'log' , no_canvas );
+		
+		this.canvas = $('<canvas id="screen-' + id + '" width="100%" height="100%" class="' + ( initial ? ' hidden' : '' ) + '">' + no_canvas + '</canvas>');
 	}
 });
 
@@ -156,13 +211,14 @@ var InterfaceController = Class.create({
 	 * 
 	 * Constructor method for the InterfaceController class.
 	 */
-	initialize: function(){
-		log('info','Initializing an InterfaceController object.');
-		// Define self to prevent conflicts with frameworks:
+	initialize: function(args){
+
 		if(!self){ var self = this; }
 		
+		log('info','Initializing an InterfaceController object. Got the following arguments:');
+		log('log' , args);
+		
 		this.screens = Array();
-		this.canvas = null;
 		
 		/*
 		 * If an interfaces JSON string is defined, the original screen
@@ -194,7 +250,7 @@ var InterfaceController = Class.create({
 				});
 			} else {
 				log('info','One screen found. Beginning processing of screen.');
-				self.processInterface(interfaces);
+				self.processInterface(interfaces, args.no_canvas);
 			}
 			log('info','All screens processed into following set.');
 			log('log',this.screens);
@@ -208,10 +264,6 @@ var InterfaceController = Class.create({
 		}
 	},
 	
-	initCanvas: function(){
-		
-	},
-	
 	/**
 	 * processInterface
 	 * Iterates over all widgets in an interface and calls
@@ -219,10 +271,11 @@ var InterfaceController = Class.create({
 	 * 
 	 * @param _interface The interface to process
 	 */
-	processInterface : function(_interface){
+	processInterface : function(_interface, no_canvas){
+		
 		if(!self){ var self = this; }
 		
-		var interface_screen = new InterfaceScreen(_interface[0].layout.tabpage.control);
+		var interface_screen = new InterfaceScreen(_interface[0].layout.tabpage.control,true, 0, no_canvas);
 		self.screens.push(interface_screen);
 		log('log','Screen processed and pushed into screens array.');
 	}
@@ -232,6 +285,9 @@ document.observe("dom:loaded", function(){
 	// If we're looking at an interface
 	if($('interfaces') != undefined){
 		log('info','Interface detected.');
-		interface_controller = new InterfaceController();
+		var args = {
+			no_canvas: 'This text is displayed if your browser does not support HTML5 Canvas.'
+		}
+		interface_controller = new InterfaceController(args);
 	}
 });
