@@ -89,7 +89,7 @@ var Control = Class.create({
 					( event.pointer().y > ( y - ( h / 2 ) ) ) &&
 					( event.pointer().x < ( ( x + w ) - ( w / 2 ) ) ) &&
 					( event.pointer().y < ( ( y + h ) - ( h / 2 ) ) ) ){
-						alert(event.pointer().x);
+						alert("IS HE REALLY USING ALERT TO TEST??? Yeah dude, so you can see it works. Cause it works!");
 					}
 		});
 	}
