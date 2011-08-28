@@ -58,7 +58,7 @@ function log(type,text){
  * @param control The control that is to be created and represented.
  */
 var Control = Class.create({
-	initialize: function(control){
+	initialize: function(control, to_id){
 		log('info','Beginning creation of control using following control object.');
 		log('log',control);
 		
@@ -72,17 +72,43 @@ var Control = Class.create({
 		this.name = control.name;
 		this.active = false;
 		this.shape = null;
+		this.parent_canvas = to_id;
 	},
 	
 	draw: function(){
-		
+		_canvas = $('screen-' + this.parent_canvas).getContext("2d");
+	},
+	
+	listen: function(x,y,w,h){
+		x = parseInt(x);
+		y = parseInt(y);
+		w = parseInt(w);
+		h = parseInt(h);
+		$('screen-' + this.parent_canvas).observe('click',function(event){
+			if( ( event.pointer().x > ( x - ( w / 2 ) ) ) && 
+					( event.pointer().y > ( y - ( h / 2 ) ) ) &&
+					( event.pointer().x < ( ( x + w ) - ( w / 2 ) ) ) &&
+					( event.pointer().y < ( ( y + h ) - ( h / 2 ) ) ) ){
+						alert(event.pointer().x);
+					}
+		});
 	}
 });
 
 var LED = Class.create(Control,{
-	initialize: function($super,control){
-		$super.call(this, control);
+	initialize: function($super,control, to_id){
+		$super.call(this, control, to_id);
 		this.type = "led";
+		this.draw();
+		this.listen(this.position.x, this.position.y, this.size.w, this.size.h);
+	},
+	
+	draw: function($super){
+		$super();
+		_canvas.beginPath();
+		_canvas.arc(this.position.x, this.position.y, this.size.w, 0, Math.PI*2, true); 
+		_canvas.closePath();
+		_canvas.fill();
 	}
 });
 
@@ -108,6 +134,7 @@ var InterfaceScreen = Class.create({
 		
 		this.controls = Array(); // Contains the controls that are on this screen.
 		this.canvas = null; // Contains the canvas that represents this screen
+		this.id = id;
 		
 		self.createCanvas(initial, id, no_canvas);
 		self.addControls(controls);
@@ -165,10 +192,11 @@ var InterfaceScreen = Class.create({
 		switch(control.type){
 			case "led":
 				log('info','Detected a LED control.');
-				_control = new LED(control);
+				_control = new LED(control, self.id);
 				break;
 			default:
 				log('info','Detected unknown control type. Constructing an instance of Control.');
+				_control = new Control(control, self.id);
 				break;
 		}
 		
@@ -193,7 +221,7 @@ var InterfaceScreen = Class.create({
 		log( 'log' , no_canvas );
 		
 		self.canvas = new Element( 'canvas' , {
-			'id' : id,
+			'id' : 'screen-' + id,
 			'width' : document.viewport.getWidth(),
 			'height' : document.viewport.getHeight()
 		}).update(no_canvas);
