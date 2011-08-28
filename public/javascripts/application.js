@@ -83,7 +83,6 @@ var Control = Class.create({
 		log('info','Beginning creation of control using following control object.');
 		log('log',control);
 		
-		// Define self to prevent conflicts with frameworks
 		if(!self){ var self = this; }
 
 		this.type = null;
@@ -101,6 +100,9 @@ var Control = Class.create({
 	},
 	
 	listen: function(x,y,w,h){
+		
+		if(!self){ var self = this; }
+		
 		x = parseInt(x);
 		y = parseInt(y);
 		w = parseInt(w);
@@ -110,7 +112,13 @@ var Control = Class.create({
 					( event.pointer().y > ( y - ( h / 2 ) ) ) &&
 					( event.pointer().x < ( ( x + w ) - ( w / 2 ) ) ) &&
 					( event.pointer().y < ( ( y + h ) - ( h / 2 ) ) ) ){
-						alert("IS HE REALLY USING ALERT TO TEST??? Yeah dude, so you can see it works. Cause it works!");
+						new Ajax.Request('/',{
+							onSucces: function(response){
+								log('info', "A succesfull call has been made to the server.");
+								log('log', response);
+							}
+						});
+						getPusherChannel().trigger( 'client-led-touch', { name: self.name });
 					}
 		});
 	}
