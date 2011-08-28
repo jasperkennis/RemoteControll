@@ -11,12 +11,33 @@ function setDebug(_debug){
 function getDebug(){ return window.debug; }
 
 
+/* Pusher */
+var pusher;
+function setPusher(_pusher_app_id){
+	if(!_pusher_app_id){ var _pusher_app_id = '7132d12d5d3ddf34b09e'; }
+	pusher = new Pusher(_pusher_app_id);
+}
+function getPusher() { return window.pusher; }
+
+
+
+/* Pusher channel */
+var pusher_channel;
+function setPusherChannel(_channel_name){
+	if(!_channel_name){var _channel_name = 'test_channel'; }
+	pusher_channel = getPusher().subscribe(_channel_name);
+}
+function getPusherChannel() { return window.pusher_channel; }
+
+
 
 /**
  * Setting non default globals
  */
 
 setDebug(true);
+setPusher('7132d12d5d3ddf34b09e');
+setPusherChannel('test_chennel');
 
 
 
