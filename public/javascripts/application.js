@@ -106,7 +106,7 @@ var LED = Class.create(Control,{
 	draw: function($super){
 		$super();
 		_canvas.beginPath();
-		_canvas.arc(this.position.x, this.position.y, this.size.w, 0, Math.PI*2, true); 
+		_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
 		_canvas.closePath();
 		_canvas.fill();
 	}
