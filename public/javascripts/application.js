@@ -330,5 +330,20 @@ document.observe("dom:loaded", function(){
 			no_canvas: 'This text is displayed if your browser does not support HTML5 Canvas.'
 		}
 		interface_controller = new InterfaceController(args);
+		
+		
+		// Enable pusher logging - don't include this in production
+    Pusher.log = function(message) {
+      if (window.console && window.console.log) window.console.log(message);
+    };
+
+    // Flash fallback logging - don't include this in production
+    WEB_SOCKET_DEBUG = true;
+
+    var pusher = new Pusher('7132d12d5d3ddf34b09e');
+    var channel = pusher.subscribe('test_channel');
+    channel.bind('my_event', function(data) {
+      alert(data);
+    });
 	}
 });
