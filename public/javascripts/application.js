@@ -194,8 +194,8 @@ var InterfaceScreen = Class.create({
 		
 		self.canvas = new Element( 'canvas' , {
 			'id' : id,
-			'width' : '100%',
-			'height' : '100%'
+			'width' : document.viewport.getWidth(),
+			'height' : document.viewport.getHeight()
 		}).update(no_canvas);
 		
 		if(!initial){
