@@ -1,0 +1,6 @@
+<% if @screen_app %>
+  <h1><%= @screen_app.name %></h1>
+  <p>The app: <%= @screen_app.url %></p>
+  <p>The interfaces: </p>
+  <p><%= link_to 'Edit', edit_screen_app_path(@screen_app) %></p>
+<% end %>
