@@ -126,11 +126,11 @@ var LED = Class.create(Control,{
 	initialize: function($super,control, to_id){
 		$super.call(this, control, to_id);
 		this.type = "led";
-		this.draw();
+		this.draw(true,this.color);
 		this.listen(this.position.x, this.position.y, this.size.w, this.size.h);
 	},
 	
-	draw: function($super){
+	draw: function($super,from_state,color){
 		$super();
 		_canvas.beginPath();
 		_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
