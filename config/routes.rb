@@ -1,4 +1,6 @@
 Remotecontroll::Application.routes.draw do
+  get "screen_apps/new"
+
   get "screen_app_communication/led"
 
   # The priority is based upon order of creation:
