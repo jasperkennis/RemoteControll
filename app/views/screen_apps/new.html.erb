@@ -1,2 +1,28 @@
-<h1>ScreenApps#new</h1>
-<p>Find me in app/views/screen_apps/new.html.erb</p>
+<h1>Submit a new app</h1>
+
+<% if @screen_app.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@screen_app.errors.count, "error") %> 
+        prohibited this app from being saved:</h2>
+    <p>There were problems with the following fields:</p>
+    <ul>
+    <% @screen_app.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for(@screen_app) do |f| %>
+	<div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :url %><br />
+    <%= f.text_field :url %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
