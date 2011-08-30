@@ -11,6 +11,7 @@ gem 'json'
 gem 'zip'
 gem 'pg'
 gem 'pusher'
+gem 'omniauth'
 
 # Use unicorn as the web server
 # gem 'unicorn'
