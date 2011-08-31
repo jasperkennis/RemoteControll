@@ -1,4 +1,8 @@
 Remotecontroll::Application.routes.draw do
+  
+  # Required by Devise
+  root :to => "home#index"
+  
   get "screen_apps/new"
 
   get "screen_app_communication/led"
