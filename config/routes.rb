@@ -3,7 +3,7 @@ Remotecontroll::Application.routes.draw do
   devise_for :users
 
   # Required by Devise
-  root :to => "home#index"
+  root :to => "screen_apps#index"
   
   get "screen_apps/new"
 
