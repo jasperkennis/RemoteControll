@@ -4,6 +4,5 @@ log/*.log
 tmp/
 .project
 pull.bat
-Gemfile.lock
 db/schema.rb
 push.bat
