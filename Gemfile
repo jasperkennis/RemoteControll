@@ -12,6 +12,7 @@ gem 'zip'
 gem 'pg'
 gem 'pusher'
 gem 'omniauth'
+gem 'devise'
 
 # Use unicorn as the web server
 # gem 'unicorn'
