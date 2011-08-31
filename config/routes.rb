@@ -1,5 +1,7 @@
 Remotecontroll::Application.routes.draw do
   
+  devise_for :users
+
   # Required by Devise
   root :to => "home#index"
   
