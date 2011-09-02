@@ -210,5 +210,5 @@ Devise.setup do |config|
   # end
   
   config.omniauth :facebook, "117618178339829", "e59e2cabb00971bd2855a3e066475c1a",
-      {:scope => 'email, offline_access', :client_options => {:ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}}} 
+      {:scope => 'email', :client_options => {:ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}}} 
 end
