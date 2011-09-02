@@ -2,11 +2,11 @@
 #
 # Table name: interfaces
 #
-#  id         :integer         not null, primary key
+#  id         :integer         primary key
 #  name       :string(255)
-#  json       :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  json       :text
+#  created_at :timestamp
+#  updated_at :timestamp
 #
 
 require 'test_helper'
