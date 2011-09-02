@@ -14,10 +14,17 @@ class ScreenAppsController < ApplicationController
   def create
     @screen_app = ScreenApp.new(params[:screen_app])
     
-    if @screen_app.save
-      render 'index'
-    else
-      render 'index'
+    respond_to do |format|
+      if @screen_app.save
+        format.html { redirect_to(@screen_app,
+                      :notice => 'The interface was uploaded succesfully.') }
+        format.xml  { render :xml => @interface,
+                      :status => :created, :location => @interface }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @interface.errors,
+                      :status => :unprocessable_entity }
+      end
     end
   end
   
