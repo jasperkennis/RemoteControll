@@ -64,7 +64,7 @@ class InterfacesController < ApplicationController
       format.html # show.html.erb
       format.xml  { render :xml => @interface }
     end
-end
+  end
 
 	def unzip_file (file, destination)
 		Zip::ZipFile.open(file) { |zip_file|
