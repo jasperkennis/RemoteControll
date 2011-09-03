@@ -17,11 +17,12 @@ class ScreenAppsController < ApplicationController
 
   def create
     @screen_app = ScreenApp.new(params[:screen_app])
+    @screen_app.user = current_user
     
     respond_to do |format|
       if @screen_app.save
         format.html { redirect_to(@screen_app,
-                      :notice => 'The interface was uploaded succesfully.') }
+                      :notice => 'Your app has been created! Now you should upload an interface, or select an alternative input method.') }
         format.xml  { render :xml => @interface,
                       :status => :created, :location => @interface }
       else
