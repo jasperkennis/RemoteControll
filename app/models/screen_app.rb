@@ -19,4 +19,8 @@ class ScreenApp < ActiveRecord::Base
                     :uniqueness => true
                     
   validates_format_of :url, :with => URI::regexp(%w(http https))
+  
+  validates :user_id, :presence => true
+  
+  belongs_to :user
 end
