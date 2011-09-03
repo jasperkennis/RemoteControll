@@ -1,0 +1,7 @@
+<p>
+	<% if user_signed_in? %>
+		Welkom <%= current_user.id %>
+	<% else %>
+		Welcome guest! <%= link_to "Sign up", new_user_registration_path %>, <%= link_to "login", new_user_registration_path %> or <%= link_to "login with Facebook", user_omniauth_authorize_path(:facebook) %>. 
+	<% end %>
+</p>
