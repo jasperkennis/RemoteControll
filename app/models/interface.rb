@@ -19,7 +19,7 @@ class Interface < ActiveRecord::Base
 
 	validates :json, :presence => true
 
-	validate :json_format
+	#validate :json_format
 
 protected
 
