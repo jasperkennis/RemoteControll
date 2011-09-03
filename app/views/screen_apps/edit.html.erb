@@ -27,4 +27,7 @@
   </div>
 <% end %>
 
-<%= link_to 'Back', screen_apps_path %>
+<%= link_to 'Back', screen_apps_path %> | <%= link_to "Delete this app",
+	  			@screen_app,
+	  			:method => :delete,
+	       	:confirm => "You sure very sure?" %>
