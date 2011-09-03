@@ -63,6 +63,6 @@ class ScreenAppsController < ApplicationController
 
     def authorized_user
       @screen_app = current_user.screen_apps.find_by_id(params[:id])
-      redirect_to root_path if @micropost.nil?
+      redirect_to root_path if @screen_app.nil?
     end
 end
