@@ -9,11 +9,7 @@
 <body>
 <p class="notice"><%= notice %></p>
 <p class="alert"><%= alert %></p>
-<% if user_signed_in? %>
-	Welkom <%= current_user.id %>
-<% else %>
-	<%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
-<% end %>
+<%= render "layouts/user_status" %>
 <%= yield %>
 
 </body>
