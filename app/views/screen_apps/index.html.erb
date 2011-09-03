@@ -1,6 +1,7 @@
 <h1>Existing applications</h1>
 <% if @screen_apps %>
 	<% @screen_apps.each do |screen_app| %>
-  	<li><b><%= screen_app.name %></b> <%= link_to 'Edit', edit_screen_app_path(screen_app) %></li>
+  	<li><b><%= screen_app.name %></b> | <%= link_to 'Edit', edit_screen_app_path(screen_app) %>, <%= link_to "Delete", screen_app, :method => :delete,
+                                     :confirm => "You sure?" %></li>
 	<% end %>
 <% end %>
