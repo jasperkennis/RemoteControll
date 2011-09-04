@@ -1,12 +1,3 @@
-require 'test_helper'
-
-class ScreenAppTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
-end
-
-
 # == Schema Information
 #
 # Table name: screen_apps
@@ -19,5 +10,15 @@ end
 #  updated_at      :datetime
 #  user_id         :integer
 #  register_arrows :boolean
+#  description     :text
 #
+
+require 'test_helper'
+
+class ScreenAppTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
+end
+
 
