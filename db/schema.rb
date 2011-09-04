@@ -11,13 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110903141307) do
+ActiveRecord::Schema.define(:version => 20110904105650) do
 
   create_table "interfaces", :force => true do |t|
     t.string   "name"
-    t.text     "json",       :limit => 255
+    t.text     "json",          :limit => 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "screen_app_id"
   end
 
   create_table "screen_apps", :force => true do |t|

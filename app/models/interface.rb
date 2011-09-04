@@ -7,8 +7,10 @@ class Interface < ActiveRecord::Base
                     :uniqueness => true
 
 	validates :json, :presence => true
+	
+	validates :screen_app_id, :presence => true
 
-	#validate :json_format
+	belongs_to :screen_app
 
 protected
 
