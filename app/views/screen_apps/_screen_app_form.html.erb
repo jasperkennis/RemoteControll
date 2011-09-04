@@ -1,0 +1,31 @@
+<%= form_for(@screen_app) do |f| %>
+	<fieldset>
+		<legend>Basic info</legend>
+		<div class="field">
+	    <%= f.label :name %><br />
+	    <%= f.text_field :name %>
+	  </div>
+	  
+	  <div class="field">
+	    <%= f.label :url %><br />
+	    <%= f.text_field :url %>
+	  </div>
+	  
+	  <div class="field">
+	    <%= f.label :description %><br />
+	    <%= f.text_area :description %>
+	  </div>
+	</fieldset>
+	
+	<fieldset>
+  	<legend>Input types</legend>	
+	  <div class="field">
+	    <%= f.label :register_arrows %>
+	    <%= f.check_box :register_arrows %>
+	  </div>
+	</fieldset>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

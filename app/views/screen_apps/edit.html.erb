@@ -13,23 +13,7 @@
   </div>
 <% end %>
 
-<%= form_for(@screen_app) do |f| %>
-	<div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :url %><br />
-    <%= f.text_field :url %>
-  </div>
-  <div class="field">
-    <%= f.label :register_arrows %>
-    <%= f.check_box :register_arrows %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+<%= render "screen_apps/screen_app_form" %>
 
 <%= link_to 'Back', screen_apps_path %> | <%= link_to "Delete this app",
 	  			@screen_app,
