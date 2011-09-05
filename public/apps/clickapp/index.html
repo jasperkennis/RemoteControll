@@ -7,11 +7,118 @@
 		<script src="/javascripts/scriptaculous.js?1309960570" type="text/javascript"></script>
 		<script src="http://js.pusherapp.com/1.9/pusher.min.js" type="text/javascript"></script>
 		<script src="/javascripts/application.js?1314567656" type="text/javascript"></script>
-		<meta content="authenticity_token" name="csrf-param" />
-		<meta content="sB39rQ65OpH5WUQE1kSlOSHh50ujwnHvLO0kGheiX4g=" name="csrf-token" />
 	</head>
-	<body>
-		<h1>This is a test app</h1>
-		<p id="app">Today, I am only a reciever.</p>
+	<body id="screen_app_page">
+		
+		
+		<script>
+		
+		var Drawable = Class.create({
+			initialize: function(control){
+				
+				if(!self){ var self = this; }
+		
+				this.type = null;
+				this.size = { w: control.w, h: control.h };
+				this.position = { x: control.x, y: control.y };
+				this.color = control.color;
+				this.name = control.name;
+				this.active = false;
+				this.shape = null;
+			},
+			
+			draw: function(){
+				_canvas = $('screen-' + this.parent_canvas).getContext("2d");
+			},
+			
+			listen: function(x,y,w,h){
+				
+				if(!self){ var self = this; }
+				
+				x = parseInt(x);
+				y = parseInt(y);
+				w = parseInt(w);
+				h = parseInt(h);
+				$('screen-' + this.parent_canvas).observe('click',function(event){
+					if( ( event.pointer().x > ( x - ( w / 2 ) ) ) && 
+							( event.pointer().y > ( y - ( h / 2 ) ) ) &&
+							( event.pointer().x < ( ( x + w ) - ( w / 2 ) ) ) &&
+							( event.pointer().y < ( ( y + h ) - ( h / 2 ) ) ) ){
+								new Ajax.Request('/screen_app_communication/led',{
+									method: 'get',
+									onComplete: function(response){
+										log('info','Some response has been generated.');
+										log('log',response);
+									}
+								});
+							}
+				});
+			}
+		});
+		
+		var LED = Class.create(Control,{
+			initialize: function($super,control, to_id){
+				$super.call(this, control, to_id);
+				this.type = "led";
+				this.draw(true,this.color);
+				this.listen(this.position.x, this.position.y, this.size.w, this.size.h);
+			},
+			
+			draw: function($super,from_state,color){
+				$super();
+				_canvas.beginPath();
+				_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
+				_canvas.closePath();
+				_canvas.fill();
+			}
+		});
+
+			var RenderTickEngine = Class.create(PeriodicalExecuter,{
+				initialize: function( $super, callback, fps ) {
+					this.frequency = 1/fps;
+					this.drawables = new Array();
+					
+					if( callback ){
+						this.callback = callback;
+					} else {
+						this.callback = function(){ this.drawDrawables(); }
+					}
+					$super.call(this, this.callback, this.frequency);
+				},
+				
+				drawDrawables: function(){
+					this.drawables.each(function(){
+						
+					});
+				},
+				
+				addDrawable: function(drawable){
+					this.drawables.push(drawable);
+				}
+			});
+		
+			var Game = Class.create({
+				initialize: function(){
+					this.renderTickEngine = new RenderTickEngine(null, 10);
+				},
+				createCanvas: function( id ){
+					if(!self){ var self = this; } // Need this because the each iterator is going to overwrite this.
+					
+					self.canvas = new Element( 'canvas' , {
+						'id' : id,
+						'width' : document.viewport.getWidth(),
+						'height' : document.viewport.getHeight()
+					});
+
+					document.body.appendChild(self.canvas);
+				}
+			});
+		
+			document.observe("dom:loaded", function(){
+				if( $('screen_app_page') != undefined ){
+					game = new Game();
+				}
+			});
+		</script>
 	</body>
 </html>
