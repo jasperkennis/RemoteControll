@@ -1,4 +1,4 @@
-<%= form_for(@screen_app) do |f| %>
+<%= form_for @screen_app do |f| %>
 	<fieldset>
 		<legend>Basic info</legend>
 		<div class="field">
@@ -23,6 +23,11 @@
 	    <%= f.label :register_arrows %>
 	    <%= f.check_box :register_arrows %>
 	  </div>
+	  
+	  <div id="interfaces">
+	  	<%= render :partial => 'interface', :collection => @screen_app.interfaces %>
+	  </div>
+	  <%= add_interface_link "Add a TouchOSC interface" %>
 	</fieldset>
   
   <div class="actions">
