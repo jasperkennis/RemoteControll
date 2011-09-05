@@ -1,11 +1,12 @@
 class ScreenAppsController < ApplicationController
 
-  before_filter :find_screen_app, :only => [:edit, :update, :show, :destroy]
+  before_filter :find_screen_app, :only => [:edit, :show, :destroy]
   before_filter :authenticate_user!, :only => [:new, :create, :update, :destroy]
   before_filter :authorized_user, :only => [:destroy, :update] 
   
   def new
     @screen_app = ScreenApp.new
+    @screen_app.interfaces.build
   end
   
   def index
@@ -34,16 +35,14 @@ class ScreenAppsController < ApplicationController
   end
   
   def update
-    respond_to do |format|
-      if @screen_app.update_attributes(params[:screen_app])
-        format.html { redirect_to(@screen_app,
-                      :notice => 'Post was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @screen_app.errors,
-                      :status => :unprocessable_entity }
-      end
+    params[:screen_app][:existing_interfaces_attributes] ||= {}
+
+    @screen_app = ScreenApp.find(params[:id])
+    if @screen_app.update_attributes(params[:screen_app])
+      flash[:notice] = "Successfully updated screen_app and interfaces."
+      redirect_to screen_app_path(@screen_app)
+    else
+      render :action => 'edit'
     end
   end
   

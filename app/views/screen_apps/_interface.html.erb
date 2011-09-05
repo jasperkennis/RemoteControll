@@ -1,0 +1,10 @@
+<div class="interface">
+	<% new_or_existing = interface.new_record? ? 'new' : 'existing' %>
+	<% prefix = "screen_app[#{new_or_existing}_interface_attributes][]" %>
+	<% fields_for prefix, interface do |interface_form| %>
+	<p>
+		Interface: <%= interface_form.text_field :name %>, <%= interface_form.file_field :json %>
+		<%= link_to "remove" , "#", :class => 'remove_task' %>
+	</p>
+	<% end %>
+</div>

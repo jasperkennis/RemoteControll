@@ -363,14 +363,33 @@ document.observe("dom:loaded", function(){
 	    if (window.console && window.console.log) window.console.log(message);
 	  };
 	  WEB_SOCKET_DEBUG = true;
- }
+ 	}
+ 
+ 
+  // Binds to the remove task link...
+	$$('.remove_interface').each(function(element){
+		element.observe( 'click', function(e){
+		  e.stop();
+		  $(this).parents('.interface').remove();
+		});
+	});
+	
+	// Add task link, note that the content we're appending
+	// to the tasks list comes straight out of the data-partial
+	// attribute that we defined in the link itself.
+	$$('.add_interface').each(function(element){
+	  element.observe( 'click', function(e){
+		  e.stop();
+	  	$('#interfaces').append($(this).data('partial'));
+	  });
+	});
 
 	/**
 	 * Here, we perform actions based on what screen is detected:
 	 */
 	
 	/* Interface */
-	if( $('interfaces') != undefined ){
+	if( $('interfaces_page') != undefined ){
 		
 		log('info','Interface detected.');
 		
