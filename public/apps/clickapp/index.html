@@ -13,6 +13,9 @@
 		
 		<script>
 		
+			var pusher_id = '7132d12d5d3ddf34b09e';
+			var pusher_channel = 'myscreen-input';
+		
 			var Drawable = Class.create({
 				initialize: function( size, position, direction, color, name, canvas){
 					log("info", canvas);
@@ -24,6 +27,8 @@
 					this.direction = { h: direction.h, v: direction.v }
 					this.color = color;
 					this.name = name;
+					
+					this.draw();
 				},
 				
 				draw: function(){
@@ -39,7 +44,6 @@
 			var Bullet = Class.create(Drawable,{
 				initialize: function($super, size, position, direction, color, name, canvas){
 					$super.call(this, size, position, direction, color, name, canvas);
-					this.draw(true,this.color);
 				},
 				
 				draw: function($super){
@@ -48,6 +52,18 @@
 					_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
 					_canvas.closePath();
 					_canvas.fill();
+				}
+			});
+			
+			var Player = Class.create(Drawable, {
+				initialize: function($super, size, position, direction, color, name, canvas){
+					$super.call(this, size, position, direction, color, name, canvas);
+				},
+				
+				draw: function($super){
+					$super();
+					_canvas.fillStyle = "rgb(200,0,0)";
+					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				}
 			});
 
@@ -114,19 +130,44 @@
 					return _canvas;
 				}
 			});
+			
+			var Connection = Class.create({
+				initialize: function(id, channel){
+		
+					setPusher(id);
+					setPusherChannel(channel);
+				},
+				
+				onKeyDown: function(callback){
+					getPusherChannel().bind('key-down', callback);
+				},
+				
+				onKeyUp: function(callback){
+					getPusherChannel().bind('key-up', callback);
+				}
+			});
 		
 			document.observe("dom:loaded", function(){
 				if( $('screen_app_page') != undefined ){
+					connection = new Connection(pusher_id, pusher_channel);
 					game = new Game();
-					bullet = new Bullet(
-						{h: 10, w: 10},
+					var player = new Player(
+						{h: 20, w: 40},
 						{x: 20, y: 15},
-						{v: 1, h: 3},
+						{v: 0, h: 0},
 						"black",
 						"name",
 						game.canvas
 					);
-					game.renderTickEngine.addDrawable(bullet);
+					game.renderTickEngine.addDrawable(player);
+					
+					connection.onKeyDown(function(data){
+						alert(data);
+					});
+					
+					connection.onKeyUp(function(data){
+						alert(data);
+					});
 				}
 			});
 		</script>
