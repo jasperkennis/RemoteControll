@@ -6,6 +6,8 @@ Remotecontroll::Application.routes.draw do
   root :to => "screen_apps#index"
 
   get "screen_app_communication/led"
+  get "screen_app_communication/keyDown"
+  get "screen_app_communication/keyUp"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
