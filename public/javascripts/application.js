@@ -162,6 +162,8 @@ var InterfaceScreen = Class.create({
 		this.controls = Array(); // Contains the controls that are on this screen.
 		this.canvas = null; // Contains the canvas that represents this screen
 		this.id = id;
+		this.left_is_pressed = false;
+		this.right_is_pressed = false;
 		
 		self.createCanvas(initial, id, no_canvas);
 		self.addControls(controls);
@@ -237,8 +239,39 @@ var InterfaceScreen = Class.create({
 	
 	
 	addKeyListeners: function(){
-		document.attachEvent("onkeydown", function(){
-			alert("test");
+		
+		if(!self){ var self = this; } // Need this because the each iterator is going to overwrite this.
+		
+		document.addEventListener("keydown", function(e){
+			if(
+				( ( e.keyCode == 37 ) && !self.left_is_pressed ) ||
+				( ( e.keyCode == 39 ) && !self.right_is_pressed ) 
+				) {
+				new Ajax.Request('/screen_app_communication/keyDown',{
+					method: 'get',
+					parameters: {key: e.keyCode, id: 1},
+					onComplete: function(response){
+						log('info','Some response has been generated.');
+						log('log',response);
+					}
+				});
+				
+				if( e.keyCode == 37 ){ self.left_is_pressed = true }
+				if( e.keyCode == 39 ){ self.right_is_pressed = true }
+			}
+		});
+		
+		document.addEventListener("keyup", function(e){
+			new Ajax.Request('/screen_app_communication/keyUp',{
+				method: 'get',
+				parameters: {key: e.keyCode, id: 1},
+				onComplete: function(response){
+					log('info','Some response has been generated.');
+					log('log',response);
+				}
+			});
+			if( e.keyCode == 37 ){ self.left_is_pressed = false }
+			if( e.keyCode == 39 ){ self.right_is_pressed = false }
 		});
 	},
 	

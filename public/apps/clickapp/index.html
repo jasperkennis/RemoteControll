@@ -149,6 +149,10 @@
 		
 			document.observe("dom:loaded", function(){
 				if( $('screen_app_page') != undefined ){
+					
+					var right_is_pressed = false;
+					var left_is_pressed = false;
+					
 					connection = new Connection(pusher_id, pusher_channel);
 					game = new Game();
 					var player = new Player(
@@ -162,11 +166,35 @@
 					game.renderTickEngine.addDrawable(player);
 					
 					connection.onKeyDown(function(data){
-						alert(data);
+						//data = data.evalJSON();
+						switch (data.key) {
+							case 37:
+								if(!left_is_pressed){
+									player.direction.h = player.direction.h - 2;
+									left_is_pressed = true;
+								}
+								break;
+							case 39:
+								if(!right_is_pressed){
+									player.direction.h =  player.direction.h + 2;
+									right_is_pressed = true;
+								}
+								break;
+						} 
 					});
 					
 					connection.onKeyUp(function(data){
-						alert(data);
+						//data = data.evalJSON();
+						switch (data.key) {
+							case 37:
+								player.direction.h = player.direction.h + 2;
+								left_is_pressed = false;
+								break;
+							case 39:
+								player.direction.h =  player.direction.h - 2;
+								right_is_pressed = false;
+								break;
+						}
 					});
 				}
 			});
