@@ -1,4 +1,32 @@
 /**
+ * Adapt the pusher ajax action:
+ */
+
+console.log(Pusher.authorizers.ajax);
+Pusher.authorizers.ajax = function(pusher, callback){
+  var self = this;
+  var xhr = window.XMLHttpRequest ?
+    new XMLHttpRequest() :
+    new ActiveXObject("Microsoft.XMLHTTP");
+  xhr.open("POST", Pusher.channel_auth_endpoint, true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+      if (xhr.status == 200) {
+        var data = JSON.parse(xhr.responseText);
+        callback(false, data);
+      	getPusherChannel().trigger("client-new-user", {"id":pusher.connection.socket_id});
+      } else {
+        Pusher.debug("Couldn't get auth info from your webapp", status);
+        callback(true, xhr.status);
+      }
+    }
+  };
+  xhr.send('socket_id=' + encodeURIComponent(pusher.connection.socket_id) + '&channel_name=' + encodeURIComponent(self.name));
+}
+
+
+/**
  * Defenition of globals, and their getters and setters
  */
 
@@ -24,7 +52,7 @@ function getPusher() { return window.pusher; }
 /* Pusher channel */
 var pusher_channel;
 function setPusherChannel(_channel_name){
-	if(!_channel_name){var _channel_name = 'test_channel'; }
+	if(!_channel_name){var _channel_name = 'private-screen-interaction'; }
 	pusher_channel = getPusher().subscribe(_channel_name);
 }
 function getPusherChannel() { return window.pusher_channel; }
@@ -249,13 +277,11 @@ var InterfaceScreen = Class.create({
 				( ( e.keyCode == 39 ) && !self.right_is_pressed ) ||
 				( ( e.keyCode == 32 ) && !self.space_bar_is_pressed )
 				) {
-				new Ajax.Request('/screen_app_communication/keyDown',{
-					method: 'get',
-					parameters: {key: e.keyCode, id: pusher.connection.socket_id },
-					onComplete: function(response){
-						log('info','Some response has been generated.');
-						log('log',response);
-					}
+				getPusherChannel().trigger(
+					'client-key-down',
+					{
+						"key": e.keyCode,
+						"id": pusher.connection.socket_id
 				});
 				
 				if( e.keyCode == 37 ){ self.left_is_pressed = true }
@@ -265,14 +291,18 @@ var InterfaceScreen = Class.create({
 		});
 		
 		document.addEventListener("keyup", function(e){
-			new Ajax.Request('/screen_app_communication/keyUp',{
-				method: 'get',
-				parameters: {key: e.keyCode, id: pusher.connection.socket_id},
-				onComplete: function(response){
-					log('info','Some response has been generated.');
-					log('log',response);
-				}
-			});
+			if(
+				( e.keyCode == 37 ) ||
+				( e.keyCode == 39 ) ||
+				( e.keyCode == 32 )
+				) {
+				getPusherChannel().trigger(
+					'client-key-up',
+					{
+						"key": e.keyCode,
+						"id": pusher.connection.socket_id
+				});
+			}
 			if( e.keyCode == 37 ){ self.left_is_pressed = false }
 			if( e.keyCode == 39 ){ self.right_is_pressed = false }
 			if( e.keyCode == 32 ){ self.space_bar_is_pressed = false }
@@ -442,19 +472,8 @@ document.observe("dom:loaded", function(){
 		setPusher('7132d12d5d3ddf34b09e');
 		setPusherChannel('private-screen-interaction');
 		
-    getPusherChannel().bind('my_event', function(data) {
-      //alert(data);
-    });
-    
     pusher.connection.bind('connected', function() {
-    	new Ajax.Request('/screen_app_communication/newUser',{
-				method: 'get',
-				parameters: { id: pusher.connection.socket_id},
-				onComplete: function(response){
-					log('info','Some response has been generated.');
-					log('log',response);
-				}
-			});
+			//getPusherChannel().trigger("client-new-user", {"id":pusher.connection.socket_id});
     });
 		
 		var args = {
@@ -470,11 +489,7 @@ document.observe("dom:loaded", function(){
 		
 		log('info','App detected.');
 		
-		setPusher('7132d12d5d3ddf34b09e');
-		setPusherChannel('private-screen-interaction');
-		
-    getPusherChannel().bind('led-activated', function(data) {
-      alert(data);
-    });
+		//setPusher('7132d12d5d3ddf34b09e');
+		//setPusherChannel('private-screen-interaction');
 	}
 });
