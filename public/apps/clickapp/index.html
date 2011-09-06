@@ -14,7 +14,7 @@
 		<script>
 		
 			var pusher_id = '7132d12d5d3ddf34b09e';
-			var pusher_channel = 'myscreen-input';
+			var pusher_channel = 'private-screen-interaction';
 		
 		
 		
@@ -68,6 +68,7 @@
 					this.fire_rate = 1;
 					this.gun = new Gun();
 					this.id = id;
+					this.controller = new Controller(id);
 				},
 				
 				draw: function($super){
@@ -109,8 +110,8 @@
 								);
 							}
 							
-							window.game.bullets.push(_bullet);
-							window.game.renderTickEngine.addDrawable(_bullet);
+							//window.game.bullets.push(_bullet);
+							//window.game.renderTickEngine.addDrawable(_bullet);
 						}
 					}
 					$super.call(this, this.callback, this.frequency);
@@ -226,48 +227,56 @@
 					this.right_is_pressed = false;
 					this.left_is_pressed = false;
 					this.space_bar_is_pressed = false;
-					this.id = id
+					this.id = id;
+					this.key_down_listener = this.listenForKeyDown();
+					this.key_up_listener = this.listenForKeyUp();
 				},
 				
 				listenForKeyDown: function(){
+					if(!self){ var self = this; }
 					connection.onKeyDown(function(data){
-						switch (data.key) {
-							case 37:
-								if(!this.left_is_pressed){
-									player.direction.h = player.direction.h - 2;
-									this.left_is_pressed = true;
-								}
-								break;
-							case 39:
-								if(!this.right_is_pressed){
-									player.direction.h =  player.direction.h + 2;
-									this.right_is_pressed = true;
-								}
-								break;
-							case 32:
-								if(!this.space_bar_is_pressed) {
-									player.startShooting();
-									this.space_bar_is_pressed = true;
-								}
-								break;
-						} 
+						if(data.id == self.id){
+							switch (data.key) {
+								case 37:
+									if(!this.left_is_pressed){
+										window.players[self.id].direction.h = window.players[self.id].direction.h - 2;
+										this.left_is_pressed = true;
+									}
+									break;
+								case 39:
+									if(!this.right_is_pressed){
+										window.players[self.id].direction.h =  window.players[self.id].direction.h + 2;
+										this.right_is_pressed = true;
+									}
+									break;
+								case 32:
+									if(!this.space_bar_is_pressed) {
+										window.players[self.id].startShooting();
+										this.space_bar_is_pressed = true;
+									}
+									break;
+							}
+						}
 					});
 				},
 				
-				listenForKeyDown: function(){
+				listenForKeyUp: function(){
+					if(!self){ var self = this; }
 					connection.onKeyUp(function(data){
-						switch (data.key) {
-							case 37:
-								player.direction.h = player.direction.h + 2;
-								this.left_is_pressed = false;
-								break;
-							case 39:
-								player.direction.h =  player.direction.h - 2;
-								this.right_is_pressed = false;
-								break;
-							case 32:
-								player.stopShooting();
-								this.space_bar_is_pressed = false;
+						if(data.id == self.id){	
+							switch (data.key) {
+								case 37:
+									window.players[self.id].direction.h = window.players[self.id].direction.h + 2;
+									this.left_is_pressed = false;
+									break;
+								case 39:
+									window.players[self.id].direction.h =  window.players[self.id].direction.h - 2;
+									this.right_is_pressed = false;
+									break;
+								case 32:
+									window.players[self.id].stopShooting();
+									this.space_bar_is_pressed = false;
+							}
 						}
 					});
 				}
@@ -277,7 +286,7 @@
 			
 			var PlayerController = Class.create({
 				initialize: function(connection){
-					this.players = new Array();
+					window.players = new Array();
 					this.connection = connection;
 					this.listener = this.listen();
 				},
@@ -292,13 +301,14 @@
 						window.game.canvas,
 						id
 					);
-					this.players[id] = player;
+					window.players[id] = _player;
 					window.game.renderTickEngine.addDrawable(_player);
 				},
 				
 				listen: function(){
+					if(!self){ var self = this; }
 					this.connection.onNewUser(function(data){
-						this.addPlayer(data.id);
+						self.addPlayer(data.id);
 					});
 				}
 			});

@@ -35,7 +35,7 @@ function getPusherChannel() { return window.pusher_channel; }
  * Setting non default globals
  */
 
-setDebug(false);
+setDebug(true);
 
 
 
@@ -251,7 +251,7 @@ var InterfaceScreen = Class.create({
 				) {
 				new Ajax.Request('/screen_app_communication/keyDown',{
 					method: 'get',
-					parameters: {key: e.keyCode, id: pusher.connection.socket_id},
+					parameters: {key: e.keyCode, id: pusher.connection.socket_id },
 					onComplete: function(response){
 						log('info','Some response has been generated.');
 						log('log',response);
@@ -267,7 +267,7 @@ var InterfaceScreen = Class.create({
 		document.addEventListener("keyup", function(e){
 			new Ajax.Request('/screen_app_communication/keyUp',{
 				method: 'get',
-				parameters: {key: e.keyCode, id: 1},
+				parameters: {key: e.keyCode, id: pusher.connection.socket_id},
 				onComplete: function(response){
 					log('info','Some response has been generated.');
 					log('log',response);
@@ -440,7 +440,7 @@ document.observe("dom:loaded", function(){
 		log('info','Interface detected.');
 		
 		setPusher('7132d12d5d3ddf34b09e');
-		setPusherChannel('test_channel');
+		setPusherChannel('private-screen-interaction');
 		
     getPusherChannel().bind('my_event', function(data) {
       //alert(data);
@@ -471,7 +471,7 @@ document.observe("dom:loaded", function(){
 		log('info','App detected.');
 		
 		setPusher('7132d12d5d3ddf34b09e');
-		setPusherChannel('myscreen-input');
+		setPusherChannel('private-screen-interaction');
 		
     getPusherChannel().bind('led-activated', function(data) {
       alert(data);
