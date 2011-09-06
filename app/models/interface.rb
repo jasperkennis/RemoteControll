@@ -20,7 +20,7 @@ class Interface < ActiveRecord::Base
 
 	validates :json, :presence => true
 	
-	validates :screen_app_id, :presence => true
+	#validates :screen_app_id, :presence => true
 
 	belongs_to :screen_app
 
