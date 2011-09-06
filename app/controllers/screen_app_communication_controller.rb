@@ -10,5 +10,17 @@ class ScreenAppCommunicationController < ApplicationController
 
     Pusher['myscreen-input'].trigger('led-activated', @message)
   end
+  
+  def keyDown
+    @message = '{"key": ' + params[:key] + ', "id": ' + params[:id] + '}'
+
+    Pusher['myscreen-input'].trigger('key-down', @message)
+  end
+  
+  def keyUp
+    @message = '{"key": ' + params[:key] + ', "id": ' + params[:id] + '}'
+
+    Pusher['myscreen-input'].trigger('key-up', @message)
+  end
 
 end
