@@ -16,6 +16,8 @@
 			var pusher_id = '7132d12d5d3ddf34b09e';
 			var pusher_channel = 'myscreen-input';
 		
+		
+		
 			var Drawable = Class.create({
 				initialize: function( size, position, direction, color, name, canvas){
 					log("info", canvas);
@@ -41,6 +43,8 @@
 					this.position.y = this.position.y + this.direction.v;
 				}
 			});
+			
+			
 			
 			var Bullet = Class.create(Drawable,{
 				initialize: function($super, size, position, direction, color, name, canvas){
@@ -167,6 +171,8 @@
 				}
 			});
 		
+		
+		
 			var Game = Class.create({
 				initialize: function(){
 					this.canvas = this.createCanvas("screen");
@@ -191,6 +197,8 @@
 				}
 			});
 			
+			
+			
 			var Connection = Class.create({
 				initialize: function(id, channel){
 		
@@ -204,74 +212,105 @@
 				
 				onKeyUp: function(callback){
 					getPusherChannel().bind('key-up', callback);
+				},
+				
+				onNewUser: function(callback){
+					getPusherChannel().bind('new-user', callback);
 				}
 			});
 			
-			var PlayerController = Class.create({
-				initialize: function(connection){
-					
+			
+			
+			var Controller = Class.create({
+				initialize: function(id){
+					this.right_is_pressed = false;
+					this.left_is_pressed = false;
+					this.space_bar_is_pressed = false;
+					this.id = id
+				},
+				
+				listenForKeyDown: function(){
+					connection.onKeyDown(function(data){
+						switch (data.key) {
+							case 37:
+								if(!this.left_is_pressed){
+									player.direction.h = player.direction.h - 2;
+									this.left_is_pressed = true;
+								}
+								break;
+							case 39:
+								if(!this.right_is_pressed){
+									player.direction.h =  player.direction.h + 2;
+									this.right_is_pressed = true;
+								}
+								break;
+							case 32:
+								if(!this.space_bar_is_pressed) {
+									player.startShooting();
+									this.space_bar_is_pressed = true;
+								}
+								break;
+						} 
+					});
+				},
+				
+				listenForKeyDown: function(){
+					connection.onKeyUp(function(data){
+						switch (data.key) {
+							case 37:
+								player.direction.h = player.direction.h + 2;
+								this.left_is_pressed = false;
+								break;
+							case 39:
+								player.direction.h =  player.direction.h - 2;
+								this.right_is_pressed = false;
+								break;
+							case 32:
+								player.stopShooting();
+								this.space_bar_is_pressed = false;
+						}
+					});
 				}
 			});
-		
-			document.observe("dom:loaded", function(){
-				if( $('screen_app_page') != undefined ){
-					
-					var right_is_pressed = false;
-					var left_is_pressed = false;
-					var space_bar_is_pressed = false;
-					
-					connection = new Connection(pusher_id, pusher_channel);
-					window.game = new Game();
-					var player = new Player(
+			
+			
+			
+			var PlayerController = Class.create({
+				initialize: function(connection){
+					this.players = new Array();
+					this.connection = connection;
+					this.listener = this.listen();
+				},
+				
+				addPlayer: function(id){
+					var _player = new Player(
 						{h: 20, w: 40},
 						{x: 20, y: 15},
 						{v: 0, h: 0},
 						"black",
 						"name",
-						window.game.canvas
+						window.game.canvas,
+						id
 					);
-					game.renderTickEngine.addDrawable(player);
-					
-					connection.onKeyDown(function(data){
-						//data = data.evalJSON();
-						switch (data.key) {
-							case 37:
-								if(!left_is_pressed){
-									player.direction.h = player.direction.h - 2;
-									left_is_pressed = true;
-								}
-								break;
-							case 39:
-								if(!right_is_pressed){
-									player.direction.h =  player.direction.h + 2;
-									right_is_pressed = true;
-								}
-								break;
-							case 32:
-								if(!space_bar_is_pressed) {
-									player.startShooting();
-									space_bar_is_pressed;
-								}
-								break;
-						} 
+					this.players[id] = player;
+					window.game.renderTickEngine.addDrawable(_player);
+				},
+				
+				listen: function(){
+					this.connection.onNewUser(function(data){
+						this.addPlayer(data.id);
 					});
+				}
+			});
+		
+		
+		
+			document.observe("dom:loaded", function(){
+				if( $('screen_app_page') != undefined ){
 					
-					connection.onKeyUp(function(data){
-						//data = data.evalJSON();
-						switch (data.key) {
-							case 37:
-								player.direction.h = player.direction.h + 2;
-								left_is_pressed = false;
-								break;
-							case 39:
-								player.direction.h =  player.direction.h - 2;
-								right_is_pressed = false;
-								break;
-							case 32:
-								player.stopShooting();
-								space_bar_is_pressed;
-						}
-					});
+					connection = new Connection(pusher_id, pusher_channel);
+					window.player_controller = new PlayerController(connection);
+					window.game = new Game();
 				}
 			});
 		</script>

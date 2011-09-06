@@ -22,5 +22,11 @@ class ScreenAppCommunicationController < ApplicationController
 
     Pusher['myscreen-input'].trigger('key-up', @message)
   end
+  
+  def newUser
+    @message = '{"id": ' + params[:id] + '}'
+
+    Pusher['myscreen-input'].trigger('new-user', @message)
+  end
 
 end

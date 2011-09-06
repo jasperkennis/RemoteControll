@@ -8,6 +8,7 @@ Remotecontroll::Application.routes.draw do
   get "screen_app_communication/led"
   get "screen_app_communication/keyDown"
   get "screen_app_communication/keyUp"
+  get "screen_app_communication/newUser"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

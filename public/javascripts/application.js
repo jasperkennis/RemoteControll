@@ -251,7 +251,7 @@ var InterfaceScreen = Class.create({
 				) {
 				new Ajax.Request('/screen_app_communication/keyDown',{
 					method: 'get',
-					parameters: {key: e.keyCode, id: 1},
+					parameters: {key: e.keyCode, id: pusher.connection.socket_id},
 					onComplete: function(response){
 						log('info','Some response has been generated.');
 						log('log',response);
@@ -443,15 +443,26 @@ document.observe("dom:loaded", function(){
 		setPusherChannel('test_channel');
 		
     getPusherChannel().bind('my_event', function(data) {
-      alert(data);
+      //alert(data);
     });
     
-    console.log(pusher.connection.socket_id);
+    pusher.connection.bind('connected', function() {
+    	new Ajax.Request('/screen_app_communication/newUser',{
+				method: 'get',
+				parameters: { id: pusher.connection.socket_id},
+				onComplete: function(response){
+					log('info','Some response has been generated.');
+					log('log',response);
+				}
+			});
+    });
 		
 		var args = {
 			no_canvas: 'This text is displayed if your browser does not support HTML5 Canvas.'
 		}
+		
 		interface_controller = new InterfaceController(args);
+		
 	}
 	
 	/* App */
