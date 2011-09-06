@@ -208,15 +208,15 @@
 				},
 				
 				onKeyDown: function(callback){
-					getPusherChannel().bind('key-down', callback);
+					getPusherChannel().bind('client-key-down', callback);
 				},
 				
 				onKeyUp: function(callback){
-					getPusherChannel().bind('key-up', callback);
+					getPusherChannel().bind('client-key-up', callback);
 				},
 				
 				onNewUser: function(callback){
-					getPusherChannel().bind('new-user', callback);
+					getPusherChannel().bind('client-new-user', callback);
 				}
 			});
 			
