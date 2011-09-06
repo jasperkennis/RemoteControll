@@ -165,6 +165,7 @@ var InterfaceScreen = Class.create({
 		
 		self.createCanvas(initial, id, no_canvas);
 		self.addControls(controls);
+		self.addKeyListeners();
 	},
 
 
@@ -235,6 +236,14 @@ var InterfaceScreen = Class.create({
 	
 	
 	
+	addKeyListeners: function(){
+		document.attachEvent("onkeydown", function(){
+			alert("test");
+		});
+	},
+	
+	
+	
 	/**
 	 * 
 	 */
@@ -294,12 +303,12 @@ var InterfaceController = Class.create({
 		 * object, which is than used to create that interface.
 		 */
 		
-		if($('interfaces').innerText.isJSON()){
+		if($('interfaces_page').innerText.isJSON()){
 			
 			log('info','Interface JSON string found.');
 			
 			// Parse the JSON string into an object before clearing body
-			var interfaces = $('interfaces').innerText.evalJSON().interfaces;
+			var interfaces = $('interfaces_page').innerText.evalJSON().interfaces;
 			log('info','JSON string converted to following object.');
 			log('log',interfaces);
 			
