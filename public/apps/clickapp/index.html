@@ -238,21 +238,21 @@
 						if(data.id == self.id){
 							switch (data.key) {
 								case 37:
-									if(!this.left_is_pressed){
+									if(!self.left_is_pressed){
 										window.players[self.id].direction.h = window.players[self.id].direction.h - 2;
-										this.left_is_pressed = true;
+										self.left_is_pressed = true;
 									}
 									break;
 								case 39:
-									if(!this.right_is_pressed){
+									if(!self.right_is_pressed){
 										window.players[self.id].direction.h =  window.players[self.id].direction.h + 2;
-										this.right_is_pressed = true;
+										self.right_is_pressed = true;
 									}
 									break;
 								case 32:
-									if(!this.space_bar_is_pressed) {
+									if(!self.space_bar_is_pressed) {
 										window.players[self.id].startShooting();
-										this.space_bar_is_pressed = true;
+										self.space_bar_is_pressed = true;
 									}
 									break;
 							}
@@ -266,16 +266,23 @@
 						if(data.id == self.id){	
 							switch (data.key) {
 								case 37:
-									window.players[self.id].direction.h = window.players[self.id].direction.h + 2;
-									this.left_is_pressed = false;
+									if(self.left_is_pressed){
+										window.players[self.id].direction.h = window.players[self.id].direction.h + 2;
+										self.left_is_pressed = false;
+									}
 									break;
 								case 39:
-									window.players[self.id].direction.h =  window.players[self.id].direction.h - 2;
-									this.right_is_pressed = false;
+									if(self.right_is_pressed){
+										window.players[self.id].direction.h =  window.players[self.id].direction.h - 2;
+										self.right_is_pressed = false;
+									}
 									break;
 								case 32:
-									window.players[self.id].stopShooting();
-									this.space_bar_is_pressed = false;
+									if(self.space_bar_is_pressed){
+										window.players[self.id].stopShooting();
+										self.space_bar_is_pressed = false;
+									}
+									break;
 							}
 						}
 					});
