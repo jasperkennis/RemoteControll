@@ -33,6 +33,7 @@
 				
 				draw: function(){
 					_canvas = this.canvas.getContext("2d");
+					_canvas.fillStyle = "rgb(200,0,0)";
 				},
 				
 				update: function(){
@@ -55,17 +56,73 @@
 				}
 			});
 			
+			
+			
 			var Player = Class.create(Drawable, {
-				initialize: function($super, size, position, direction, color, name, canvas){
+				initialize: function($super, size, position, direction, color, name, canvas, id){
 					$super.call(this, size, position, direction, color, name, canvas);
+					this.fire_rate = 1;
+					this.gun = new Gun();
+					this.id = id;
 				},
 				
 				draw: function($super){
 					$super();
-					_canvas.fillStyle = "rgb(200,0,0)";
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
+				},
+				
+				startShooting: function(){
+					this.gun.startShooting();
+				},
+				
+				stopShooting: function(){
+					this.gun.stopShooting();
 				}
 			});
+			
+			
+			
+			var Gun = Class.create(PeriodicalExecuter,{
+				initialize: function( $super, callback, fire_rate ) {
+					
+					if(!self){ var self = this; }
+					
+					this.frequency = 1;
+					this.is_shooting = false;
+					
+					if( callback ){
+						this.callback = callback;
+					} else {
+						this.callback = function(){
+							if(this.is_shooting){
+								var _bullet = new Bullet(
+									{ h : 3 , w : 3 },
+									{ x : 20 , y : 300 },
+									{ h : 0 , v : -16 },
+									"black",
+									"bullet_time!",
+									window.game.canvas
+								);
+							}
+							
+							window.game.bullets.push(_bullet);
+							window.game.renderTickEngine.addDrawable(_bullet);
+						}
+					}
+					$super.call(this, this.callback, this.frequency);
+					this.stopShooting();
+				},
+				
+				startShooting: function(){
+					this.is_shooting = true;
+				},
+				
+				stopShooting: function($super){
+					this.is_shooting = false;
+				}
+			});
+
+
 
 			var RenderTickEngine = Class.create(PeriodicalExecuter,{
 				initialize: function( $super, callback, fps, canvas ) {
@@ -106,14 +163,17 @@
 				},
 				
 				clearCanvas: function(){
-					this.canvas.getContext("2d").clearRect(0,0,document.viewport.getWidth(),document.viewport.getHeight());
+					this.canvas.getContext("2d").clearRect(0,0,window.game.width,window.game.height);
 				}
 			});
 		
 			var Game = Class.create({
 				initialize: function(){
 					this.canvas = this.createCanvas("screen");
+					this.bullets = new Array();
 					this.renderTickEngine = new RenderTickEngine( null, 30, this.canvas );
+					this.height = document.viewport.getHeight();
+					this.width = document.viewport.getWidth();
 				},
 				
 				createCanvas: function( id ){
@@ -121,8 +181,8 @@
 					
 					_canvas = new Element( 'canvas' , {
 						'id' : id,
-						'width' : document.viewport.getWidth(),
-						'height' : document.viewport.getHeight()
+						'width' : this.width,
+						'height' : this.height
 					});
 
 					_canvas = document.body.appendChild(_canvas);
@@ -146,22 +206,29 @@
 					getPusherChannel().bind('key-up', callback);
 				}
 			});
+			
+			var PlayerController = Class.create({
+				initialize: function(connection){
+					
+				}
+			});
 		
 			document.observe("dom:loaded", function(){
 				if( $('screen_app_page') != undefined ){
 					
 					var right_is_pressed = false;
 					var left_is_pressed = false;
+					var space_bar_is_pressed = false;
 					
 					connection = new Connection(pusher_id, pusher_channel);
-					game = new Game();
+					window.game = new Game();
 					var player = new Player(
 						{h: 20, w: 40},
 						{x: 20, y: 15},
 						{v: 0, h: 0},
 						"black",
 						"name",
-						game.canvas
+						window.game.canvas
 					);
 					game.renderTickEngine.addDrawable(player);
 					
@@ -180,6 +247,12 @@
 									right_is_pressed = true;
 								}
 								break;
+							case 32:
+								if(!space_bar_is_pressed) {
+									player.startShooting();
+									space_bar_is_pressed;
+								}
+								break;
 						} 
 					});
 					
@@ -194,6 +267,9 @@
 								player.direction.h =  player.direction.h - 2;
 								right_is_pressed = false;
 								break;
+							case 32:
+								player.stopShooting();
+								space_bar_is_pressed;
 						}
 					});
 				}

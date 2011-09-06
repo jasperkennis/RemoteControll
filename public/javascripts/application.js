@@ -164,6 +164,7 @@ var InterfaceScreen = Class.create({
 		this.id = id;
 		this.left_is_pressed = false;
 		this.right_is_pressed = false;
+		this.space_bar_is_pressed = false;
 		
 		self.createCanvas(initial, id, no_canvas);
 		self.addControls(controls);
@@ -245,7 +246,8 @@ var InterfaceScreen = Class.create({
 		document.addEventListener("keydown", function(e){
 			if(
 				( ( e.keyCode == 37 ) && !self.left_is_pressed ) ||
-				( ( e.keyCode == 39 ) && !self.right_is_pressed ) 
+				( ( e.keyCode == 39 ) && !self.right_is_pressed ) ||
+				( ( e.keyCode == 32 ) && !self.space_bar_is_pressed )
 				) {
 				new Ajax.Request('/screen_app_communication/keyDown',{
 					method: 'get',
@@ -258,6 +260,7 @@ var InterfaceScreen = Class.create({
 				
 				if( e.keyCode == 37 ){ self.left_is_pressed = true }
 				if( e.keyCode == 39 ){ self.right_is_pressed = true }
+				if( e.keyCode == 32 ){ self.space_bar_is_pressed = true }
 			}
 		});
 		
@@ -272,6 +275,7 @@ var InterfaceScreen = Class.create({
 			});
 			if( e.keyCode == 37 ){ self.left_is_pressed = false }
 			if( e.keyCode == 39 ){ self.right_is_pressed = false }
+			if( e.keyCode == 32 ){ self.space_bar_is_pressed = false }
 		});
 	},
 	
@@ -441,6 +445,8 @@ document.observe("dom:loaded", function(){
     getPusherChannel().bind('my_event', function(data) {
       alert(data);
     });
+    
+    console.log(pusher.connection.socket_id);
 		
 		var args = {
 			no_canvas: 'This text is displayed if your browser does not support HTML5 Canvas.'
