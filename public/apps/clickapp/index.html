@@ -47,10 +47,10 @@
 				intersects: function(compare){
 					var _return = false;
 					if( 
-						( ( this.position.x > compare.position.x ) && ( this.position.x < ( compare.position.x + compare.size.w ) ) ) ||
-						( ( ( this.position.x + this.size.w ) > compare.position.x ) && ( ( this.position.x + this.size.w ) < ( compare.position.x + compare.size.w ) ) ) ||
-						( ( this.position.y > compare.position.y ) && ( this.position.y < ( compare.position.y + compare.size.y ) ) ) ||
-						( ( ( this.position.y + this.size.h ) > compare.position.y ) && ( ( this.position.y + this.size.h ) < ( compare.position.y + compare.size.h ) ) )
+						( ( this.position.x > compare.position.x ) && ( this.position.x < ( compare.position.x + compare.size.w ) ) ) //||
+						//( ( ( this.position.x + this.size.w ) > compare.position.x ) && ( ( this.position.x + this.size.w ) < ( compare.position.x + compare.size.w ) ) ) ||
+						//( ( this.position.y > compare.position.y ) && ( this.position.y < ( compare.position.y + compare.size.y ) ) ) ||
+						//( ( ( this.position.y + this.size.h ) > compare.position.y ) && ( ( this.position.y + this.size.h ) < ( compare.position.y + compare.size.h ) ) )
 					){
 						_return = true;
 					}
