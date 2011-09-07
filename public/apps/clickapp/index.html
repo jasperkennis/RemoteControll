@@ -341,9 +341,20 @@
 					window.enemies = new Array();
 				},
 				
-				createEnemie: function(players,time_passed, fps){
-					if( ( Math.floor( Math.random() * ( fps/players ) ) ) < 2 ){
-						console.log("Would create enemy!");
+				createEnemies: { execute:
+					function(){
+						if( ( Math.floor( Math.random() * ( ( window.game.fps/window.game.players.length ) * 2 ) ) ) < 1 ){
+							var _enemy = new Enemy(
+								{h: 30, w: 30},
+								{x: ( Math.floor( Math.random() * window.game.width ) ), y: - 30},
+								{v: 1, h: 0},
+								"black",
+								"name",
+								window.game.canvas
+							);
+							window.game.enemies.push(_enemy);
+							window.game.render_tick_engine.addDrawable(_enemy);
+						}
 					}
 				}
 			});
