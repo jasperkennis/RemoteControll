@@ -42,6 +42,19 @@
 				update: function(){
 					this.position.x = this.position.x + this.direction.h;
 					this.position.y = this.position.y + this.direction.v;
+				},
+				
+				intersects: function(compare){
+					var _return = false;
+					if( 
+						( ( this.position.x > compare.position.x ) && ( this.position.x < ( compare.position.x + compare.size.w ) ) ) ||
+						( ( ( this.position.x + this.size.w ) > compare.position.x ) && ( ( this.position.x + this.size.w ) < ( compare.position.x + compare.size.w ) ) ) ||
+						( ( this.position.y > compare.position.y ) && ( this.position.y < ( compare.position.y + compare.size.y ) ) ) ||
+						( ( ( this.position.y + this.size.h ) > compare.position.y ) && ( ( this.position.y + this.size.h ) < ( compare.position.y + compare.size.h ) ) )
+					){
+						_return = true;
+					}
+					return _return;
 				}
 			});
 			
@@ -89,10 +102,15 @@
 			
 			
 			var Enemy = Class.create(Drawable,{
-				initialize: function($super, size, position, direction, color, name, canvas, id){
+				initialize: function($super, size, position, direction, color, name, canvas){
 					$super.call(this, size, position, direction, color, name, canvas);
-					this.id = id;
-				}
+				},
+				
+				draw: function($super){
+					$super();
+					_canvas.fillStyle = "rgb(141,198,63)";
+					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
+				},
 			});
 			
 			
