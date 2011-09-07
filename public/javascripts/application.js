@@ -66,7 +66,7 @@ function getPusherChannel() { return window.pusher_channel; }
  * Setting non default globals
  */
 
-setDebug();
+setDebug(true);
 
 
 
