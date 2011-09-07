@@ -47,10 +47,13 @@
 				intersects: function(compare){
 					var _return = false;
 					if( 
-						( ( this.position.x > compare.position.x ) && ( this.position.x < ( compare.position.x + compare.size.w ) ) ) //||
-						//( ( ( this.position.x + this.size.w ) > compare.position.x ) && ( ( this.position.x + this.size.w ) < ( compare.position.x + compare.size.w ) ) ) ||
-						//( ( this.position.y > compare.position.y ) && ( this.position.y < ( compare.position.y + compare.size.y ) ) ) ||
-						//( ( ( this.position.y + this.size.h ) > compare.position.y ) && ( ( this.position.y + this.size.h ) < ( compare.position.y + compare.size.h ) ) )
+						(
+							( ( this.position.x > compare.position.x ) && ( this.position.x < ( compare.position.x + compare.size.w ) ) ) ||
+							( ( ( this.position.x + this.size.w ) > compare.position.x ) && ( ( this.position.x + this.size.w ) < ( compare.position.x + compare.size.w ) ) )
+						) && (
+							( ( this.position.y > compare.position.y ) && ( this.position.y < ( compare.position.y + compare.size.h ) ) ) || 
+							( ( ( this.position.y + this.size.h ) > compare.position.y ) && ( ( this.position.y + this.size.h ) < ( compare.position.y + compare.size.h ) ) )
+						)
 					){
 						_return = true;
 					}
@@ -73,8 +76,17 @@
 					_canvas.fill();
 				},
 				
-				remove: function(){
-					console.log(window.game.bullets.find(this));
+				remove: function(own_index){
+					if(!self){ var self = this; }
+					window.game.render_tick_engine.drawables.detect(function(q){
+						if(q == self){
+							// Find the index of the element, and then splice the array of drawables at that point.
+							window.game.render_tick_engine.drawables.splice( window.game.render_tick_engine.drawables.indexOf(q),1);
+						}
+					});
+					
+					// Remove the bullet from the bullets list too:
+					window.game.bullets.splice(own_index, 1);
 				}
 			});
 			
@@ -115,6 +127,19 @@
 					_canvas.fillStyle = "rgb(141,198,63)";
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				},
+				
+				die: function(own_index) {
+					if(!self){ var self = this; }
+					window.game.render_tick_engine.drawables.detect(function(q){
+						if(q == self){
+							// Find the index of the element, and then splice the array of drawables at that point.
+							window.game.render_tick_engine.drawables.splice( window.game.render_tick_engine.drawables.indexOf(q),1);
+						}
+					});
+					
+					// Remove the bullet from the bullets list too:
+					window.game.enemies.splice(own_index, 1);
+				}
 			});
 			
 			
@@ -290,7 +315,6 @@
 								case 37:
 									if(self.left_is_pressed){
 										window.game.players[self.id].direction.h = window.game.players[self.id].direction.h + 4;
-										console.log(window.game.players);
 										self.left_is_pressed = false;
 									}
 									break;
@@ -330,9 +354,13 @@
 				
 				bulletVSEnemy: {execute: function(){
 					window.game.damage_control.hitTest(window.game.bullets, window.game.enemies,{execute: function(bullet_index,enemy_index){
-						console.log(window.game.bullets[bullet_index]);
-						//bullet.remove();
-						//enemy.die();
+						// Entering the process of deleting the object and all its references:
+						_bullet = window.game.bullets[bullet_index];
+						_bullet.remove(bullet_index);
+						
+						// Do the same thing for the hit enemy:
+						_enemy = window.game.enemies[enemy_index];
+						_enemy.die(enemy_index);
 					}});
 				}}
 			});
