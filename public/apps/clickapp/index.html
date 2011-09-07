@@ -172,6 +172,7 @@
 						this.callback = callback;
 					} else {
 						this.callback = function(){
+							this.runUpdatables();
 							this.clearCanvas();
 							this.updateDrawables();
 							this.drawDrawables();
@@ -204,8 +205,14 @@
 					this.canvas.getContext("2d").clearRect(0,0,window.game.width,window.game.height);
 				},
 				
-				addUpdateFunction: function(){
-					
+				addUpdatable: function(updatable){
+					this.updatables.push(updatable);
+				},
+				
+				runUpdatables: function(){
+					this.updatables.each(function(e){
+						e.execute();
+					});
 				}
 			});
 		
