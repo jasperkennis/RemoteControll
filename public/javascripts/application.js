@@ -2,7 +2,6 @@
  * Adapt the pusher ajax action:
  */
 
-console.log(Pusher.authorizers.ajax);
 Pusher.authorizers.ajax = function(pusher, callback){
   var self = this;
   var xhr = window.XMLHttpRequest ?
@@ -15,16 +14,20 @@ Pusher.authorizers.ajax = function(pusher, callback){
       if (xhr.status == 200) {
         var data = JSON.parse(xhr.responseText);
         callback(false, data);
-      	getPusherChannel().trigger("client-new-user", {"id":pusher.connection.socket_id});
+      	attempt_initial_call.delay(1);
       } else {
+      	alert("trouble occured");
         Pusher.debug("Couldn't get auth info from your webapp", status);
-        callback(true, xhr.status);
       }
     }
   };
   xhr.send('socket_id=' + encodeURIComponent(pusher.connection.socket_id) + '&channel_name=' + encodeURIComponent(self.name));
 }
 
+
+function attempt_initial_call(){
+	getPusherChannel().trigger("client-new-user", {"id":pusher.connection.socket_id});
+}
 
 /**
  * Defenition of globals, and their getters and setters
@@ -63,7 +66,7 @@ function getPusherChannel() { return window.pusher_channel; }
  * Setting non default globals
  */
 
-setDebug(true);
+setDebug();
 
 
 

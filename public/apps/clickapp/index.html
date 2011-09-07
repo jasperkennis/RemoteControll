@@ -119,6 +119,7 @@
 				},
 				
 				startShooting: function(){
+					log("info","Gun should start shooting now");
 					this.is_shooting = true;
 				},
 				
@@ -168,6 +169,7 @@
 				},
 				
 				clearCanvas: function(){
+					//log("info", "Screen height seems to be: " + this.height);
 					this.canvas.getContext("2d").clearRect(0,0,window.game.width,window.game.height);
 				}
 			});
@@ -181,6 +183,7 @@
 					this.renderTickEngine = new RenderTickEngine( null, 30, this.canvas );
 					this.height = document.viewport.getHeight();
 					this.width = document.viewport.getWidth();
+					log("info", "Screen height seems to be: " + this.height);
 				},
 				
 				createCanvas: function( id ){
