@@ -133,7 +133,7 @@
 							if(this.is_shooting){
 								var _bullet = new Bullet(
 									{ h : 4 , w : 4 },
-									{ x : window.players[this.player].position.x + 18 , y : window.players[this.player].position.y },
+									{ x : window.game.players[this.player].position.x + 18 , y : window.game.players[this.player].position.y },
 									{ h : 0 , v : -16 },
 									"black",
 									"bullet_time!",
@@ -141,7 +141,7 @@
 								);
 								
 								window.game.bullets.push(_bullet);
-								window.game.renderTickEngine.addDrawable(_bullet);
+								window.game.render_tick_engine.addDrawable(_bullet);
 							}
 						}
 					}
