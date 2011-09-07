@@ -12,13 +12,13 @@
 		
 		
 		<script>
-		
+
 			var pusher_id = '7132d12d5d3ddf34b09e';
 			var pusher_channel = 'private-screen-interaction';
 			var fps = 30;
-		
-		
-		
+
+
+
 			var Drawable = Class.create({
 				initialize: function( size, position, direction, color, name, canvas){
 					log("info", canvas);
@@ -60,9 +60,9 @@
 					return _return;
 				}
 			});
-			
-			
-			
+
+
+
 			var Bullet = Class.create(Drawable,{
 				initialize: function($super, size, position, direction, color, name, canvas){
 					$super.call(this, size, position, direction, color, name, canvas);
@@ -89,15 +89,17 @@
 					window.game.bullets.splice(own_index, 1);
 				}
 			});
-			
-			
-			
+
+
+
 			var Player = Class.create(Drawable, {
 				initialize: function($super, size, position, direction, color, name, canvas, id){
 					$super.call(this, size, position, direction, color, name, canvas);
 					this.fire_rate = 1;
 					this.gun = new Gun(null, this.fire_rate, id);
+					this.gun.registerPeriodicAction();
 					this.id = id;
+					this.is_shooting;
 					this.controller = new Controller(id);
 				},
 				
@@ -107,16 +109,16 @@
 				},
 				
 				startShooting: function(){
-					this.gun.startShooting();
+					this.is_shooting = true;
 				},
 				
 				stopShooting: function(){
-					this.gun.stopShooting();
+					this.is_shooting = false;
 				}
 			});
-			
-			
-			
+
+
+
 			var Enemy = Class.create(Drawable,{
 				initialize: function($super, size, position, direction, color, name, canvas){
 					$super.call(this, size, position, direction, color, name, canvas);
@@ -141,50 +143,111 @@
 					window.game.enemies.splice(own_index, 1);
 				}
 			});
-			
-			
-			/*
-			 * Gun is actually a bullet factory, but of course gun sounds much cooler!
-			 */
-			var Gun = Class.create(PeriodicalExecuter,{
-				initialize: function( $super, callback, fire_rate, player_id ) {
-					
+
+
+
+			var DrawableFactory = Class.create({
+				initialize: function(periodic_action){
+					this.collection = Array();
+					if(periodic_action){ this.periodic_action = periodic_action; } else { this.periodic_action = null }
+				},
+				
+				addEntity: function(_entity){
+					this.collection.push( _entity );
+				},
+				
+				registerPeriodicAction: function(){
+					window.game.render_tick_engine.addUpdatable(this.periodic_action);
+				}
+			});
+
+
+
+			var Gun = Class.create(DrawableFactory,{
+				initialize: function( $super, periodic_action, fire_rate, player_id ) {
 					if(!self){ var self = this; }
+					$super.call(this);
 					
 					this.frequency = 1;
-					this.is_shooting = false;
 					this.player = player_id;
 					
-					if( callback ){
-						this.callback = callback;
-					} else {
-						this.callback = function(){
-							if(this.is_shooting){
-								var _bullet = new Bullet(
-									{ h : 4 , w : 4 },
-									{ x : window.game.players[this.player].position.x + 18 , y : window.game.players[this.player].position.y },
-									{ h : 0 , v : -16 },
-									"black",
-									"bullet_time!",
-									window.game.canvas
-								);
-								
-								window.game.bullets.push(_bullet);
-								window.game.render_tick_engine.addDrawable(_bullet);
-							}
+					if( this.periodic_action == null ) {
+						this.periodic_action = {
+							options: { self: self },
+							execute: this.defaultPeriodicAction 
 						}
 					}
-					$super.call(this, this.callback, this.frequency);
-					this.stopShooting();
 				},
 				
-				startShooting: function(){
-					log("info","Gun should start shooting now");
-					this.is_shooting = true;
+				defaultPeriodicAction: function(options){
+					if( window.game.players[options.self.player].is_shooting ){
+						var _bullet = new Bullet(
+							{ h : 4 , w : 4 },
+							{ x : window.game.players[options.self.player].position.x + 18 , y : window.game.players[options.self.player].position.y },
+							{ h : 0 , v : -16 },
+							"black",
+							"bullet_time!",
+							window.game.canvas
+						);
+						
+						options.self.addEntity(_bullet);
+						window.game.render_tick_engine.addDrawable(_bullet);
+					}
+				}
+			});
+
+
+
+			var HarmsHazard = Class.create({
+				initialize: function(){
+					window.enemies = new Array();
 				},
 				
-				stopShooting: function($super){
-					this.is_shooting = false;
+				createEnemies: function(){
+					if( ( Math.floor( Math.random() * ( ( window.game.fps/window.game.players.length ) * 2 ) ) ) < 1 ){
+						var _enemy = new Enemy(
+							{h: 30, w: 30},
+							{x: ( Math.floor( Math.random() * window.game.width ) ), y: - 30},
+							{v: 1, h: 0},
+							"black",
+							"name",
+							window.game.canvas
+						);
+						window.game.enemies.push(_enemy);
+						window.game.render_tick_engine.addDrawable(_enemy);
+					}
+				}
+			});
+
+
+
+			var AlliedFactions = Class.create({
+				initialize: function(connection){
+					window.players = new Array();
+					this.connection = connection;
+					this.listener = this.listen();
+				},
+				
+				addPlayer: function(id){
+					var _player = new Player(
+						{h: 20, w: 40},
+						{x: 20, y: window.game.height - 30},
+						{v: 0, h: 0},
+						"black",
+						"name",
+						window.game.canvas,
+						id
+					);
+					window.game.players[id] = _player;
+					window.game.players.push(_player);
+					window.game.render_tick_engine.addDrawable(_player);
+				},
+				
+				listen: function(){
+					if(!self){ var self = this; }
+					this.connection.onNewUser(function(data){
+						self.addPlayer(data.id);
+					});
 				}
 			});
 
@@ -240,13 +303,17 @@
 				
 				runUpdatables: function(){
 					this.updatables.each(function(e){
-						e.execute();
+						if(Object.isFunction(e)){
+							e.call();
+						} else {
+							e.execute(e.options);
+						}
 					});
 				}
 			});
-		
-		
-		
+
+
+
 			var Connection = Class.create({
 				initialize: function(id, channel){
 		
@@ -266,9 +333,9 @@
 					getPusherChannel().bind('client-new-user', callback);
 				}
 			});
-			
-			
-			
+
+
+
 			var Controller = Class.create({
 				initialize: function(id){
 					this.right_is_pressed = false;
@@ -335,12 +402,9 @@
 					});
 				}
 			});
-			
-			
-			
-			/*
-			 * This is actually just a collection of hit test object methods to be registered inside the . I've mady it easy; everything is square.
-			 */
+
+
+
 			var DamageControl = Class.create({
 				hitTest: function( first_collection , second_collection, callback ){
 					for (var i = first_collection.length - 1; i >= 0; i--){
@@ -352,7 +416,7 @@
 					}
 				},
 				
-				bulletVSEnemy: {execute: function(){
+				bulletVSEnemy: function(){
 					window.game.damage_control.hitTest(window.game.bullets, window.game.enemies,{execute: function(bullet_index,enemy_index){
 						// Entering the process of deleting the object and all its references:
 						_bullet = window.game.bullets[bullet_index];
@@ -362,74 +426,11 @@
 						_enemy = window.game.enemies[enemy_index];
 						_enemy.die(enemy_index);
 					}});
-				}}
-			});
-			
-			
-			
-			/*
-			 * HarmsHazard is actually a bullet factory, but of course harms hazard sounds much cooler!
-			 */
-			var HarmsHazard = Class.create({
-				initialize: function(){
-					window.enemies = new Array();
-				},
-				
-				createEnemies: { execute:
-					function(){
-						if( ( Math.floor( Math.random() * ( ( window.game.fps/window.game.players.length ) * 2 ) ) ) < 1 ){
-							var _enemy = new Enemy(
-								{h: 30, w: 30},
-								{x: ( Math.floor( Math.random() * window.game.width ) ), y: - 30},
-								{v: 1, h: 0},
-								"black",
-								"name",
-								window.game.canvas
-							);
-							window.game.enemies.push(_enemy);
-							window.game.render_tick_engine.addDrawable(_enemy);
-						}
-					}
 				}
 			});
-			
-			
-			
-			/*
-			 * The Allied Factions represent the player controller.
-			 */
-			var AlliedFactions = Class.create({
-				initialize: function(connection){
-					window.players = new Array();
-					this.connection = connection;
-					this.listener = this.listen();
-				},
-				
-				addPlayer: function(id){
-					var _player = new Player(
-						{h: 20, w: 40},
-						{x: 20, y: window.game.height - 30},
-						{v: 0, h: 0},
-						"black",
-						"name",
-						window.game.canvas,
-						id
-					);
-					window.game.players[id] = _player;
-					window.game.players.push(_player);
-					window.game.render_tick_engine.addDrawable(_player);
-				},
-				
-				listen: function(){
-					if(!self){ var self = this; }
-					this.connection.onNewUser(function(data){
-						self.addPlayer(data.id);
-					});
-				}
-			});
-		
-		
-		
+
+
+
 			var Game = Class.create({
 				initialize: function(fps, pusher_id, pusher_channel){
 					// Set simple variables:
@@ -469,9 +470,9 @@
 					return _canvas;
 				}
 			});
-			
-			
-			
+
+
+
 			document.observe("dom:loaded", function(){
 				if( $('screen_app_page') != undefined ){
 					window.game = new Game(fps, pusher_id, pusher_channel);
