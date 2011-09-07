@@ -15,6 +15,7 @@
 		
 			var pusher_id = '7132d12d5d3ddf34b09e';
 			var pusher_channel = 'private-screen-interaction';
+			var fps = 30;
 		
 		
 		
@@ -66,7 +67,7 @@
 				initialize: function($super, size, position, direction, color, name, canvas, id){
 					$super.call(this, size, position, direction, color, name, canvas);
 					this.fire_rate = 1;
-					this.gun = new Gun();
+					this.gun = new Gun(null, this.fire_rate, id);
 					this.id = id;
 					this.controller = new Controller(id);
 				},
@@ -87,13 +88,25 @@
 			
 			
 			
+			var Enemy = Class.create(Drawable,{
+				initialize: function($super, size, position, direction, color, name, canvas, id){
+					$super.call(this, size, position, direction, color, name, canvas);
+					this.id = id;
+				}
+			});
+			
+			
+			/*
+			 * Gun is actually a bullet factory, but of course gun sounds much cooler!
+			 */
 			var Gun = Class.create(PeriodicalExecuter,{
-				initialize: function( $super, callback, fire_rate ) {
+				initialize: function( $super, callback, fire_rate, player_id ) {
 					
 					if(!self){ var self = this; }
 					
 					this.frequency = 1;
 					this.is_shooting = false;
+					this.player = player_id;
 					
 					if( callback ){
 						this.callback = callback;
@@ -101,17 +114,17 @@
 						this.callback = function(){
 							if(this.is_shooting){
 								var _bullet = new Bullet(
-									{ h : 3 , w : 3 },
-									{ x : 20 , y : 300 },
+									{ h : 4 , w : 4 },
+									{ x : window.players[this.player].position.x + 18 , y : window.players[this.player].position.y },
 									{ h : 0 , v : -16 },
 									"black",
 									"bullet_time!",
 									window.game.canvas
 								);
+								
+								window.game.bullets.push(_bullet);
+								window.game.renderTickEngine.addDrawable(_bullet);
 							}
-							
-							//window.game.bullets.push(_bullet);
-							//window.game.renderTickEngine.addDrawable(_bullet);
 						}
 					}
 					$super.call(this, this.callback, this.frequency);
@@ -135,6 +148,7 @@
 					this.frequency = 1/fps;
 					this.canvas = canvas;
 					this.drawables = new Array();
+					this.updatables = new Array();
 					
 					if( callback ){
 						this.callback = callback;
@@ -169,40 +183,16 @@
 				},
 				
 				clearCanvas: function(){
-					//log("info", "Screen height seems to be: " + this.height);
 					this.canvas.getContext("2d").clearRect(0,0,window.game.width,window.game.height);
-				}
-			});
-		
-		
-		
-			var Game = Class.create({
-				initialize: function(){
-					this.canvas = this.createCanvas("screen");
-					this.bullets = new Array();
-					this.renderTickEngine = new RenderTickEngine( null, 30, this.canvas );
-					this.height = document.viewport.getHeight();
-					this.width = document.viewport.getWidth();
-					log("info", "Screen height seems to be: " + this.height);
 				},
 				
-				createCanvas: function( id ){
-					if(!self){ var self = this; } // Need this because the each iterator is going to overwrite this.
+				addUpdateFunction: function(){
 					
-					_canvas = new Element( 'canvas' , {
-						'id' : id,
-						'width' : this.width,
-						'height' : this.height
-					});
-
-					_canvas = document.body.appendChild(_canvas);
-					
-					return _canvas;
 				}
 			});
-			
-			
-			
+		
+		
+		
 			var Connection = Class.create({
 				initialize: function(id, channel){
 		
@@ -237,7 +227,7 @@
 				
 				listenForKeyDown: function(){
 					if(!self){ var self = this; }
-					connection.onKeyDown(function(data){
+					window.game.connection.onKeyDown(function(data){
 						if(data.id == self.id){
 							switch (data.key) {
 								case 37:
@@ -265,7 +255,7 @@
 				
 				listenForKeyUp: function(){
 					if(!self){ var self = this; }
-					connection.onKeyUp(function(data){
+					window.game.connection.onKeyUp(function(data){
 						if(data.id == self.id){	
 							switch (data.key) {
 								case 37:
@@ -294,7 +284,27 @@
 			
 			
 			
-			var PlayerController = Class.create({
+			/*
+			 * HarmsHazard is actually a bullet factory, but of course harms hazard sounds much cooler!
+			 */
+			var HarmsHazard = Class.create({
+				initialize: function(){
+					window.enemies = new Array();
+				},
+				
+				createEnemie: function(players,time_passed, fps){
+					if( ( Math.floor( Math.random() * ( fps/players ) ) ) < 2 ){
+						console.log("Would create enemy!");
+					}
+				}
+			});
+			
+			
+			
+			/*
+			 * The Allied Factions represent the player controller.
+			 */
+			var AlliedFactions = Class.create({
 				initialize: function(connection){
 					window.players = new Array();
 					this.connection = connection;
@@ -304,7 +314,7 @@
 				addPlayer: function(id){
 					var _player = new Player(
 						{h: 20, w: 40},
-						{x: 20, y: 15},
+						{x: 20, y: window.game.height - 30},
 						{v: 0, h: 0},
 						"black",
 						"name",
@@ -325,12 +335,46 @@
 		
 		
 		
+			var Game = Class.create({
+				initialize: function(fps, pusher_id, pusher_channel){
+					// Set simple variables:
+					this.fps = fps;
+					this.height = document.viewport.getHeight();
+					this.width = document.viewport.getWidth();
+					this.canvas = this.createCanvas("screen");
+					
+					// Create containers for main objects:
+					this.bullets = new Array();
+					this.players = new Array();
+					this.enemies = new Array();
+					
+					// Create controlling objects:
+					this.connection = new Connection(pusher_id, pusher_channel);
+					this.allied_factions = new AlliedFactions(this.connection);
+					this.harm_hazard = new HarmsHazard(fps);
+					this.renderTickEngine = new RenderTickEngine( null, this.fps, this.canvas );
+				},
+				
+				createCanvas: function( id ){
+					if(!self){ var self = this; } // Need this because the each iterator is going to overwrite this.
+					
+					_canvas = new Element( 'canvas' , {
+						'id' : id,
+						'width' : this.width,
+						'height' : this.height
+					});
+
+					_canvas = document.body.appendChild(_canvas);
+					
+					return _canvas;
+				}
+			});
+			
+			
+			
 			document.observe("dom:loaded", function(){
 				if( $('screen_app_page') != undefined ){
-					
-					connection = new Connection(pusher_id, pusher_channel);
-					window.player_controller = new PlayerController(connection);
-					window.game = new Game();
+					window.game = new Game(fps, pusher_id, pusher_channel);
 				}
 			});
 		</script>
