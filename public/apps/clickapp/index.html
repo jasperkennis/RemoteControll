@@ -71,6 +71,10 @@
 					_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
 					_canvas.closePath();
 					_canvas.fill();
+				},
+				
+				remove: function(){
+					console.log(window.game.bullets.find(this));
 				}
 			});
 			
@@ -325,8 +329,10 @@
 				},
 				
 				bulletVSEnemy: {execute: function(){
-					window.game.damage_control.hitTest(window.game.bullets, window.game.enemies,{execute: function(bullet,enemy){
-						console.log("hit!");
+					window.game.damage_control.hitTest(window.game.bullets, window.game.enemies,{execute: function(bullet_index,enemy_index){
+						console.log(window.game.bullets[bullet_index]);
+						//bullet.remove();
+						//enemy.die();
 					}});
 				}}
 			});
