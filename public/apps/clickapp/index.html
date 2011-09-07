@@ -257,19 +257,19 @@
 							switch (data.key) {
 								case 37:
 									if(!self.left_is_pressed){
-										window.players[self.id].direction.h = window.players[self.id].direction.h - 2;
+										window.game.players[self.id].direction.h = window.game.players[self.id].direction.h - 4;
 										self.left_is_pressed = true;
 									}
 									break;
 								case 39:
 									if(!self.right_is_pressed){
-										window.players[self.id].direction.h =  window.players[self.id].direction.h + 2;
+										window.game.players[self.id].direction.h =  window.game.players[self.id].direction.h + 4;
 										self.right_is_pressed = true;
 									}
 									break;
 								case 32:
 									if(!self.space_bar_is_pressed) {
-										window.players[self.id].startShooting();
+										window.game.players[self.id].startShooting();
 										self.space_bar_is_pressed = true;
 									}
 									break;
@@ -285,19 +285,20 @@
 							switch (data.key) {
 								case 37:
 									if(self.left_is_pressed){
-										window.players[self.id].direction.h = window.players[self.id].direction.h + 2;
+										window.game.players[self.id].direction.h = window.game.players[self.id].direction.h + 4;
+										console.log(window.game.players);
 										self.left_is_pressed = false;
 									}
 									break;
 								case 39:
 									if(self.right_is_pressed){
-										window.players[self.id].direction.h =  window.players[self.id].direction.h - 2;
+										window.game.players[self.id].direction.h =  window.game.players[self.id].direction.h - 4;
 										self.right_is_pressed = false;
 									}
 									break;
 								case 32:
 									if(self.space_bar_is_pressed){
-										window.players[self.id].stopShooting();
+										window.game.players[self.id].stopShooting();
 										self.space_bar_is_pressed = false;
 									}
 									break;
