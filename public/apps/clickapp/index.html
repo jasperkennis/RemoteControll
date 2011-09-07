@@ -381,8 +381,9 @@
 						window.game.canvas,
 						id
 					);
-					window.players[id] = _player;
-					window.game.renderTickEngine.addDrawable(_player);
+					window.game.players[id] = _player;
+					window.game.players.push(_player);
+					window.game.render_tick_engine.addDrawable(_player);
 				},
 				
 				listen: function(){
@@ -409,10 +410,15 @@
 					this.enemies = new Array();
 					
 					// Create controlling objects:
+					this.damage_control = new DamageControl();
 					this.connection = new Connection(pusher_id, pusher_channel);
 					this.allied_factions = new AlliedFactions(this.connection);
 					this.harm_hazard = new HarmsHazard(fps);
-					this.renderTickEngine = new RenderTickEngine( null, this.fps, this.canvas );
+					this.render_tick_engine = new RenderTickEngine( null, this.fps, this.canvas );
+					
+					// Add update functions to the render tick engine:
+					this.render_tick_engine.addUpdatable(this.harm_hazard.createEnemies);
+					this.render_tick_engine.addUpdatable(this.damage_control.bulletVSEnemy);
 				},
 				
 				createCanvas: function( id ){
