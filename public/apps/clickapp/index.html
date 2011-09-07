@@ -311,6 +311,29 @@
 			
 			
 			/*
+			 * This is actually just a collection of hit test object methods to be registered inside the . I've mady it easy; everything is square.
+			 */
+			var DamageControl = Class.create({
+				hitTest: function( first_collection , second_collection, callback ){
+					for (var i = first_collection.length - 1; i >= 0; i--){
+						for (var j = second_collection.length - 1; j >= 0; j--){
+							if( first_collection[i].intersects( second_collection[j] ) ) {
+								callback.execute(i,j);
+							}
+						}
+					}
+				},
+				
+				bulletVSEnemy: {execute: function(){
+					window.game.damage_control.hitTest(window.game.bullets, window.game.enemies,{execute: function(bullet,enemy){
+						console.log("hit!");
+					}});
+				}}
+			});
+			
+			
+			
+			/*
 			 * HarmsHazard is actually a bullet factory, but of course harms hazard sounds much cooler!
 			 */
 			var HarmsHazard = Class.create({
