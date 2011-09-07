@@ -6,7 +6,7 @@ Pusher.secret = 'd683b29be863f1fed7ed'
 
 class ScreenAppCommunicationController < ApplicationController
   
-  protect_from_forgery :except => :auth # stop rails CSRF protection for this action
+  #protect_from_forgery :except => :auth # stop rails CSRF protection for this action
   
   def led
     @message = 'Someone activated a led!'
