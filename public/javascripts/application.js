@@ -66,7 +66,7 @@ function getPusherChannel() { return window.pusher_channel; }
  * Setting non default globals
  */
 
-setDebug(true);
+setDebug(false);
 
 
 
@@ -197,9 +197,9 @@ var InterfaceScreen = Class.create({
 		this.right_is_pressed = false;
 		this.space_bar_is_pressed = false;
 		
-		self.createCanvas(initial, id, no_canvas);
-		self.addControls(controls);
-		self.addKeyListeners();
+		//this.createCanvas(initial, id, no_canvas);
+		//this.addControls(controls);
+		this.addKeyListeners();
 	},
 
 
@@ -404,10 +404,12 @@ var InterfaceController = Class.create({
 			return true;
 
 		} else {
-			alert("This interface is broken. Unfortunately, you can't use this application right now.");
+			var interface_screen = new InterfaceScreen();
+			interface_screen.addKeyListeners();
+			//alert("This interface is broken. Unfortunately, you can't use this application right now.");
 			log('error','Broken interface. Aborting.');
 			log('log',$('interfaces'));
-			return false;
+			//return false;
 		}
 	},
 	
@@ -474,10 +476,6 @@ document.observe("dom:loaded", function(){
 		
 		setPusher('7132d12d5d3ddf34b09e');
 		setPusherChannel('private-screen-interaction');
-		
-    pusher.connection.bind('connected', function() {
-			//getPusherChannel().trigger("client-new-user", {"id":pusher.connection.socket_id});
-    });
 		
 		var args = {
 			no_canvas: 'This text is displayed if your browser does not support HTML5 Canvas.'
