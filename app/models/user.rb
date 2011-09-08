@@ -6,17 +6,15 @@ class User < ActiveRecord::Base
          :omniauthable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :name
   
   has_many :screen_apps, :dependent => :destroy
   
   def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
-    data = access_token['extra']['user_hash']
-    auth = request.env['omniauth.auth']  #I think this is what your access_token variable equates to.
     if user = User.find_by_email(data["email"])
       user
     else # Create a user with a stub password.
-      User.create(:email => data["email"], :name => auth['user_info']['name'], :password => Devise.friendly_token[0,20]) 
+      User.create(:email => data["email"], :name => data["name"], :password => Devise.friendly_token[0,20]) 
     end
   end
 end
