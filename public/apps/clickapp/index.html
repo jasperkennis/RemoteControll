@@ -42,6 +42,16 @@
 				update: function(){
 					this.position.x = this.position.x + this.direction.h;
 					this.position.y = this.position.y + this.direction.v;
+					
+					//TODO: implement the out of screen logics:
+					/*if(
+						( this.position.x > window.game.width ) ||
+						( this.position.y > window.game.height ) ||
+						( this.position.x < ( -1 * this.position.x ) ) ||
+						( this.position.y < ( ( -1 * this.position.y ) - 100 ) )
+					){
+						// should now do: this.remove(this);
+					}*/
 				},
 				
 				intersects: function(compare){
@@ -58,7 +68,9 @@
 						_return = true;
 					}
 					return _return;
-				}
+				},
+				
+				remove: function(){}
 			});
 
 
@@ -114,6 +126,25 @@
 				
 				stopShooting: function(){
 					this.is_shooting = false;
+				},
+				
+				remove: function(own_index) {
+					if(!self){ var self = this; }
+					window.game.render_tick_engine.drawables.detect(function(q){
+						if(q == self){
+							// Find the index of the element, and then splice the array of drawables at that point.
+							window.game.render_tick_engine.drawables.splice( window.game.render_tick_engine.drawables.indexOf(q),1);
+						}
+					});
+					
+					// Remove the bullet from the bullets list too:
+					window.game.allied_factions.collection.splice(own_index, 1);
+				},
+				
+				update: function($super){
+					$super.call( this );
+					if( this.position.x < 20 ) {  this.position.x = 20; }
+					if( this.position.x > window.game.width - 20 - this.size.w ) { this.position.x = window.game.width - this.size.w - 20 }
 				}
 			});
 
@@ -130,7 +161,7 @@
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				},
 				
-				die: function(own_index) {
+				remove: function(own_index) {
 					if(!self){ var self = this; }
 					window.game.render_tick_engine.drawables.detect(function(q){
 						if(q == self){
@@ -198,7 +229,6 @@
 						options.self.addEntity(_bullet);
 						window.game.render_tick_engine.addDrawable(_bullet);
 						options.self.delay = ( 30 / options.self.frequency);
-						console.log(options.self.frequency);
 					}
 				}
 			});
@@ -442,9 +472,22 @@
 							
 							// Do the same thing for the hit enemy:
 							_enemy = window.game.harm_hazard.collection[enemy_index];
-							_enemy.die(enemy_index);
+							_enemy.remove(enemy_index);
 						});
 					}
+				},
+				
+				playerVSEnemy: function(){
+					if(!self){ var self = this; }
+					window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.harm_hazard.collection, function(player_index,enemy_index){
+						// Entering the process of deleting the object and all its references:
+						_player = window.game.allied_factions.collection[player_index];
+						_player.remove(player_index);
+						
+						// Do the same thing for the hit enemy:
+						_enemy = window.game.harm_hazard.collection[enemy_index];
+						_enemy.remove(enemy_index);
+					});
 				}
 			});
 
@@ -471,6 +514,7 @@
 					// Add update functions to the updating loop:
 					this.render_tick_engine.addUpdatable(this.harm_hazard.periodic_action);
 					this.render_tick_engine.addUpdatable(this.damage_control.bulletVSEnemy);
+					this.render_tick_engine.addUpdatable(this.damage_control.playerVSEnemy);
 				},
 				
 				createCanvas: function( id ){
