@@ -285,7 +285,7 @@
 				listen: function(){
 					if(!self){ var self = this; }
 					this.connection.onNewUser(function(data){
-						console.alert(data);
+						console.error(data);
 						//self.addEntity(data.id);
 					});
 				}
@@ -370,7 +370,7 @@
 				},
 				
 				onNewUser: function(callback){
-					getPusherChannel().bind('pusher:subscription_succeeded', callback(data));
+					getPusherChannel().bind('pusher:subscription_succeeded', callback);
 				}
 			});
 
