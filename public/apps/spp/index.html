@@ -267,17 +267,17 @@
 					$super.call(this);
 				},
 				
-				addEntity: function(id){
+				addEntity: function(data){
 					var _player = new Player(
 						{h: 20, w: 40},
 						{x: 20, y: window.game.height - 30},
 						{v: 0, h: 0},
-						"black",
-						"name",
+						"rgb(" + Math.floor( Math.random() * 255 ).toString() + " , " + Math.floor( Math.random() * 255 ).toString() + " , " + Math.floor( Math.random() * 255 ).toString() + ")",
+						data.name,
 						window.game.canvas,
 						id
 					);
-					this.collection[id] = _player;
+					this.collection[data.id] = _player;
 					this.collection.push(_player);
 					window.game.render_tick_engine.addDrawable(_player);
 				},
@@ -285,7 +285,7 @@
 				listen: function(){
 					if(!self){ var self = this; }
 					this.connection.onNewUser(function(data){
-						self.addEntity(data.id);
+						self.addEntity(data);
 					});
 				}
 			});
