@@ -55,7 +55,7 @@ function getPusher() { return window.pusher; }
 /* Pusher channel */
 var pusher_channel;
 function setPusherChannel(_channel_name){
-	if(!_channel_name){var _channel_name = 'private-screen-interaction'; }
+	if(!_channel_name){var _channel_name = 'presence-screen-interaction'; }
 	pusher_channel = getPusher().subscribe(_channel_name);
 }
 function getPusherChannel() { return window.pusher_channel; }
@@ -475,7 +475,7 @@ document.observe("dom:loaded", function(){
 		log('info','Interface detected.');
 		
 		setPusher('7132d12d5d3ddf34b09e');
-		setPusherChannel('private-screen-interaction');
+		setPusherChannel('presence-screen-interaction');
 		
 		var args = {
 			no_canvas: 'This text is displayed if your browser does not support HTML5 Canvas.'
@@ -491,6 +491,6 @@ document.observe("dom:loaded", function(){
 		log('info','App detected.');
 		
 		//setPusher('7132d12d5d3ddf34b09e');
-		//setPusherChannel('private-screen-interaction');
+		//setPusherChannel('presence-screen-interaction');
 	}
 });
