@@ -76,7 +76,7 @@
 					_canvas.fill();
 				},
 				
-				remove: function(own_index){
+				remove: function(own_index, gun_index){
 					if(!self){ var self = this; }
 					window.game.render_tick_engine.drawables.detect(function(q){
 						if(q == self){
@@ -86,7 +86,7 @@
 					});
 					
 					// Remove the bullet from the bullets list too:
-					window.game.bullets.splice(own_index, 1);
+					window.game.allied_factions.collection[gun_index].gun.collection.splice(own_index, 1);
 				}
 			});
 
@@ -140,7 +140,7 @@
 					});
 					
 					// Remove the bullet from the bullets list too:
-					window.game.enemies.splice(own_index, 1);
+					window.game.harm_hazard.collection.splice(own_index, 1);
 				}
 			});
 
@@ -148,28 +148,9 @@
 
 			var DrawableFactory = Class.create({
 				initialize: function(periodic_action){
-					this.collection = Array();
-					if(periodic_action){ this.periodic_action = periodic_action; } else { this.periodic_action = null }
-				},
-				
-				addEntity: function(_entity){
-					this.collection.push( _entity );
-				},
-				
-				registerPeriodicAction: function(){
-					window.game.render_tick_engine.addUpdatable(this.periodic_action);
-				}
-			});
-
-
-
-			var Gun = Class.create(DrawableFactory,{
-				initialize: function( $super, periodic_action, fire_rate, player_id ) {
 					if(!self){ var self = this; }
-					$super.call(this);
 					
-					this.frequency = 1;
-					this.player = player_id;
+					this.collection = Array();
 					
 					if( this.periodic_action == null ) {
 						this.periodic_action = {
@@ -179,11 +160,33 @@
 					}
 				},
 				
+				addEntity: function(_entity){
+					this.collection.push( _entity );
+				},
+				
+				registerPeriodicAction: function(){
+					window.game.render_tick_engine.addUpdatable(this.periodic_action);
+				},
+				
+				defaultPeriodicAction: function(){
+					
+				}
+			});
+
+
+
+			var Gun = Class.create(DrawableFactory,{
+				initialize: function( $super, periodic_action, fire_rate, player_id ) {
+					this.frequency = 1;
+					this.player = player_id;
+					$super.call(this);
+				},
+				
 				defaultPeriodicAction: function(options){
-					if( window.game.players[options.self.player].is_shooting ){
+					if( window.game.allied_factions.collection[options.self.player].is_shooting ){
 						var _bullet = new Bullet(
 							{ h : 4 , w : 4 },
-							{ x : window.game.players[options.self.player].position.x + 18 , y : window.game.players[options.self.player].position.y },
+							{ x :  window.game.allied_factions.collection[options.self.player].position.x + 18 , y :  window.game.allied_factions.collection[options.self.player].position.y },
 							{ h : 0 , v : -16 },
 							"black",
 							"bullet_time!",
@@ -198,13 +201,13 @@
 
 
 
-			var HarmsHazard = Class.create({
-				initialize: function(){
-					window.enemies = new Array();
+			var HarmsHazard = Class.create(DrawableFactory,{
+				initialize: function($super, periodic_action){
+					$super.call(this);
 				},
 				
-				createEnemies: function(){
-					if( ( Math.floor( Math.random() * ( ( window.game.fps/window.game.players.length ) * 2 ) ) ) < 1 ){
+				defaultPeriodicAction: function(options){
+					if( ( Math.floor( Math.random() * ( ( window.game.fps/window.game.allied_factions.collection.length ) * 2 ) ) ) < 1 ){
 						var _enemy = new Enemy(
 							{h: 30, w: 30},
 							{x: ( Math.floor( Math.random() * window.game.width ) ), y: - 30},
@@ -213,7 +216,7 @@
 							"name",
 							window.game.canvas
 						);
-						window.game.enemies.push(_enemy);
+						options.self.addEntity(_enemy);
 						window.game.render_tick_engine.addDrawable(_enemy);
 					}
 				}
@@ -221,14 +224,15 @@
 
 
 
-			var AlliedFactions = Class.create({
-				initialize: function(connection){
-					window.players = new Array();
+			var AlliedFactions = Class.create(DrawableFactory,{
+				initialize: function($super, connection){
+					//window.players = new Array();
 					this.connection = connection;
 					this.listener = this.listen();
+					$super.call(this);
 				},
 				
-				addPlayer: function(id){
+				addEntity: function(id){
 					var _player = new Player(
 						{h: 20, w: 40},
 						{x: 20, y: window.game.height - 30},
@@ -238,15 +242,15 @@
 						window.game.canvas,
 						id
 					);
-					window.game.players[id] = _player;
-					window.game.players.push(_player);
+					this.collection[id] = _player;
+					this.collection.push(_player);
 					window.game.render_tick_engine.addDrawable(_player);
 				},
 				
 				listen: function(){
 					if(!self){ var self = this; }
 					this.connection.onNewUser(function(data){
-						self.addPlayer(data.id);
+						self.addEntity(data.id);
 					});
 				}
 			});
@@ -353,19 +357,19 @@
 							switch (data.key) {
 								case 37:
 									if(!self.left_is_pressed){
-										window.game.players[self.id].direction.h = window.game.players[self.id].direction.h - 4;
+										window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h - 4;
 										self.left_is_pressed = true;
 									}
 									break;
 								case 39:
 									if(!self.right_is_pressed){
-										window.game.players[self.id].direction.h =  window.game.players[self.id].direction.h + 4;
+										window.game.allied_factions.collection[self.id].direction.h =  window.game.allied_factions.collection[self.id].direction.h + 4;
 										self.right_is_pressed = true;
 									}
 									break;
 								case 32:
 									if(!self.space_bar_is_pressed) {
-										window.game.players[self.id].startShooting();
+										window.game.allied_factions.collection[self.id].startShooting();
 										self.space_bar_is_pressed = true;
 									}
 									break;
@@ -381,19 +385,19 @@
 							switch (data.key) {
 								case 37:
 									if(self.left_is_pressed){
-										window.game.players[self.id].direction.h = window.game.players[self.id].direction.h + 4;
+										window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h + 4;
 										self.left_is_pressed = false;
 									}
 									break;
 								case 39:
 									if(self.right_is_pressed){
-										window.game.players[self.id].direction.h =  window.game.players[self.id].direction.h - 4;
+										window.game.allied_factions.collection[self.id].direction.h =  window.game.allied_factions.collection[self.id].direction.h - 4;
 										self.right_is_pressed = false;
 									}
 									break;
 								case 32:
 									if(self.space_bar_is_pressed){
-										window.game.players[self.id].stopShooting();
+										window.game.allied_factions.collection[self.id].stopShooting();
 										self.space_bar_is_pressed = false;
 									}
 									break;
@@ -407,25 +411,38 @@
 
 			var DamageControl = Class.create({
 				hitTest: function( first_collection , second_collection, callback ){
-					for (var i = first_collection.length - 1; i >= 0; i--){
-						for (var j = second_collection.length - 1; j >= 0; j--){
-							if( first_collection[i].intersects( second_collection[j] ) ) {
-								callback.execute(i,j);
+
+					if(
+							Object.isArray( first_collection ) &&
+							( first_collection.length > 0 ) &&
+							Object.isArray( second_collection ) &&
+							( second_collection.length > 0 ) 
+						){
+						for (var i = first_collection.length - 1; i >= 0; i--){
+							for (var j = second_collection.length - 1; j >= 0; j--){
+								if( first_collection[i].intersects( second_collection[j] ) ) {
+									callback.call(i,j);
+									console.log(i);
+									//console.log(j);
+								}
 							}
 						}
 					}
 				},
 				
 				bulletVSEnemy: function(){
-					window.game.damage_control.hitTest(window.game.bullets, window.game.enemies,{execute: function(bullet_index,enemy_index){
-						// Entering the process of deleting the object and all its references:
-						_bullet = window.game.bullets[bullet_index];
-						_bullet.remove(bullet_index);
-						
-						// Do the same thing for the hit enemy:
-						_enemy = window.game.enemies[enemy_index];
-						_enemy.die(enemy_index);
-					}});
+					if(!self){ var self = this; }
+					for (var player = window.game.allied_factions.collection.length - 1; player >= 0; player--){
+						window.game.damage_control.hitTest(window.game.allied_factions.collection[player].gun.collection, window.game.harm_hazard.collection, function(bullet_index,enemy_index){
+							// Entering the process of deleting the object and all its references:
+							_bullet = window.game.allied_factions.collection[player].gun.collection[bullet_index];
+							_bullet.remove(bullet_index,player);
+							
+							// Do the same thing for the hit enemy:
+							_enemy = window.game.harm_hazard.collection[enemy_index];
+							_enemy.die(enemy_index);
+						});
+					}
 				}
 			});
 
@@ -441,8 +458,6 @@
 					
 					// Create containers for main objects:
 					this.bullets = new Array();
-					this.players = new Array();
-					this.enemies = new Array();
 					
 					// Create controlling objects:
 					this.damage_control = new DamageControl();
@@ -451,13 +466,13 @@
 					this.harm_hazard = new HarmsHazard(fps);
 					this.render_tick_engine = new RenderTickEngine( null, this.fps, this.canvas );
 					
-					// Add update functions to the render tick engine:
-					this.render_tick_engine.addUpdatable(this.harm_hazard.createEnemies);
+					// Add update functions to the updating loop:
+					this.render_tick_engine.addUpdatable(this.harm_hazard.periodic_action);
 					this.render_tick_engine.addUpdatable(this.damage_control.bulletVSEnemy);
 				},
 				
 				createCanvas: function( id ){
-					if(!self){ var self = this; } // Need this because the each iterator is going to overwrite this.
+					if(!self){ var self = this; } 
 					
 					_canvas = new Element( 'canvas' , {
 						'id' : id,
