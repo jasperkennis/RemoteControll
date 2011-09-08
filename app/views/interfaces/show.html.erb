@@ -1,13 +1,53 @@
 <p class="notice"><%= notice %></p>
 
-<p>
+<!--<p>
   <b>Name:</b>
   <%= @interface.name %>
 </p>
  
 <p>
   <b>Interface:</b>
-</p>
+</p>-->
 <p id="interfaces_page">
-  <%= @interface.json %>
+  <!--<%= @interface.json %>-->
+</p>
+
+<h1>Space Invaders PLUS</h1>
+<h2>Green Squares are BAD!!! Join the Allied Factions today!</h2>
+
+
+<p>
+	<% if user_signed_in? %>
+		Welcome <%= current_user.email %>! <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+		
+		<h3>What's Space Invaders PLUS?</h3>
+		<p>It's Space Invaders, but PLUS! Instead of one lonely tank defending our beloved earth, a small army kills these attacking enemies with awesome powers!<p>
+		<p>That army's called The Allied Factions, and you can be part of it TODAY! As a matter of fact, as you opened this page, you probably already are!<p>
+			
+		<h3>How to play this game?</h3>
+		<p>Pretty simple. By opening the page you're currently on, you joined The Allied Factions! You probably found this url on a Big Screen, right? Look at it, there's a tank there you control! Use <b>left</b> and <b>right</b> to move, <b>spacebar</b> to shoot! Kill those horrible ugly green squares, defend your planet!</p>
+		
+		<h3>What if there's no Big Screen around?</h3>
+		<p>Then you can set one up yourself. To do so, you need to have a Big Screen attatched to a computer with internet. Open a full screen browser on that screen, preferably Google Chrome, and go to <a href="http://remotely.heroku.com/apps/spp">http://remotely.heroku.com/apps/spp</a>. Once the page is done loading, you can start playing by visting the page you are on right now.</p>
+		
+		<h3>Please be advised!</h3>
+		<p>Use only one Big Screen at a time. If there are multiple Big Screens, members of the Allied Factions will show up on all Big Screens, causing major confusion!</p>
+
+	<% else %>
+		<%= link_to "Login with Facebook to play!", user_omniauth_authorize_path(:facebook) %>
+		
+		<h3>What's Space Invaders PLUS?</h3>
+		<p>It's Space Invaders, but PLUS! Instead of one lonely tank defending our beloved earth, a small army kills these attacking enemies with awesome powers!<p>
+		<p>That army's called The Allied Factions, and you can be part of it TODAY! <%= link_to "Just sign in and get playing!", user_omniauth_authorize_path(:facebook) %>.<p>
+			
+		<h3>How to play this game?</h3>
+		<p>Pretty simple. By <%= link_to "loging in with Facebook", user_omniauth_authorize_path(:facebook) %>, you will joine The Allied Factions! You probably found this url on a Big Screen, right? After <%= link_to "login", user_omniauth_authorize_path(:facebook) %> a tank will apear there that you control! Kill those horrible ugly green squares, defend your planet!</p>
+		
+		<h3>What if there's no Big Screen around?</h3>
+		<p>Then you can set one up yourself. To do so, you need to have a Big Screen attatched to a computer with internet. Open a full screen browser on that screen, preferably Google Chrome, and go to <a href="http://remotely.heroku.com/apps/spp">http://remotely.heroku.com/apps/spp</a>. Once the page is done loading, you can start playing by visting the page you are on right now.</p>
+		
+		<h3>Please be advised!</h3>
+		<p>Use only one Big Screen at a time. If there are multiple Big Screens, members of the Allied Factions will show up on all Big Screens, causing major confusion!</p>
+		 
+	<% end %>
 </p>
