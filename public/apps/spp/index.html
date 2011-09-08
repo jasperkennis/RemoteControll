@@ -124,13 +124,6 @@
 
 			var Player = Class.create(Drawable, {
 				initialize: function($super, size, position, direction, color, name, canvas, id){
-					$super.call(this, size, position, direction, color, name, canvas);
-					this.fire_rate = 1;
-					this.gun = new Gun(null, this.fire_rate, id);
-					this.gun.registerPeriodicAction();
-					this.id = id;
-					this.is_shooting;
-					this.controller = new Controller(id);
 					this.score = 3;
 					this.score_display = new Score(
 						{ s: 100, w: 100 },
@@ -140,6 +133,13 @@
 						"timer",
 						canvas
 					);
+					$super.call(this, size, position, direction, color, name, canvas);
+					this.fire_rate = 1;
+					this.gun = new Gun(null, this.fire_rate, id);
+					this.gun.registerPeriodicAction();
+					this.id = id;
+					this.is_shooting;
+					this.controller = new Controller(id);
 				},
 				
 				draw: function($super){
