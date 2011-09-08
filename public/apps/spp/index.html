@@ -75,6 +75,22 @@
 
 
 
+			var Score = Class.create(Drawable,{
+				initialize: function($super, size, position, direction, color, name, canvas){
+					$super.call(this, size, position, direction, color, name, canvas);
+				},
+				
+				draw: function($super, name, score){
+					$super();
+					context.fillStyle    = '#00f';
+					context.font         = 'italic 12px sans-serif';
+					context.textBaseline = 'top';
+					context.fillText  (name + ': ' + score.toString(), 0, 0);
+				}
+			});
+
+
+
 			var Bullet = Class.create(Drawable,{
 				initialize: function($super, size, position, direction, color, name, canvas){
 					$super.call(this, size, position, direction, color, name, canvas);
@@ -113,10 +129,20 @@
 					this.id = id;
 					this.is_shooting;
 					this.controller = new Controller(id);
+					this.score = 0;
+					this.score_display = new Score(
+						{ s: 100, w: 100 },
+						{ x: 0, y: 0 },
+						{ v:0, h: 0 },
+						"black",
+						"timer",
+						canvas
+					);
 				},
 				
 				draw: function($super){
 					$super();
+					this.score_display.draw(this.name, thistory.score);
 					_canvas.fillStyle = this.color;
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				},
@@ -272,7 +298,7 @@
 						{h: 20, w: 40},
 						{x: 20, y: window.game.height - 30},
 						{v: 0, h: 0},
-						"rgb(" + Math.floor( Math.random() * 255 ).toString() + " , " + Math.floor( Math.random() * 255 ).toString() + " , " + Math.floor( Math.random() * 255 ).toString() + ")",
+						"rgb(" + Math.floor( ( Math.random() * 155 ) + 100 ).toString() + " , " + Math.floor( ( Math.random() * 155 ) + 100 ).toString() + " , " + Math.floor( ( Math.random() * 155 ) + 100 ).toString() + ")",
 						data.name,
 						window.game.canvas,
 						data.id
@@ -287,6 +313,16 @@
 					this.connection.onNewUser(function(data){
 						self.addEntity({id: data.id, name: data.name});
 					});
+				},
+				
+				scoreBoard: function(){
+					if(!self){ var self = this; }
+					
+					if(this.collection.length > 0) {
+						self.collection.each(function(){
+							
+						});
+					}
 				}
 			});
 
