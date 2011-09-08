@@ -270,7 +270,11 @@
 				},
 				
 				defaultPeriodicAction: function(options){
-					if( ( Math.floor( Math.random() * ( ( window.game.fps/window.game.allied_factions.collection.length ) * 2 ) ) ) < 1 ){
+					var combined_score = 0;
+					for (var i = window.game.allied_factions.collection.length - 1; i >= 0; i--){
+						combined_score += window.game.allied_factions.collection[i].score;
+					};
+					if( ( Math.floor( ( Math.random() * ( ( window.game.fps/window.game.allied_factions.collection.length ) * 1.9 ) ) * 1 + ( combined_score / 100 ) ) ) < 1 ){
 						var _enemy = new Enemy(
 							{h: 30, w: 30},
 							{x: ( Math.floor( Math.random() * window.game.width ) ), y: - 30},
