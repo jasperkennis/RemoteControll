@@ -1,35 +1,4 @@
 /**
- * Adapt the pusher ajax action:
- */
-
-Pusher.authorizers.ajax = function(pusher, callback){
-  var self = this;
-  var xhr = window.XMLHttpRequest ?
-    new XMLHttpRequest() :
-    new ActiveXObject("Microsoft.XMLHTTP");
-  xhr.open("POST", Pusher.channel_auth_endpoint, true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4) {
-      if (xhr.status == 200) {
-        var data = JSON.parse(xhr.responseText);
-        callback(false, data);
-      	attempt_initial_call.delay(1);
-      } else {
-      	alert("trouble occured");
-        Pusher.debug("Couldn't get auth info from your webapp", status);
-      }
-    }
-  };
-  xhr.send('socket_id=' + encodeURIComponent(pusher.connection.socket_id) + '&channel_name=' + encodeURIComponent(self.name));
-}
-
-
-function attempt_initial_call(){
-	getPusherChannel().trigger("client-new-user", {"id":pusher.connection.socket_id});
-}
-
-/**
  * Defenition of globals, and their getters and setters
  */
 
