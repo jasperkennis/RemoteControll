@@ -31,6 +31,12 @@ function getPusherChannel() { return window.pusher_channel; }
 
 
 
+/* Trigger new user event. Will be called after new user confirmed. */
+function attempt_initial_call(){
+	getPusherChannel().trigger( "client-new-user", { "id": pusher.connection.socket_id, "user_name": window.user_name });
+}
+
+
 /**
  * Setting non default globals
  */
@@ -450,6 +456,10 @@ document.observe("dom:loaded", function(){
 			no_canvas: 'This text is displayed if your browser does not support HTML5 Canvas.'
 		}
 		
+		getPusherChannel().bind('pusher:subscription_succeeded', function(members) {
+		  attempt_initial_call();
+		});
+		
 		interface_controller = new InterfaceController(args);
 		
 	}
@@ -458,8 +468,5 @@ document.observe("dom:loaded", function(){
 	if( $('app') != undefined ){
 		
 		log('info','App detected.');
-		
-		//setPusher('7132d12d5d3ddf34b09e');
-		//setPusherChannel('presence-screen-interaction');
 	}
 });
