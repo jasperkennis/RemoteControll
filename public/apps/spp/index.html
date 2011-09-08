@@ -144,7 +144,6 @@
 				
 				draw: function($super){
 					$super();
-					console.log(this);
 					this.score_display.draw(this.name, this.score);
 					_canvas.fillStyle = this.color;
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
@@ -506,6 +505,9 @@
 					if(!self){ var self = this; }
 					for (var player = window.game.allied_factions.collection.length - 1; player >= 0; player--){
 						window.game.damage_control.hitTest(window.game.allied_factions.collection[player].gun.collection, window.game.harm_hazard.collection, function(bullet_index,enemy_index){
+							
+							window.game.allied_factions.collection[player].score++;
+							
 							// Entering the process of deleting the object and all its references:
 							_bullet = window.game.allied_factions.collection[player].gun.collection[bullet_index];
 							_bullet.remove(bullet_index,player);
