@@ -177,13 +177,15 @@
 
 			var Gun = Class.create(DrawableFactory,{
 				initialize: function( $super, periodic_action, fire_rate, player_id ) {
-					this.frequency = 1;
+					this.frequency = fire_rate;
 					this.player = player_id;
+					this.delay = 0;
 					$super.call(this);
 				},
 				
 				defaultPeriodicAction: function(options){
-					if( window.game.allied_factions.collection[options.self.player].is_shooting ){
+					if(options.self.delay > 0) { options.self.delay--; }
+					if( window.game.allied_factions.collection[options.self.player].is_shooting && ( options.self.delay == 0 ) ){
 						var _bullet = new Bullet(
 							{ h : 4 , w : 4 },
 							{ x :  window.game.allied_factions.collection[options.self.player].position.x + 18 , y :  window.game.allied_factions.collection[options.self.player].position.y },
@@ -195,6 +197,8 @@
 						
 						options.self.addEntity(_bullet);
 						window.game.render_tick_engine.addDrawable(_bullet);
+						options.self.delay = ( 30 / options.self.frequency);
+						console.log(options.self.frequency);
 					}
 				}
 			});
@@ -421,9 +425,7 @@
 						for (var i = first_collection.length - 1; i >= 0; i--){
 							for (var j = second_collection.length - 1; j >= 0; j--){
 								if( first_collection[i].intersects( second_collection[j] ) ) {
-									callback.call(i,j);
-									console.log(i);
-									//console.log(j);
+									callback.call(this,i,j);
 								}
 							}
 						}
