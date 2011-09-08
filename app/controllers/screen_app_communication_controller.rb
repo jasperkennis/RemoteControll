@@ -33,11 +33,11 @@ class ScreenAppCommunicationController < ApplicationController
   end
   
   def auth
-    if current_user
+    if user_signed_in?
       response = Pusher[params[:channel_name]].authenticate(params[:socket_id], {
         :user_id => current_user.id, # => required
         :user_info => { # => optional - for example
-          :name => current_user.email
+          :name => current_user.name
         }
       })
       render :json => response

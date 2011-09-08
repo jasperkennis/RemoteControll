@@ -2,12 +2,12 @@
 #
 # Table name: screen_apps
 #
-#  id              :integer         not null, primary key
+#  id              :integer         primary key
 #  name            :string(255)
 #  url             :string(255)
 #  logs_arrows     :boolean
-#  created_at      :datetime
-#  updated_at      :datetime
+#  created_at      :timestamp
+#  updated_at      :timestamp
 #  user_id         :integer
 #  register_arrows :boolean
 #  description     :text
