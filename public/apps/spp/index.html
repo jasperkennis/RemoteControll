@@ -81,11 +81,13 @@
 				},
 				
 				draw: function($super, name, score){
-					$super();
-					_canvas.fillStyle    = '#00f';
-					_canvas.font         = 'italic 12px sans-serif';
-					_canvas.textBaseline = 'top';
-					_canvas.fillText  (name + ': ' + score.toString(), 0, 0);
+					if(name && score){
+						$super();
+						_canvas.fillStyle    = '#00f';
+						_canvas.font         = 'italic 12px sans-serif';
+						_canvas.textBaseline = 'top';
+						_canvas.fillText  (name + ': ' + score.toString(), 0, 0);
+					}
 				}
 			});
 
