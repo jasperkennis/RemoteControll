@@ -285,7 +285,7 @@
 				listen: function(){
 					if(!self){ var self = this; }
 					this.connection.onNewUser(function(data){
-						self.addEntity(data);
+						self.addEntity({id: data.id, name: data.name});
 					});
 				}
 			});
