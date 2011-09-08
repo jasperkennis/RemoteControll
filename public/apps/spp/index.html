@@ -131,7 +131,7 @@
 					this.id = id;
 					this.is_shooting;
 					this.controller = new Controller(id);
-					this.score = 0;
+					this.score = 3;
 					this.score_display = new Score(
 						{ s: 100, w: 100 },
 						{ x: 0, y: 0 },
@@ -144,7 +144,7 @@
 				
 				draw: function($super){
 					$super();
-					//this.score_display.draw(this.name, this.score);
+					this.score_display.draw(this.name, this.score);
 					_canvas.fillStyle = this.color;
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				},
