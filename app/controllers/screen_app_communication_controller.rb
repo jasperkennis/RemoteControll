@@ -37,8 +37,7 @@ class ScreenAppCommunicationController < ApplicationController
       response = Pusher[params[:channel_name]].authenticate(params[:socket_id], {
         :user_id => current_user.id, # => required
         :user_info => { # => optional - for example
-          :name => current_user.email[3],
-          :email => current_user.email
+          :name => current_user.email
         }
       })
       render :json => response
