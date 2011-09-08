@@ -311,7 +311,7 @@
 				listen: function(){
 					if(!self){ var self = this; }
 					this.connection.onNewUser(function(data){
-						console.log(data.name);
+						console.log(data);
 						self.addEntity({id: data.id, name: data.name});
 					});
 				},
