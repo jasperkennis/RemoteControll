@@ -33,8 +33,18 @@ class ScreenAppCommunicationController < ApplicationController
   end
   
   def auth
-    response = Pusher[params[:channel_name]].authenticate(params[:socket_id])
-    render :json => response
+    if current_user
+      response = Pusher[params[:channel_name]].authenticate(params[:socket_id], {
+        :user_id => current_user.id, # => required
+        :user_info => { # => optional - for example
+          :name => current_user.email[3],
+          :email => current_user.email
+        }
+      })
+      render :json => response
+    else
+      render :text => "Not authorized", :status => '403'
+    end
   end
 
 end
