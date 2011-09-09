@@ -557,8 +557,8 @@
 				initialize: function(fps, pusher_id, pusher_channel){
 					// Set simple variables:
 					this.fps = fps;
-					this.height = document.viewport.getHeight();
-					this.width = document.viewport.getWidth();
+					this.height = document.viewport.getHeight() - 10;
+					this.width = document.viewport.getWidth() - 10;
 					this.canvas = this.createCanvas("screen");
 					
 					// Create containers for main objects:
