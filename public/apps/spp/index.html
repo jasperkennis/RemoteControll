@@ -582,8 +582,10 @@
 						){
 						for (var i = first_collection.length - 1; i >= 0; i--){
 							for (var j = second_collection.length - 1; j >= 0; j--){
-								if( first_collection[i].intersects( second_collection[j] ) ) {
-									callback.call(this,i,j);
+								if(i != null && j != null){
+									if( first_collection[i].intersects( second_collection[j] ) ) {
+										callback.call(this,i,j);
+									}
 								}
 							}
 						}
@@ -626,7 +628,6 @@
 				upgradeVSPlayer: function(){
 					if(!self){ var self = this; }
 					window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.rain_of_goodies.collection, function(player_index,upgrade){
-						console.error("Two bastards have hit!");
 						// Entering the process of deleting the object and all its references:
 						_player = window.game.allied_factions.collection[player_index];
 						_player.addUpgrade;
