@@ -80,13 +80,13 @@
 					$super.call(this, size, position, direction, color, name, canvas);
 				},
 				
-				draw: function($super, name, score){
+				draw: function($super, name, score, color){
 					if(name && score){
 						$super();
-						_canvas.fillStyle    = '#00f';
-						_canvas.font         = 'italic 12px sans-serif';
+						_canvas.fillStyle    = color;
+						_canvas.font         = '12px sans-serif';
 						_canvas.textBaseline = 'top';
-						_canvas.fillText  (name + ': ' + score.toString(), 0, 0);
+						_canvas.fillText  (name + ': ' + score.toString(), 20, 20);
 					}
 				}
 			});
@@ -144,7 +144,7 @@
 				
 				draw: function($super){
 					$super();
-					this.score_display.draw(this.name, this.score);
+					this.score_display.draw(this.name, this.score, thistory.color);
 					_canvas.fillStyle = this.color;
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				},
@@ -274,7 +274,7 @@
 					for (var i = window.game.allied_factions.collection.length - 1; i >= 0; i--){
 						combined_score += window.game.allied_factions.collection[i].score;
 					};
-					if( ( Math.floor( ( Math.random() * ( ( window.game.fps/window.game.allied_factions.collection.length ) * 1.9 ) ) * 1 + ( combined_score / 100 ) ) ) < 1 ){
+					if( ( Math.floor( ( Math.random() * ( ( window.game.fps/window.game.allied_factions.collection.length ) * 1.9 ) ) * 1 + ( combined_score / 50 ) ) ) < 1 ){
 						var _enemy = new Enemy(
 							{h: 30, w: 30},
 							{x: ( Math.floor( Math.random() * window.game.width ) ), y: - 30},
@@ -304,7 +304,7 @@
 						{h: 20, w: 40},
 						{x: 20, y: window.game.height - 30},
 						{v: 0, h: 0},
-						"rgb(" + Math.floor( Math.random() * 155 ).toString() + " , " + Math.floor( Math.random() * 155 ).toString() + " , " + Math.floor( Math.random() * 155 ).toString() + ")",
+						"rgb(" + Math.floor( Math.random() * 100 ).toString() + " , " + Math.floor( Math.random() * 100 ).toString() + " , " + Math.floor( Math.random() * 100 ).toString() + ")",
 						data.name,
 						window.game.canvas,
 						data.id
