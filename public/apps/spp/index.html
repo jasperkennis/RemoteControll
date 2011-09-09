@@ -57,7 +57,7 @@
 					}*/
 				},
 				
-				myIntersects: function(compare){
+				intersects: function(compare){
 					var _return = false;
 					if( 
 						(
@@ -583,7 +583,8 @@
 						for (var i = first_collection.length - 1; i >= 0; i--){
 							for (var j = second_collection.length - 1; j >= 0; j--){
 								if( first_collection[i] != undefined && second_collection[j] != undefined){
-									if( first_collection[i].myIntersects( second_collection[j] ) ) {
+									if( first_collection[i].intersects( second_collection[j] ) ) {
+										console.error("intersects");
 										callback.call(this,i,j);
 									}
 								}
