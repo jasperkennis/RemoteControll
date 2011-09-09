@@ -144,7 +144,7 @@
 				
 				draw: function($super){
 					$super();
-					this.score_display.draw(this.name, this.score, thistory.color);
+					this.score_display.draw(this.name, this.score, this.color);
 					_canvas.fillStyle = this.color;
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				},
