@@ -626,6 +626,7 @@
 				upgradeVSPlayer: function(){
 					if(!self){ var self = this; }
 					window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.rain_of_goodies.collection, function(player_index,upgrade){
+						console.error("Two bastards have hit!");
 						// Entering the process of deleting the object and all its references:
 						_player = window.game.allied_factions.collection[player_index];
 						_player.addUpgrade;
