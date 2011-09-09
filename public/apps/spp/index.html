@@ -204,6 +204,16 @@
 					
 					// Remove the bullet from the bullets list too:
 					window.game.harm_hazard.collection.splice(own_index, 1);
+				},
+				
+				update: function($super){
+					$super.call();
+					if( this.position.y > window.game.height ){
+						thistory.remove(window.game.allied_factions.collection.indexOf(this));
+						for (var i = window.game.allied_factions.collection.length - 1; i >= 0; i--){
+							window.game.allied_factions.collection[i].score -= window.game.allied_factions.collection.length;
+						};
+					}
 				}
 			});
 
@@ -280,7 +290,7 @@
 					if( ( Math.floor( ( Math.random() * ( ( window.game.fps/window.game.allied_factions.collection.length ) * 1.9 ) ) * 1 + ( combined_score / 50 ) ) ) < 1 ){
 						var _enemy = new Enemy(
 							{h: 30, w: 30},
-							{x: ( Math.floor( Math.random() * window.game.width ) ), y: - 30},
+							{x: ( 20 + Math.floor( Math.random() * window.game.width - 40 ) ), y: - 30},
 							{v: 1, h: 0},
 							"black",
 							"name",
