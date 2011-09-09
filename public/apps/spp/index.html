@@ -323,12 +323,13 @@
 					_upgrade = new Upgrade(
 						{h: 4, w: 4},
 						{x: ( data.position.x + 8 ), y: data.position.x + 10},
-						{v: 0, h: 0},
-						"rgb(255,255,0)",
+						{v: 2, h: 0},
+						"rgb(255,0,255)",
 						data.name,
 						window.game.canvas
 					);
 					this.collection.push( _upgrade );
+					window.game.render_tick_engine.addDrawable(_upgrade);
 				}
 			});
 
