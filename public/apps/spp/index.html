@@ -154,6 +154,7 @@
 					);
 					$super.call(this, size, position, direction, color, name, canvas);
 					this.fire_rate = 1;
+					this.speed = 1;
 					this.gun = new Gun(null, this.fire_rate, id);
 					this.gun.registerPeriodicAction();
 					this.id = id;
@@ -193,6 +194,26 @@
 					$super.call( this );
 					if( this.position.x < 20 ) {  this.position.x = 20; }
 					if( this.position.x > window.game.width - 20 - this.size.w ) { this.position.x = window.game.width - this.size.w - 20 }
+				},
+				
+				addUpgrade: function(){
+					if( Math.floor( Math.random() * 2 ) == 1 ) {
+						this.speed <= 5 ? this.addSpeed() : this.addFire();
+					} else {
+						this.fire_rate <= 5 ? this.addFire() : this.addSpeed();
+					}
+				},
+				
+				addFire: function(){
+					if(this.fire_rate < 5) {
+						this.fire_rate++;
+					}
+				},
+				
+				addSpeed: function(){
+					if(this.speed < 5) {
+						this.speed++;
+					}
 				}
 			});
 
@@ -569,6 +590,8 @@
 							// Do the same thing for the hit enemy:
 							_enemy = window.game.harm_hazard.collection[enemy_index];
 							_enemy.remove(enemy_index);
+							
+							window.game.rain_of_goodies.addEntity(_enemy);
 						});
 					}
 				},
@@ -608,6 +631,7 @@
 						this.allied_factions.addEntity({});
 					}
 					this.harm_hazard = new HarmsHazard(fps);
+					this.rain_of_goodies = new RainOfGoodies();
 					this.render_tick_engine = new RenderTickEngine( null, this.fps, this.canvas );
 					
 					// Add update functions to the updating loop:
