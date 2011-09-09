@@ -158,12 +158,13 @@
 						var _gun_index;
 						var _own_index;
 						window.game.allied_factions.collection.detect(function(q){
-							q.collection.detect(function(r){
+							console.log(q);
+							/*q.collection.detect(function(r){
 								if(r == self){
 									_gun_index = window.game.allied_factions.collection.indexOf(q);
 									_own_index = q.collection.indexOf(r);
 								}
-							});
+							});*/
 						});
 						this.remove(_own_index,_gun_index);
 					}
