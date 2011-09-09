@@ -107,6 +107,19 @@
 					_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
 					_canvas.closePath();
 					_canvas.fill();
+				},
+				
+				remove: function(own_index){
+					if(!self){ var self = this; }
+					window.game.render_tick_engine.drawables.detect(function(q){
+						if(q == self){
+							// Find the index of the element, and then splice the array of drawables at that point.
+							window.game.render_tick_engine.drawables.splice( window.game.render_tick_engine.drawables.indexOf(q),1);
+						}
+					});
+					
+					// Remove the bullet from the bullets list too:
+					window.game.rain_of_goodies.collection.splice(own_index, 1);
 				}
 			});
 
@@ -607,6 +620,19 @@
 						// Do the same thing for the hit enemy:
 						_enemy = window.game.harm_hazard.collection[enemy_index];
 						_enemy.remove(enemy_index);
+					});
+				},
+
+				upgradeVSPlayer: function(){
+					if(!self){ var self = this; }
+					window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.rain_of_goodies.collection, function(player_index,upgrade){
+						// Entering the process of deleting the object and all its references:
+						_player = window.game.allied_factions.collection[player_index];
+						_player.addUpgrade;
+						
+						// Do the same thing for the hit enemy:
+						_upgrade = window.game.rain_of_goodies.collection[upgrade];
+						_upgrade.remove(upgrade);
 					});
 				}
 			});
