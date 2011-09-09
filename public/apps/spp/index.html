@@ -149,6 +149,24 @@
 					
 					// Remove the bullet from the bullets list too:
 					window.game.allied_factions.collection[gun_index].gun.collection.splice(own_index, 1);
+				},
+				
+				update: function($super){
+					$super.call( this );
+					if(!self){var self=this;}
+					if( thistory.position.y < 0 ) {
+						var _gun_index;
+						var _own_index;
+						window.game.allied_factions.collection.detect(function(q){
+							q.collection.detect(function(r){
+								if(r == self){
+									_gun_index = window.game.allied_factions.collection.indexOf(q);
+									_own_index = q.collection.indexOf(r);
+								}
+							});
+						});
+						this.remove(_own_index,_gun_index);
+					}
 				}
 			});
 
@@ -205,7 +223,7 @@
 				
 				update: function($super){
 					$super.call( this );
-					if( this.position.x < 20 ) {  this.position.x = 20; }
+					if( this.position.x < 20 ) { this.position.x = 20; }
 					if( this.position.x > window.game.width - 20 - this.size.w ) { this.position.x = window.game.width - this.size.w - 20 }
 				},
 				
