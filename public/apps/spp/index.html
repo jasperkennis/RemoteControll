@@ -2,6 +2,9 @@
 <html>
 	<head>
 		<title>Remotecontroll</title>
+		<script>
+			window.offline_mode = false;
+		</script>
 		<link href="/stylesheets/all.css?1314522841" media="screen" rel="stylesheet" type="text/css" />
 		<script src="/javascripts/prototype.js?1309781076" type="text/javascript"></script>
 		<script src="/javascripts/scriptaculous.js?1309960570" type="text/javascript"></script>
@@ -141,22 +144,22 @@
 					this.is_shooting;
 					this.controller = new Controller(id);
 				},
-				
+
 				draw: function($super){
 					$super();
 					this.score_display.draw(this.name, this.score, this.color);
 					_canvas.fillStyle = this.color;
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				},
-				
+
 				startShooting: function(){
 					this.is_shooting = true;
 				},
-				
+
 				stopShooting: function(){
 					this.is_shooting = false;
 				},
-				
+
 				remove: function(own_index) {
 					if(!self){ var self = this; }
 					window.game.render_tick_engine.drawables.detect(function(q){
@@ -293,7 +296,6 @@
 
 			var AlliedFactions = Class.create(DrawableFactory,{
 				initialize: function($super, connection){
-					//window.players = new Array();
 					this.connection = connection;
 					this.listener = this.listen();
 					$super.call(this);
@@ -411,7 +413,9 @@
 				},
 				
 				onNewUser: function(callback){
-					getPusherChannel().bind('client-new-user', callback);
+					if(!window.offline_mode){
+						getPusherChannel().bind('client-new-user', callback);
+					}
 				}
 			});
 
@@ -554,6 +558,9 @@
 					this.damage_control = new DamageControl();
 					this.connection = new Connection(pusher_id, pusher_channel);
 					this.allied_factions = new AlliedFactions(this.connection);
+					if( window.offline_mode){
+						this.allied_factions.addEntity({});
+					}
 					this.harm_hazard = new HarmsHazard(fps);
 					this.render_tick_engine = new RenderTickEngine( null, this.fps, this.canvas );
 					
