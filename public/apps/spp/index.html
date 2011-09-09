@@ -154,7 +154,7 @@
 				update: function($super){
 					$super.call( this );
 					if(!self){var self=this;}
-					if( thistory.position.y < 0 ) {
+					if( this.position.y < 0 ) {
 						var _gun_index;
 						var _own_index;
 						window.game.allied_factions.collection.detect(function(q){
