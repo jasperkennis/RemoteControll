@@ -582,7 +582,7 @@
 						){
 						for (var i = first_collection.length - 1; i >= 0; i--){
 							for (var j = second_collection.length - 1; j >= 0; j--){
-								if(i != undefined && j != undefined){
+								if( first_collection[i] != undefined && second_collection[j] != undefined){
 									if( first_collection[i].myIntersects( second_collection[j] ) ) {
 										callback.call(this,i,j);
 									}
