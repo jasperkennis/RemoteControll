@@ -615,7 +615,11 @@
 				
 				bulletVSEnemy: function(){
 					if(!self){ var self = this; }
-					console.log('A bullet has hit an enemy');
+					window.game.allied_factions.compact.collect( function(player){ // Compare all players to all bullets
+						window.game.damage_control.hitTest(player.gun.collection, window.game.harm_hazard.collection, function(bullet,enemy){
+							window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject(Object == bullet || Object == enemy);
+						});
+					});
 					/*for (var player = window.game.allied_factions.collection.length - 1; player >= 0; player--){
 						window.game.damage_control.hitTest(window.game.allied_factions.collection[player].gun.collection, window.game.harm_hazard.collection, function(bullet_index,enemy_index){
 							
@@ -637,7 +641,7 @@
 				
 				playerVSEnemy: function(){
 					if(!self){ var self = this; }
-					console.log('A player hit an enemy');
+					//console.log('A player hit an enemy');
 					/*window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.harm_hazard.collection, function(player_index,enemy_index){
 						// Entering the process of deleting the object and all its references:
 						_player = window.game.allied_factions.collection[player_index];
@@ -651,7 +655,7 @@
 
 				upgradeVSPlayer: function(){
 					if(!self){ var self = this; }
-					console.log('A player collected an upgrade');
+					//console.log('A player collected an upgrade');
 					/*window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.rain_of_goodies.collection, function(player_index,upgrade){
 						// Entering the process of deleting the object and all its references:
 						_player = window.game.allied_factions.collection[player_index];
