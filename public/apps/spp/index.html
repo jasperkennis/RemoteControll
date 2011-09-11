@@ -617,9 +617,20 @@
 					if(!self){ var self = this; }
 					window.game.allied_factions.collection.compact().collect( function(player){ // Compare all players to all bullets
 						window.game.damage_control.hitTest(player.gun.collection, window.game.harm_hazard.collection, function( bullet , enemy ){
+							
 							window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject( function(o){
 								return (o == bullet || o == enemy);
 							});
+							
+							player.gun.collection = player.gun.collection.reject( function(o){
+								return (o == bullet);
+							});
+							
+							window.game.harm_hazard.collection = window.game.harm_hazard.collection.reject( function(o){
+								return (o == enemy);
+							});
+							
+							
 						});
 					});
 					/*for (var player = window.game.allied_factions.collection.length - 1; player >= 0; player--){
