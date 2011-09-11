@@ -605,7 +605,7 @@
 							
 							first_collection.compact().collect(function(first){
 								second_collection.compact().collect(function(second){
-									if(!Object.isUndifined(first) && !Object.isUndifined(second)){
+									if(!Object.isUndefined(first) && !Object.isUndefined(second)){
 										if(first.intersects(second)){
 											callback.call(this,first, second);
 										}
