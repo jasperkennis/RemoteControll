@@ -606,7 +606,6 @@
 							first_collection.compact().collect(function(first){
 								second_collection.compact().collect(function(second){
 									if(first.intersects(second)){
-										console.log(callback);
 										callback.call(this,first, second);
 									}
 								});
@@ -618,7 +617,8 @@
 					if(!self){ var self = this; }
 					window.game.allied_factions.collection.compact().collect( function(player){ // Compare all players to all bullets
 						window.game.damage_control.hitTest(player.gun.collection, window.game.harm_hazard.collection, function( bullet , enemy ){
-							window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject(Object == bullet || Object == enemy);
+							console.log("Doing that call thats back")
+							//window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject(Object == bullet || Object == enemy);
 						});
 					});
 					/*for (var player = window.game.allied_factions.collection.length - 1; player >= 0; player--){
