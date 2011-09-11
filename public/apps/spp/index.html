@@ -91,7 +91,7 @@
 				
 				draw: function($super){
 					$super();
-					_canvas.fillStyle = "rgb(255,255,0)";
+					_canvas.fillStyle = "rgb(255,0,255)";
 					_canvas.beginPath();
 					_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
 					_canvas.closePath();
@@ -294,16 +294,18 @@
 				},
 				
 				addEntity: function(data){
-					_upgrade = new Upgrade(
-						{h: 4, w: 4},
-						{x: ( data.position.x + 8 ), y: (data.position.y + 10)},
-						{v: 2, h: 0},
-						"rgb(255,0,255)",
-						data.name,
-						window.game.canvas
-					);
-					this.collection.push( _upgrade );
-					window.game.render_tick_engine.addDrawable(_upgrade);
+					if( Math.floor( Math.random() * 20 ) < 1 ) {
+						_upgrade = new Upgrade(
+							{h: 4, w: 4},
+							{x: ( data.position.x + 8 ), y: (data.position.y + 10)},
+							{v: 2, h: 0},
+							"rgb(255,0,255)",
+							data.name,
+							window.game.canvas
+						);
+						this.collection.push( _upgrade );
+						window.game.render_tick_engine.addDrawable(_upgrade);
+					}
 				}
 			});
 
@@ -319,7 +321,7 @@
 					for (var i = window.game.allied_factions.collection.length - 1; i >= 0; i--){
 						combined_score += window.game.allied_factions.collection[i].score;
 					};
-					if( ( Math.floor( ( Math.random() * ( ( window.game.fps/window.game.allied_factions.collection.length ) * 1.9 ) ) * 1 + ( combined_score / 50 ) ) ) < 1 ){
+					if( ( Math.floor( ( Math.random() * ( ( window.game.fps/window.game.allied_factions.collection.length ) * 1.9 ) ) * 1 + ( combined_score / 30 ) ) ) < 1 ){
 						var _enemy = new Enemy(
 							{h: 30, w: 30},
 							{x: ( 20 + Math.floor( Math.random() * window.game.width - 40 ) ), y: - 30},
@@ -590,6 +592,8 @@
 					window.game.damage_control.hitTest( window.game.rain_of_goodies.collection, window.game.allied_factions.collection, function(upgrade,player){
 						
 						window.game.rain_of_goodies.removeEntity( upgrade );
+						
+						player.addUpgrade();
 					});
 				}
 			});
