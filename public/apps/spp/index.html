@@ -61,9 +61,7 @@
 						_return = true;
 					}
 					return _return;
-				},
-				
-				remove: function(){}
+				}
 			});
 
 
@@ -115,37 +113,6 @@
 					_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
 					_canvas.closePath();
 					_canvas.fill();
-				},
-				
-				remove: function(own_index, gun_index){
-					if(!self){ var self = this; }
-					window.game.render_tick_engine.drawables.detect(function(q){
-						if(q == self){
-							// Find the index of the element, and then splice the array of drawables at that point.
-							window.game.render_tick_engine.drawables.splice( window.game.render_tick_engine.drawables.indexOf(q),1);
-						}
-					});
-					
-					// Remove the bullet from the bullets list too:
-					window.game.allied_factions.collection[gun_index].gun.collection.splice(own_index, 1);
-				},
-				
-				update: function($super){
-					$super.call( this );
-					if(!self){var self=this;}
-					if( this.position.y < 0 ) {
-						var _gun_index;
-						var _own_index;
-						window.game.allied_factions.collection.detect(function(q){
-							q.gun.collection.detect(function(r){
-								if(r == self){
-									_gun_index = window.game.allied_factions.collection.indexOf(q);
-									_own_index = q.gun.collection.indexOf(r);
-								}
-							});
-						});
-						this.remove(_own_index,_gun_index);
-					}
 				}
 			});
 
@@ -185,19 +152,6 @@
 
 				stopShooting: function(){
 					this.is_shooting = false;
-				},
-
-				remove: function(own_index) {
-					if(!self){ var self = this; }
-					window.game.render_tick_engine.drawables.detect(function(q){
-						if(q == self){
-							// Find the index of the element, and then splice the array of drawables at that point.
-							window.game.render_tick_engine.drawables.splice( window.game.render_tick_engine.drawables.indexOf(q),1);
-						}
-					});
-					
-					// Remove the bullet from the bullets list too:
-					window.game.allied_factions.collection.splice(own_index, 1);
 				},
 				
 				update: function($super){
@@ -245,23 +199,10 @@
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				},
 				
-				remove: function() {
-					if(!self){ var self = this; }
-					window.game.render_tick_engine.drawables.detect(function(q){
-						if(q == self){
-							// Find the index of the element, and then splice the array of drawables at that point.
-							window.game.render_tick_engine.drawables.splice( window.game.render_tick_engine.drawables.indexOf(q),1);
-						}
-					});
-					
-					// Remove the bullet from the bullets list too:
-					window.game.harm_hazard.collection.splice(window.game.harm_hazard.collection.indexOf(self), 1);
-				},
-				
 				update: function($super){
 					$super.call();
 					if( this.position.y > window.game.height ){
-						this.remove();
+						window.game.harm_hazzard.removeEntity(this);
 						window.game.allied_factions.collection.collect(function(player){
 							player.score -= window.game.allied_factions.collection.length;
 						});
