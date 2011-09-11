@@ -605,10 +605,8 @@
 							
 							first_collection.compact().collect(function(first){
 								second_collection.compact().collect(function(second){
-									if(!Object.isUndefined(first) && !Object.isUndefined(second)){
-										if(first.intersects(second)){
-											callback.call(this,first, second);
-										}
+									if(first.intersects(second)){
+										callback.call(this,first, second);
 									}
 								});
 							});
@@ -659,10 +657,6 @@
 						window.game.allied_factions.collection = window.game.allied_faction.collection.reject(function(o){
 							return ( o == player );
 						});
-						
-						console.log(window.game.allied_factions.collection[player.id]);
-						window.game.allied_factions.collection[player.id] = undefined;
-						
 					});
 				},
 
