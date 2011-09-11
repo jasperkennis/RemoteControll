@@ -618,66 +618,65 @@
 					window.game.allied_factions.collection.compact().collect( function(player){ // Compare all players to all bullets
 						window.game.damage_control.hitTest(player.gun.collection, window.game.harm_hazard.collection, function( bullet , enemy ){
 							
+							// Remove these items from all the 4 dimensions
 							window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject( function(o){
 								return (o == bullet || o == enemy);
 							});
 							
+							// Used bullets are of no use, dispose them
 							player.gun.collection = player.gun.collection.reject( function(o){
 								return (o == bullet);
 							});
 							
+							// Remove the enemy from the danger
 							window.game.harm_hazard.collection = window.game.harm_hazard.collection.reject( function(o){
 								return (o == enemy);
 							});
 							
+							player.score++; // Add that kill to the score!
 							
+							window.game.rain_of_goodies.addEntity(enemy); // Maybe even create some GOODIES!!!
 						});
 					});
-					/*for (var player = window.game.allied_factions.collection.length - 1; player >= 0; player--){
-						window.game.damage_control.hitTest(window.game.allied_factions.collection[player].gun.collection, window.game.harm_hazard.collection, function(bullet_index,enemy_index){
-							
-							window.game.allied_factions.collection[player].score++;
-							
-							/*
-							// Entering the process of deleting the object and all its references:
-							_bullet = window.game.allied_factions.collection[player].gun.collection[bullet_index];
-							_bullet.remove(bullet_index,player);
-							
-							// Do the same thing for the hit enemy:
-							_enemy = window.game.harm_hazard.collection[enemy_index];
-							_enemy.remove();
-							
-							window.game.rain_of_goodies.addEntity(_enemy);
-						});
-					}*/
 				},
 				
 				playerVSEnemy: function(){
 					if(!self){ var self = this; }
-					//console.log('A player hit an enemy');
-					/*window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.harm_hazard.collection, function(player_index,enemy_index){
-						// Entering the process of deleting the object and all its references:
-						_player = window.game.allied_factions.collection[player_index];
-						_player.remove(player_index);
+					window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.harm_hazard.collection, function(player,enemy){
 						
-						// Do the same thing for the hit enemy:
-						_enemy = window.game.harm_hazard.collection[enemy_index];
-						_enemy.remove();
-					});*/
+						// Remove these items from all the 4 dimensions
+						window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject( function(o){
+							return ( o == player || o == enemy );
+						});
+						
+						// Remove the enemy from the danger
+						window.game.harm_hazard.collection = window.game.harm_hazard.collection.reject( function(o){
+							return (o == enemy );
+						});
+						
+						window.game.allied_faction.collection = window.game.allied_faction.collection.reject(function(o){
+							return ( o == player );
+						});
+					});
 				},
 
 				upgradeVSPlayer: function(){
 					if(!self){ var self = this; }
-					//console.log('A player collected an upgrade');
-					/*window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.rain_of_goodies.collection, function(player_index,upgrade){
-						// Entering the process of deleting the object and all its references:
-						_player = window.game.allied_factions.collection[player_index];
-						_player.addUpgrade;
+					window.game.damage_control.hitTest(window.gameval.allied_factions.collection, window.game.rain_of_goodies.collection, function(player,upgrade){
 						
-						// Do the same thing for the hit enemy:
-						_upgrade = window.game.rain_of_goodies.collection[upgrade];
-						_upgrade.remove(upgrade);
-					});*/
+						// Remove these items from all the 4 dimensions
+						window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject( function(o){
+							return (o == player || o == uprade);
+						});
+						
+						window.game.rain_of_goodies.collection = window.game.rain_of_goodies.collection.reject( function(o){
+							return (o == upgrade );
+						});
+						
+						window.game.allied_faction.collection = window.game.allied_faction.collection.reject(function(o){
+							return ( o == player );
+						});
+					});
 				}
 			});
 
