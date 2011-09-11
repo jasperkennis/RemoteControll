@@ -155,12 +155,13 @@
 				},
 				
 				update: function($super){
+					if(!self){var self = this;}
 					$super.call( this );
 					if( this.position.x < 20 ) { this.position.x = 20; }
 					if( this.position.x > window.game.width - 20 - this.size.w ) { this.position.x = window.game.width - this.size.w - 20 }
 					this.gun.collection.collect( function(bullet){
 						if( bullet.position.y < 0 ) {
-							this.gun.removeEntity(bullet);
+							self.gun.removeEntity(bullet);
 						}
 					});
 				},
