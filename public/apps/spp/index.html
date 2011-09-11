@@ -45,16 +45,6 @@
 				update: function(){
 					this.position.x = this.position.x + this.direction.h;
 					this.position.y = this.position.y + this.direction.v;
-					
-					//TODO: implement the out of screen logics:
-					/*if(
-						( this.position.x > window.game.width ) ||
-						( this.position.y > window.game.height ) ||
-						( this.position.x < ( -1 * this.position.x ) ) ||
-						( this.position.y < ( ( -1 * this.position.y ) - 100 ) )
-					){
-						// should now do: this.remove(this);
-					}*/
 				},
 				
 				intersects: function(compare){
@@ -307,6 +297,10 @@
 					this.collection.push( _entity );
 				},
 				
+				removeEntity: function(outside_object){
+					this.collection = this.collection.reject(function(inside_object){ return (outside_object == inside_object); });
+				},
+				
 				registerPeriodicAction: function(){
 					window.game.render_tick_engine.addUpdatable(this.periodic_action);
 				},
@@ -481,6 +475,10 @@
 					}
 				},
 				
+				removeDrawable: function(outside_object){
+					this.drawables = this.drawables.reject(function(inside_object){ return (outside_object == inside_object ); });
+				},
+				
 				clearCanvas: function(){
 					this.canvas.getContext("2d").clearRect(0,0,window.game.width,window.game.height);
 				},
@@ -621,19 +619,14 @@
 						window.game.damage_control.hitTest(player.gun.collection, window.game.harm_hazard.collection, function( bullet , enemy ){
 							
 							// Remove these items from all the 4 dimensions
-							window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject( function(o){
-								return (o == bullet || o == enemy);
-							});
+							window.game.render_tick_engine.removeDrawable(bullet);
+							window.game.render_tick_engine.removeDrawable(enemy);
 							
 							// Used bullets are of no use, dispose them
-							player.gun.collection = player.gun.collection.reject( function(o){
-								return (o == bullet);
-							});
+							player.gun.removeEntity(bullet);
 							
 							// Remove the enemy from the danger
-							window.game.harm_hazard.collection = window.game.harm_hazard.collection.reject( function(o){
-								return (o == enemy);
-							});
+							window.game.harm_hazard.removeEntity(enemy);
 							
 							player.score++; // Add that kill to the score!
 							
@@ -647,18 +640,13 @@
 					window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.harm_hazard.collection, function(player,enemy){
 						
 						// Remove these items from all the 4 dimensions
-						window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject( function(o){
-							return ( o == player || o == enemy );
-						});
+						window.game.render_tick_engine.removeDrawable(player);
+						window.game.render_tick_engine.removeDrawable(enemy);
 						
 						// Remove the enemy from the danger
-						window.game.harm_hazard.collection = window.game.harm_hazard.collection.reject( function(o){
-							return (o == enemy );
-						});
+						window.game.harm_hazard.removeEntity( enemy );
 						
-						window.game.allied_factions.collection = window.game.allied_factions.collection.reject(function(o){
-							return ( o == player );
-						});
+						window.game.allied_factions.removeEntity( player );
 					});
 				},
 
@@ -666,16 +654,9 @@
 					if(!self){ var self = this; }
 					window.game.damage_control.hitTest( window.game.rain_of_goodies.collection, window.game.allied_factions.collection, function(upgrade,player){
 						
-						console.log("Intersecting upgrade and player");
+						window.game.render_tick_engine.removeDrawable(upgrade);
 						
-						// Remove these items from all the 4 dimensions
-						window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject( function(o){
-							return ( o == upgrade);
-						});
-						
-						window.game.rain_of_goodies.collection = window.game.rain_of_goodies.collection.reject( function(o){
-							return (o == upgrade );
-						});
+						window.game.rain_of_goodies.removeEntity( upgrade );
 					});
 				}
 			});
