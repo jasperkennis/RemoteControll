@@ -664,7 +664,7 @@
 
 				upgradeVSPlayer: function(){
 					if(!self){ var self = this; }
-					window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.rain_of_goodies.collection, function(player,upgrade){
+					window.game.damage_control.hitTest( window.game.rain_of_goodies.collection, window.game.allied_factions.collection, function(player,upgrade){
 						
 						console.log("Intersecting upgrade and player");
 						
