@@ -103,6 +103,7 @@
 				
 				draw: function($super){
 					$super();
+					_canvas.fillStyle = "rgb(255,255,0)";
 					_canvas.beginPath();
 					_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
 					_canvas.closePath();
@@ -158,7 +159,6 @@
 						var _gun_index;
 						var _own_index;
 						window.game.allied_factions.collection.detect(function(q){
-							console.log(q);
 							q.gun.collection.detect(function(r){
 								if(r == self){
 									_gun_index = window.game.allied_factions.collection.indexOf(q);
@@ -262,7 +262,7 @@
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				},
 				
-				remove: function(own_index) {
+				remove: function() {
 					if(!self){ var self = this; }
 					window.game.render_tick_engine.drawables.detect(function(q){
 						if(q == self){
@@ -272,13 +272,13 @@
 					});
 					
 					// Remove the bullet from the bullets list too:
-					window.game.harm_hazard.collection.splice(own_index, 1);
+					window.game.harm_hazard.collection.splice(window.game.harm_hazard.collection.indexOf(self), 1);
 				},
 				
 				update: function($super){
 					$super.call();
 					if( this.position.y > window.game.height ){
-						this.remove(window.game.allied_factions.collection.indexOf(this));
+						this.remove();
 						for (var i = window.game.allied_factions.collection.length - 1; i >= 0; i--){
 							window.game.allied_factions.collection[i].score -= window.game.allied_factions.collection.length;
 						};
@@ -599,16 +599,26 @@
 							Object.isArray( second_collection ) &&
 							( second_collection.length > 0 ) 
 						){
-						for (var i = first_collection.length - 1; i >= 0; i--){
+							
+							first_collection.compactcollect(function(first){
+								second_collection.compact.collect(function(second){
+									if(first.intersects(second)){
+										console.log(first);
+										console.log(second);
+										//callback.call(this,first, second);
+									}
+								});
+							});
+							
+						/*for (var i = first_collection.length - 1; i >= 0; i--){
 							for (var j = second_collection.length - 1; j >= 0; j--){
 								if( first_collection[i] != undefined && second_collection[j] != undefined){
 									if( first_collection[i].intersects( second_collection[j] ) ) {
-										console.error("intersects");
 										callback.call(this,i,j);
 									}
 								}
 							}
-						}
+						}*/
 					}
 				},
 				
@@ -625,7 +635,7 @@
 							
 							// Do the same thing for the hit enemy:
 							_enemy = window.game.harm_hazard.collection[enemy_index];
-							_enemy.remove(enemy_index);
+							_enemy.remove();
 							
 							window.game.rain_of_goodies.addEntity(_enemy);
 						});
@@ -641,7 +651,7 @@
 						
 						// Do the same thing for the hit enemy:
 						_enemy = window.game.harm_hazard.collection[enemy_index];
-						_enemy.remove(enemy_index);
+						_enemy.remove();
 					});
 				},
 
