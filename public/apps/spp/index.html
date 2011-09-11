@@ -539,7 +539,7 @@
 				listenForKeyDown: function(){
 					if(!self){ var self = this; }
 					window.game.connection.onKeyDown(function(data){
-						if(data.id == self.id){
+						if(data.id == self.id && !Object.isUndefined(window.game.allied_factions.collection[self.id])){
 							switch (data.key) {
 								case 37:
 									if(!self.left_is_pressed){
@@ -567,7 +567,7 @@
 				listenForKeyUp: function(){
 					if(!self){ var self = this; }
 					window.game.connection.onKeyUp(function(data){
-						if(data.id == self.id){	
+						if(data.id == self.id && !Object.isUndefined(window.game.allied_factions.collection[self.id])){	
 							switch (data.key) {
 								case 37:
 									if(self.left_is_pressed){
