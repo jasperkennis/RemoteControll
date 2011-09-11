@@ -127,7 +127,8 @@
 
 
 			var Bullet = Class.create(Drawable,{
-				initialize: function($super, size, position, direction, color, name, canvas){
+				initialize: function($super, size, position, direction, color, name, canvas, gun_id){
+					this.gun = gun_id; // In oop, giving the index of the parent object is of course cheating, however, this will greatly boost performance
 					$super.call(this, size, position, direction, color, name, canvas);
 				},
 				
@@ -326,6 +327,7 @@
 				},
 				
 				defaultPeriodicAction: function(options){
+					if(!self){var self = this;}
 					if(options.self.delay > 0) { options.self.delay--; }
 					if( window.game.allied_factions.collection[options.self.player].is_shooting && ( options.self.delay == 0 ) ){
 						var _bullet = new Bullet(
@@ -334,7 +336,8 @@
 							{ h : 0 , v : -16 },
 							"black",
 							"bullet_time!",
-							window.game.canvas
+							window.game.canvas,
+							self.player_id
 						);
 						
 						options.self.addEntity(_bullet);
@@ -600,26 +603,13 @@
 							( second_collection.length > 0 ) 
 						){
 							
-							//var _first_collection = 
 							first_collection.compact().collect(function(first){
 								second_collection.compact().collect(function(second){
 									if(first.intersects(second)){
-										console.log(first);
-										console.log(second);
-										//callback.call(this,first, second);
+										callback.call(this,first, second);
 									}
 								});
 							});
-							
-						/*for (var i = first_collection.length - 1; i >= 0; i--){
-							for (var j = second_collection.length - 1; j >= 0; j--){
-								if( first_collection[i] != undefined && second_collection[j] != undefined){
-									if( first_collection[i].intersects( second_collection[j] ) ) {
-										callback.call(this,i,j);
-									}
-								}
-							}
-						}*/
 					}
 				},
 				
@@ -630,13 +620,14 @@
 							
 							window.game.allied_factions.collection[player].score++;
 							
+							/*
 							// Entering the process of deleting the object and all its references:
 							_bullet = window.game.allied_factions.collection[player].gun.collection[bullet_index];
 							_bullet.remove(bullet_index,player);
 							
 							// Do the same thing for the hit enemy:
 							_enemy = window.game.harm_hazard.collection[enemy_index];
-							_enemy.remove();
+							_enemy.remove();*/
 							
 							window.game.rain_of_goodies.addEntity(_enemy);
 						});
@@ -645,7 +636,7 @@
 				
 				playerVSEnemy: function(){
 					if(!self){ var self = this; }
-					window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.harm_hazard.collection, function(player_index,enemy_index){
+					/*window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.harm_hazard.collection, function(player_index,enemy_index){
 						// Entering the process of deleting the object and all its references:
 						_player = window.game.allied_factions.collection[player_index];
 						_player.remove(player_index);
@@ -653,12 +644,12 @@
 						// Do the same thing for the hit enemy:
 						_enemy = window.game.harm_hazard.collection[enemy_index];
 						_enemy.remove();
-					});
+					});*/
 				},
 
 				upgradeVSPlayer: function(){
 					if(!self){ var self = this; }
-					window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.rain_of_goodies.collection, function(player_index,upgrade){
+					/*window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.rain_of_goodies.collection, function(player_index,upgrade){
 						// Entering the process of deleting the object and all its references:
 						_player = window.game.allied_factions.collection[player_index];
 						_player.addUpgrade;
@@ -667,7 +658,7 @@
 						_upgrade = window.game.rain_of_goodies.collection[upgrade];
 						_upgrade.remove(upgrade);
 					});
-				}
+				}*/
 			});
 
 
