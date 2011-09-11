@@ -45,7 +45,7 @@ function attempt_initial_call(){
  * Setting non default globals
  */
 
-setDebug(true);
+setDebug(false);
 
 
 

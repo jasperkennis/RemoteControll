@@ -148,7 +148,6 @@
 					});
 					
 					// Remove the bullet from the bullets list too:
-					console.log(window.game.allied_factions.collection[gun_index]);
 					window.game.allied_factions.collection[gun_index].gun.collection.splice(own_index, 1);
 				},
 				
@@ -160,12 +159,12 @@
 						var _own_index;
 						window.game.allied_factions.collection.detect(function(q){
 							console.log(q);
-							/*q.collection.detect(function(r){
+							q.gun.collection.detect(function(r){
 								if(r == self){
 									_gun_index = window.game.allied_factions.collection.indexOf(q);
 									_own_index = q.collection.indexOf(r);
 								}
-							});*/
+							});
 						});
 						this.remove(_own_index,_gun_index);
 					}
