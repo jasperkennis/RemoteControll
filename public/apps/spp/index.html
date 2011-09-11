@@ -329,20 +329,22 @@
 				defaultPeriodicAction: function(options){
 					if(!self){var self = this;}
 					if(options.self.delay > 0) { options.self.delay--; }
-					if( window.game.allied_factions.collection[options.self.player].is_shooting && ( options.self.delay == 0 ) ){
-						var _bullet = new Bullet(
-							{ h : 4 , w : 4 },
-							{ x :  window.game.allied_factions.collection[options.self.player].position.x + 18 , y :  window.game.allied_factions.collection[options.self.player].position.y },
-							{ h : 0 , v : -16 },
-							"black",
-							"bullet_time!",
-							window.game.canvas,
-							self.player_id
-						);
-						
-						options.self.addEntity(_bullet);
-						window.game.render_tick_engine.addDrawable(_bullet);
-						options.self.delay = ( 30 / options.self.frequency);
+					if(!Object.isUndefined(window.game.allied_factions.collection[options.self.player])){
+						if( window.game.allied_factions.collection[options.self.player].is_shooting && ( options.self.delay == 0 ) ){
+							var _bullet = new Bullet(
+								{ h : 4 , w : 4 },
+								{ x :  window.game.allied_factions.collection[options.self.player].position.x + 18 , y :  window.game.allied_factions.collection[options.self.player].position.y },
+								{ h : 0 , v : -16 },
+								"black",
+								"bullet_time!",
+								window.game.canvas,
+								self.player_id
+							);
+							
+							options.self.addEntity(_bullet);
+							window.game.render_tick_engine.addDrawable(_bullet);
+							options.self.delay = ( 30 / options.self.frequency);
+						}
 					}
 				}
 			});
