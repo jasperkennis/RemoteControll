@@ -688,6 +688,15 @@
 					this.width = document.viewport.getWidth() - 10;
 					this.canvas = this.createCanvas("screen");
 					
+					// Creating the render tick engine first before any updatables are added, and before other objects construct. 
+					this.render_tick_engine = new RenderTickEngine( null, this.fps, this.canvas );
+					
+					// Add update functions to the updating loop:
+					this.render_tick_engine.addUpdatable(this.damage_control.playerVSEnemy);
+					this.render_tick_engine.addUpdatable(this.damage_control.bulletVSEnemy);
+					this.render_tick_engine.addUpdatable(this.damage_control.upgradeVSPlayer);
+					this.render_tick_engine.addUpdatable(this.harm_hazard.periodic_action);
+					
 					// Create containers for main objects:
 					this.bullets = new Array();
 					
@@ -700,13 +709,6 @@
 					}
 					this.harm_hazard = new HarmsHazard(fps);
 					this.rain_of_goodies = new RainOfGoodies();
-					this.render_tick_engine = new RenderTickEngine( null, this.fps, this.canvas );
-					
-					// Add update functions to the updating loop:
-					this.render_tick_engine.addUpdatable(this.harm_hazard.periodic_action);
-					this.render_tick_engine.addUpdatable(this.damage_control.bulletVSEnemy);
-					this.render_tick_engine.addUpdatable(this.damage_control.playerVSEnemy);
-					this.render_tick_engine.addUpdatable(this.damage_control.upgradeVSPlayer);
 				},
 				
 				createCanvas: function( id ){
