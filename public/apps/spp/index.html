@@ -615,7 +615,8 @@
 				
 				bulletVSEnemy: function(){
 					if(!self){ var self = this; }
-					for (var player = window.game.allied_factions.collection.length - 1; player >= 0; player--){
+					console.log('A bullet has hit an enemy');
+					/*for (var player = window.game.allied_factions.collection.length - 1; player >= 0; player--){
 						window.game.damage_control.hitTest(window.game.allied_factions.collection[player].gun.collection, window.game.harm_hazard.collection, function(bullet_index,enemy_index){
 							
 							window.game.allied_factions.collection[player].score++;
@@ -627,15 +628,16 @@
 							
 							// Do the same thing for the hit enemy:
 							_enemy = window.game.harm_hazard.collection[enemy_index];
-							_enemy.remove();*/
+							_enemy.remove();
 							
 							window.game.rain_of_goodies.addEntity(_enemy);
 						});
-					}
+					}*/
 				},
 				
 				playerVSEnemy: function(){
 					if(!self){ var self = this; }
+					console.log('A player hit an enemy');
 					/*window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.harm_hazard.collection, function(player_index,enemy_index){
 						// Entering the process of deleting the object and all its references:
 						_player = window.game.allied_factions.collection[player_index];
@@ -649,6 +651,7 @@
 
 				upgradeVSPlayer: function(){
 					if(!self){ var self = this; }
+					console.log('A player collected an upgrade');
 					/*window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.rain_of_goodies.collection, function(player_index,upgrade){
 						// Entering the process of deleting the object and all its references:
 						_player = window.game.allied_factions.collection[player_index];
@@ -657,8 +660,8 @@
 						// Do the same thing for the hit enemy:
 						_upgrade = window.game.rain_of_goodies.collection[upgrade];
 						_upgrade.remove(upgrade);
-					});
-				}*/
+					});*/
+				}
 			});
 
 
