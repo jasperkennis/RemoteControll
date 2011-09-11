@@ -96,6 +96,14 @@
 					_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
 					_canvas.closePath();
 					_canvas.fill();
+				},
+				
+				update: function($super){
+					if(!self){var self = this;}
+					$super.call( this );
+					if(this.position.y > window.game.height){
+						window.game.rain_of_goodies.removeEntity(this);
+					}
 				}
 			});
 
@@ -203,7 +211,7 @@
 				update: function($super){
 					$super.call();
 					if( this.position.y > window.game.height ){
-						window.game.harm_hazzard.removeEntity(this);
+						window.game.harm_hazard.removeEntity(this);
 						window.game.allied_factions.collection.collect(function(player){
 							player.score -= window.game.allied_factions.collection.length;
 						});
