@@ -595,7 +595,6 @@
 
 			var DamageControl = Class.create({
 				hitTest: function( first_collection , second_collection, callback ){
-					console.log(callback);
 
 					if(
 							Object.isArray( first_collection ) &&
@@ -607,6 +606,7 @@
 							first_collection.compact().collect(function(first){
 								second_collection.compact().collect(function(second){
 									if(first.intersects(second)){
+										console.log(callback);
 										callback.call(this,first, second);
 									}
 								});
