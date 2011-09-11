@@ -666,7 +666,7 @@
 						
 						// Remove these items from all the 4 dimensions
 						window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject( function(o){
-							return (o == player || o == uprade);
+							return ( o == upgrade);
 						});
 						
 						window.game.rain_of_goodies.collection = window.game.rain_of_goodies.collection.reject( function(o){
