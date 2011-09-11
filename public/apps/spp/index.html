@@ -595,6 +595,7 @@
 
 			var DamageControl = Class.create({
 				hitTest: function( first_collection , second_collection, callback ){
+					console.log(callback);
 
 					if(
 							Object.isArray( first_collection ) &&
@@ -616,7 +617,7 @@
 				bulletVSEnemy: function(){
 					if(!self){ var self = this; }
 					window.game.allied_factions.collection.compact().collect( function(player){ // Compare all players to all bullets
-						window.game.damage_control.hitTest(player.gun.collection, window.game.harm_hazard.collection, function(bullet,enemy){
+						window.game.damage_control.hitTest(player.gun.collection, window.game.harm_hazard.collection, function( bullet , enemy ){
 							window.game.render_tick_engine.drawables = window.game.render_tick_engine.drawables.reject(Object == bullet || Object == enemy);
 						});
 					});
