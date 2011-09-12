@@ -185,14 +185,12 @@
 				
 				addFire: function(){
 					if(this.fire_rate < 5) {
-						console.log("adding_fire");
-						this.fire_rate++;
+						this.gun.frequency++;
 					}
 				},
 				
 				addSpeed: function(){
 					if(this.speed < 5) {
-						console.log("adding speed")
 						this.speed++;
 					}
 				}
@@ -284,7 +282,6 @@
 							options.self.addEntity(_bullet);
 							window.game.render_tick_engine.addDrawable(_bullet);
 							options.self.delay = ( 30 / options.self.frequency);
-							console.log(options.self.delay)
 						}
 					}
 				}
@@ -492,13 +489,13 @@
 							switch (data.key) {
 								case 37:
 									if(!self.left_is_pressed){
-										window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h - (3 + ( window.game.allied_factions.collection[self.id].speed * 2 ));
+										window.game.allied_factions.collection[self.id].direction.h = -1 * (3 + ( window.game.allied_factions.collection[self.id].speed * 2 ));
 										self.left_is_pressed = true;
 									}
 									break;
 								case 39:
 									if(!self.right_is_pressed){
-										window.game.allied_factions.collection[self.id].direction.h =  window.game.allied_factions.collection[self.id].direction.h + (3 + ( window.game.allied_factions.collection[self.id].speed * 2 ));
+										window.game.allied_factions.collection[self.id].direction.h = (3 + ( window.game.allied_factions.collection[self.id].speed * 2 ));
 										self.right_is_pressed = true;
 									}
 									break;
@@ -520,13 +517,13 @@
 							switch (data.key) {
 								case 37:
 									if(self.left_is_pressed){
-										window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h + (3 + ( window.game.allied_factions.collection[self.id].speed * 2 ));
+										window.game.allied_factions.collection[self.id].direction.h = 0;
 										self.left_is_pressed = false;
 									}
 									break;
 								case 39:
 									if(self.right_is_pressed){
-										window.game.allied_factions.collection[self.id].direction.h =  window.game.allied_factions.collection[self.id].direction.h - (3 + ( window.game.allied_factions.collection[self.id].speed * 2 ));
+										window.game.allied_factions.collection[self.id].direction.h = 0;
 										self.right_is_pressed = false;
 									}
 									break;
