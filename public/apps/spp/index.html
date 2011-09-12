@@ -327,7 +327,7 @@
 						 	Math.floor( 
 					 			Math.random() * ( 
 					 				( 
-					 					window.game.fps/window.game.allied_factions.collection.length 
+					 					window.game.fps/( Math.floor( combined_score / 100 ) ) 
 					 				) * 2.4 
 					 			) 
 					 		) - (
@@ -338,7 +338,7 @@
 						var _enemy = new Enemy(
 							{h: 30, w: 30},
 							{x: 20 + ( Math.floor( Math.random() * ( window.game.width - 40) ) ), y: - 30},
-							{v: ( Math.floor( Math.random() * 3 ) ), h: 0},
+							{v: ( Math.floor( Math.random() * ( 3 + ( Math.floor( combined_score / 50 ) ) ) ) ), h: 0},
 							"black",
 							"name",
 							window.game.canvas
