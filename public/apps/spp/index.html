@@ -281,7 +281,7 @@
 							
 							options.self.addEntity(_bullet);
 							window.game.render_tick_engine.addDrawable(_bullet);
-							options.self.delay = ( 30 / options.self.frequency);
+							options.self.delay = ( Math.floor( 30 / options.self.frequency) );
 						}
 					}
 				}
