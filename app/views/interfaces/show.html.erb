@@ -19,6 +19,13 @@
 	
 	<p>Welcome <%= current_user.name %> (<%= current_user.email %>)! <%= link_to "Sign out", destroy_user_session_path, :method => :delete %></p>
 	
+	<ul>
+		<li>You must login with Facebook to play</li>
+		<li><b>The game plays on another screen, but you controll it from here</b></li>
+		<li>You'r tank will apear on the screen as soon as this page is loaded</li>
+		<li>Refresh this page to get a new tank on the screen</li>
+	</ul>
+	
 	<h3>What's Space Invaders PLUS?</h3>
 	<p>It's Space Invaders, but PLUS! Instead of one lonely tank defending our beloved earth, a small army kills these attacking enemies with awesome powers!<p>
 	<p>That army's called The Allied Factions, and you can be part of it TODAY! As a matter of fact, as you opened this page, you probably already are!<p>
@@ -34,6 +41,13 @@
 
 <% else %>
 	<p><%= link_to "Login with Facebook to play!", user_omniauth_authorize_path(:facebook) %></p>
+	
+	<ul>
+		<li>You must login with Facebook to play</li>
+		<li><b>The game plays on another screen, but you controll it from here</b></li>
+		<li>You'r tank will apear on the screen as soon as this page is loaded</li>
+		<li>Refresh this page to get a new tank on the screen</li>
+	</ul>
 	
 	<h3>What's Space Invaders PLUS?</h3>
 	<p>It's Space Invaders, but PLUS! Instead of one lonely tank defending our beloved earth, a small army kills these attacking enemies with awesome powers!<p>

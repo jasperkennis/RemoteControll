@@ -4,7 +4,7 @@ html, body, canvas {
 	background-color: #F7F7F7;
 }
 
-h1, h2, h3, h4, h5, p {
+h1, h2, h3, h4, h5, p, ul, li {
 	color: #DD5F18;
 	font-family: Tahoma;
 	font-size 11px;
