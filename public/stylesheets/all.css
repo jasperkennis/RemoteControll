@@ -21,4 +21,4 @@ p {
 	margin-bottom: 40px;
 }
 
-.label {position: absolute; z-index: 10; right: 0; top: 0;}
+.label {position: absolute; z-index: 10; right: 0; top: 0; border: none;}
