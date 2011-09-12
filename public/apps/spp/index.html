@@ -327,7 +327,7 @@
 						 	Math.floor( 
 					 			Math.random() * ( 
 					 				( 
-					 					window.game.fps/( Math.floor( combined_score / 100 ) ) 
+					 					window.game.fps/(1 + Math.floor( combined_score / 100 ) ) 
 					 				) * 2.4 
 					 			) 
 					 		) - (
