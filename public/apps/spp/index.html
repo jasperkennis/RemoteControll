@@ -39,7 +39,7 @@
 				
 				draw: function(){
 					_canvas = this.canvas.getContext("2d");
-					_canvas.fillStyle = "rgb(200,0,0)";
+					_canvas.fillStyle = "rgb(131,166,3)";
 				},
 				
 				update: function(){
@@ -91,7 +91,7 @@
 				
 				draw: function($super){
 					$super();
-					_canvas.fillStyle = "rgb(255,0,255)";
+					_canvas.fillStyle = "rgb(171,71,109)";
 					_canvas.beginPath();
 					_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
 					_canvas.closePath();
@@ -117,6 +117,7 @@
 				
 				draw: function($super){
 					$super();
+					_canvas.fillStyle = "rgb(20,28,38)";
 					_canvas.beginPath();
 					_canvas.arc(this.position.x, this.position.y, this.size.w/2, 0, Math.PI*2, true); 
 					_canvas.closePath();
@@ -206,7 +207,7 @@
 				
 				draw: function($super){
 					$super();
-					_canvas.fillStyle = "rgb(141,198,63)";
+					_canvas.fillStyle = "rgb(131,166,3)";
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				},
 				
@@ -338,7 +339,7 @@
 					){
 						var _enemy = new Enemy(
 							{h: 30, w: 30},
-							{x: 20 + ( Math.floor( Math.random() * window.game.width - 40 ) ), y: - 30},
+							{x: 20 + ( Math.floor( Math.random() * ( window.game.width - 40) ) ), y: - 30},
 							{v: 1, h: 0},
 							"black",
 							"name",
