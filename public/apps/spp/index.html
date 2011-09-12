@@ -329,7 +329,7 @@
 					 			Math.random() * ( 
 					 				( 
 					 					window.game.fps/window.game.allied_factions.collection.length 
-					 				) * 1.9 
+					 				) * 2.4 
 					 			) 
 					 		) - (
 					 			combined_score / 15
@@ -338,7 +338,7 @@
 					){
 						var _enemy = new Enemy(
 							{h: 30, w: 30},
-							{x: ( 20 + Math.floor( Math.random() * window.game.width - 40 ) ), y: - 30},
+							{x: 20 + ( Math.floor( Math.random() * window.game.width - 40 ) ), y: - 30},
 							{v: 1, h: 0},
 							"black",
 							"name",
