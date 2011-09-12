@@ -610,6 +610,7 @@
 					this.height = document.viewport.getHeight() - 10;
 					this.width = document.viewport.getWidth() - 10;
 					this.canvas = this.createCanvas("screen");
+					this.createLabel();
 					
 					// Create containers for main objects:
 					this.bullets = new Array();
@@ -644,6 +645,14 @@
 					_canvas = document.body.appendChild(_canvas);
 					
 					return _canvas;
+				},
+				
+				createLabel: function(){
+					_label = new Element('image',{
+						'class':"label",
+						'width' : 300,
+						'height' : 300
+					});
 				}
 			});
 
