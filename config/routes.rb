@@ -3,7 +3,7 @@ Remotecontroll::Application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "omniauth_callbacks" }
 
   # Required by Devise
-  root :to => "screen_apps#index"
+  root :to => "interfaces#show", :id => 1
 
   get "screen_app_communication/led"
   get "screen_app_communication/keyDown"
