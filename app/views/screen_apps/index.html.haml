@@ -9,10 +9,5 @@
           - link_to 'Edit', edit_screen_app_path(screen_app)
 
 - if user_signed_in?
-  - link_to 'Add a new app!', new_screen_app_path()
-- else
   %p
-    %a= link_to 'Login', new_user_session_path
-    of
-    %a= link_to 'registreer', new_user_registration_path
-    om zelf applicaties te plaatsen.
+    %a= link_to 'Add a new app!', new_screen_app_path()

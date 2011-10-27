@@ -1,0 +1,34 @@
+= form_for @screen_app do |f|
+  %fieldset
+    %legend Basic info
+    
+    %div{ :class => "field" }
+    =f.label :name
+    %br
+    =f.text_field :name
+    
+    %div{ :class => "field" }
+    =f.label :url
+    %br
+    =f.text_field :url
+    
+    %div{ :class => "field" }
+    =f.label :description
+    %br
+    =f.text_area :description
+
+  %fieldset
+    %legend Input types
+  		
+    %div{ :class => "field" }
+    =f.label :register_arrows
+    %br
+    =f.check_box :register_arrows
+	  
+    %div{ :id => "interfaces" }= render :partial => 'interface', :collection => @screen_app.interfaces
+    
+    
+  %fieldset
+    %legend Actions
+    
+    %div{ :class => "actions" }= f.submit

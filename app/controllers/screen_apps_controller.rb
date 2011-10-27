@@ -24,11 +24,11 @@ class ScreenAppsController < ApplicationController
       if @screen_app.save
         format.html { redirect_to(@screen_app,
                       :notice => 'Your app has been created! Now you should upload an interface, or select an alternative input method.') }
-        format.xml  { render :xml => @interface,
-                      :status => :created, :location => @interface }
+        format.xml  { render :xml => @screen_app,
+                      :status => :created, :location => @screen_app }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @interface.errors,
+        format.xml  { render :xml => @screen_app.errors,
                       :status => :unprocessable_entity }
       end
     end
