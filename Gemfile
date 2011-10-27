@@ -1,9 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0'
+# gem 'rails', '3.0.9'
 
 # Bundle edge Rails instead:
-#gem 'rails', :git => 'git://github.com/rails/rails.git'
+gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
 gem 'rubyzip'
@@ -13,7 +13,6 @@ gem 'pg'
 gem 'pusher'
 gem 'omniauth'
 gem 'devise'
-gem 'haml'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -39,14 +38,14 @@ gem 'haml'
 # end
 
 group :development do
-	gem 'annotate'
+  gem 'annotate'
 end
 
 group :test do
-	gem 'rspec'
-	gem 'rspec-rails'
-	gem 'webrat'
-	gem 'cucumber'
-	gem 'cucumber-rails'
-	gem 'database_cleaner'
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'webrat'
+  gem 'cucumber'
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
 end

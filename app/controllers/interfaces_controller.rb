@@ -7,17 +7,6 @@ class InterfacesController < ApplicationController
 			format.xml  { render :xml => @interface }
 		end
 	end
-	
-	
-
-	def index
-	  respond_to do |format|
-	    format.html
-	    format.xml { render :xml => @interface }
-	  end
-	end
-
-
 
 	def create
 
@@ -68,8 +57,6 @@ class InterfacesController < ApplicationController
 		end
 	end
 
-
-
 	def show
     @interface = Interface.find(params[:id])
    
@@ -78,8 +65,6 @@ class InterfacesController < ApplicationController
       format.xml  { render :xml => @interface }
     end
   end
-
-
 
 	def unzip_file (file, destination)
 		Zip::ZipFile.open(file) { |zip_file|
@@ -90,8 +75,6 @@ class InterfacesController < ApplicationController
 			}
 		}
 	end
-
-
 
 	def get_file_as_string(filename)
 		data = ''
