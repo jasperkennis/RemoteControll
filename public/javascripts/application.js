@@ -14,10 +14,8 @@ function getDebug(){ return window.debug; }
 /* Pusher */
 var pusher;
 function setPusher(_pusher_app_id){
-	if(!window.offline_mode){
-		if(!_pusher_app_id){ var _pusher_app_id = '7132d12d5d3ddf34b09e'; }
-		pusher = new Pusher(_pusher_app_id);
-	}
+	if(!_pusher_app_id){ var _pusher_app_id = '7132d12d5d3ddf34b09e'; }
+	pusher = new Pusher(_pusher_app_id);
 }
 function getPusher() { return window.pusher; }
 
@@ -26,10 +24,8 @@ function getPusher() { return window.pusher; }
 /* Pusher channel */
 var pusher_channel;
 function setPusherChannel(_channel_name){
-	if(!window.offline_mode){
-		if(!_channel_name){var _channel_name = 'presence-screen-interaction'; }
-		pusher_channel = getPusher().subscribe(_channel_name);
-	}
+	if(!_channel_name){var _channel_name = 'presence-screen-interaction'; }
+	pusher_channel = getPusher().subscribe(_channel_name);
 }
 function getPusherChannel() { return window.pusher_channel; }
 
@@ -45,7 +41,7 @@ function attempt_initial_call(){
  * Setting non default globals
  */
 
-setDebug(false);
+setDebug(true);
 
 
 
@@ -419,12 +415,10 @@ document.observe("dom:loaded", function(){
 	 * First, we set debugging requirements if debug is on:
 	 */
 	if(getDebug()){
-		if(!window.offline_mode){
-		  Pusher.log = function(message) {
-		    if (window.console && window.console.log) window.console.log(message);
-		  };
-		  WEB_SOCKET_DEBUG = true;
-	 }
+	  Pusher.log = function(message) {
+	    if (window.console && window.console.log) window.console.log(message);
+	  };
+	  WEB_SOCKET_DEBUG = true;
  	}
  
  
