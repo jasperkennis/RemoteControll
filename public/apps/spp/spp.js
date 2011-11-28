@@ -60,18 +60,6 @@
 
 
 
-			var Score = Class.create(Drawable,{
-				initialize: function($super, size, position, direction, color, name, canvas){
-					$super.call(this, size, position, direction, color, name, canvas);
-				},
-				
-				draw: function($super, name, score){
-					$super();
-				}
-			});
-
-
-
 			var Bullet = Class.create(Drawable,{
 				initialize: function($super, size, position, direction, color, name, canvas){
 					$super.call(this, size, position, direction, color, name, canvas);
@@ -106,20 +94,10 @@
 					this.gun.registerPeriodicAction();
 					this.id = id;
 					this.controller = new Controller(id);
-					this.score = 0;
-					this.score_display = new Score(
-						{ s: 100, w: 100 },
-						{ x: 0, y: 0 },
-						{ v:0, h: 0 },
-						"black",
-						"timer",
-						canvas
-					);
 				},
 				
 				draw: function($super){
 					$super();
-					//this.score_display.draw(this.name, this.score);
 					_canvas.fillStyle = this.color;
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
 				},
@@ -267,16 +245,6 @@
 						console.log(data.name);
 						self.addEntity({id: data.id, name: data.name});
 					});
-				},
-				
-				scoreBoard: function(){
-					if(!self){ var self = this; }
-					
-					if(this.collection.length > 0) {
-						self.collection.each(function(){
-							
-						});
-					}
 				}
 			});
 
