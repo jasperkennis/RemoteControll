@@ -226,7 +226,7 @@
 				
 				addEntity: function(data){
 					var second = false;
-					if(window.game.allied_factions.collection.length > 1){ second = true; }
+					if(window.game.allied_factions.collection.length > 0){ second = true; }
 					var _player = new Player(
 						{h: 20, w: 40},
 						{x: 20, y: window.game.height - 30},
