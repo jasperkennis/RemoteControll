@@ -287,11 +287,19 @@ var InterfaceScreen = Class.create({
 		});
 		*/
 		document.addEventListener("touchstart",function(e){
-			alert("test touch down");
+			getPusherChannel().trigger(
+				'client-screen-down',
+				{
+					"id": pusher.connection.socket_id
+			});
 		});
 		
 		document.addEventListener("touchend",function(e){
-			alert("test touch up");
+			getPusherChannel().trigger(
+				'client-screen-up',
+				{
+					"id": pusher.connection.socket_id
+			});
 		});
 	},
 	

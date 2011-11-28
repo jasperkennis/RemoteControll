@@ -319,11 +319,11 @@
 				},
 				
 				onKeyDown: function(callback){
-					getPusherChannel().bind('client-key-down', callback);
+					getPusherChannel().bind('client-screen-down', callback);
 				},
 				
 				onKeyUp: function(callback){
-					getPusherChannel().bind('client-key-up', callback);
+					getPusherChannel().bind('client-screen-up', callback);
 				},
 				
 				onNewUser: function(callback){
@@ -347,19 +347,7 @@
 					if(!self){ var self = this; }
 					window.game.connection.onKeyDown(function(data){
 						if(data.id == self.id){
-							switch (data.key) {
-								case 37:
-									if(!self.left_is_pressed){
-										window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h - 4;
-										self.left_is_pressed = true;
-									}
-									break;
-								case 39:
-									if(!self.right_is_pressed){
-										window.game.allied_factions.collection[self.id].direction.h =  window.game.allied_factions.collection[self.id].direction.h + 4;
-										self.right_is_pressed = true;
-									}
-									break;
+							alert("down");
 							}
 						}
 					});
@@ -369,20 +357,7 @@
 					if(!self){ var self = this; }
 					window.game.connection.onKeyUp(function(data){
 						if(data.id == self.id){	
-							switch (data.key) {
-								case 37:
-									if(self.left_is_pressed){
-										window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h + 4;
-										self.left_is_pressed = false;
-									}
-									break;
-								case 39:
-									if(self.right_is_pressed){
-										window.game.allied_factions.collection[self.id].direction.h =  window.game.allied_factions.collection[self.id].direction.h - 4;
-										self.right_is_pressed = false;
-									}
-									break;
-							}
+							alert("up");
 						}
 					});
 				}
