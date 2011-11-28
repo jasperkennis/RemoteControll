@@ -365,7 +365,11 @@
 					if(!self){ var self = this; }
 					window.game.connection.onKeyUp(function(data){
 						if(data.id == self.id){	
-							window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h + 0;
+							if(this.second){
+								window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h + 4;
+							} else {
+								window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h - 4;
+							}
 							self.is_down = false;
 						}
 					});
