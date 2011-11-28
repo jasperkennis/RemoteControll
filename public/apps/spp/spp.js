@@ -351,7 +351,7 @@
 					if(!self){ var self = this; }
 					window.game.connection.onKeyDown(function(data){
 						if(data.id == self.id){
-							if(this.second){
+							if(self.second){
 								window.game.allied_factions.collection.each(function(player){
 									player.direction.h = player.direction.h - 4;
 								});
@@ -369,7 +369,7 @@
 					if(!self){ var self = this; }
 					window.game.connection.onKeyUp(function(data){
 						if(data.id == self.id){	
-							if(this.second){
+							if(self.second){
 								window.game.allied_factions.collection.each(function(player){
 									player.direction.h = player.direction.h + 4;
 								});
