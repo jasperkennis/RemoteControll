@@ -112,7 +112,6 @@
 					this.gun = new Gun(null, this.fire_rate, id);
 					this.gun.registerPeriodicAction();
 					this.id = id;
-					this.is_shooting;
 					this.controller = new Controller(id);
 					this.score = 0;
 					this.score_display = new Score(
@@ -130,14 +129,6 @@
 					//this.score_display.draw(this.name, this.score);
 					_canvas.fillStyle = this.color;
 					_canvas.fillRect (this.position.x, this.position.y, this.size.w, this.size.h);
-				},
-				
-				startShooting: function(){
-					this.is_shooting = true;
-				},
-				
-				stopShooting: function(){
-					this.is_shooting = false;
 				},
 				
 				remove: function(own_index) {
@@ -228,20 +219,6 @@
 				
 				defaultPeriodicAction: function(options){
 					if(options.self.delay > 0) { options.self.delay--; }
-					if( window.game.allied_factions.collection[options.self.player].is_shooting && ( options.self.delay == 0 ) ){
-						var _bullet = new Bullet(
-							{ h : 4 , w : 4 },
-							{ x :  window.game.allied_factions.collection[options.self.player].position.x + 18 , y :  window.game.allied_factions.collection[options.self.player].position.y },
-							{ h : 0 , v : -16 },
-							"black",
-							"bullet_time!",
-							window.game.canvas
-						);
-						
-						options.self.addEntity(_bullet);
-						window.game.render_tick_engine.addDrawable(_bullet);
-						options.self.delay = ( 30 / options.self.frequency);
-					}
 				}
 			});
 
@@ -424,12 +401,6 @@
 										self.right_is_pressed = true;
 									}
 									break;
-								case 32:
-									if(!self.space_bar_is_pressed) {
-										window.game.allied_factions.collection[self.id].startShooting();
-										self.space_bar_is_pressed = true;
-									}
-									break;
 							}
 						}
 					});
@@ -450,12 +421,6 @@
 									if(self.right_is_pressed){
 										window.game.allied_factions.collection[self.id].direction.h =  window.game.allied_factions.collection[self.id].direction.h - 4;
 										self.right_is_pressed = false;
-									}
-									break;
-								case 32:
-									if(self.space_bar_is_pressed){
-										window.game.allied_factions.collection[self.id].stopShooting();
-										self.space_bar_is_pressed = false;
 									}
 									break;
 							}
