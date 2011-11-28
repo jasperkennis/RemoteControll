@@ -249,7 +249,7 @@ var InterfaceScreen = Class.create({
 		
 		if(!self){ var self = this; } // Need this because the each iterator is going to overwrite this.
 		
-		document.addEventListener("keydown", function(e){
+		/*document.addEventListener("keydown", function(e){
 			if(
 				( ( e.keyCode == 37 ) && !self.left_is_pressed ) ||
 				( ( e.keyCode == 39 ) && !self.right_is_pressed ) ||
@@ -284,6 +284,14 @@ var InterfaceScreen = Class.create({
 			if( e.keyCode == 37 ){ self.left_is_pressed = false }
 			if( e.keyCode == 39 ){ self.right_is_pressed = false }
 			if( e.keyCode == 32 ){ self.space_bar_is_pressed = false }
+		});
+		*/
+		document.addEventListener("touchstart",function(e){
+			alert("test touch down");
+		});
+		
+		document.addEventListener("touchend",function(e){
+			alert("test touch up");
 		});
 	},
 	
