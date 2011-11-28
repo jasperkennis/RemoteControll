@@ -97,9 +97,6 @@
 							window.game.render_tick_engine.drawables.splice( window.game.render_tick_engine.drawables.indexOf(q),1);
 						}
 					});
-					
-					// Remove the bullet from the bullets list too:
-					window.game.allied_factions.collection[gun_index].gun.collection.splice(own_index, 1);
 				}
 			});
 
@@ -140,7 +137,6 @@
 						}
 					});
 					
-					// Remove the bullet from the bullets list too:
 					window.game.allied_factions.collection.splice(own_index, 1);
 				},
 				
@@ -173,7 +169,6 @@
 						}
 					});
 					
-					// Remove the bullet from the bullets list too:
 					window.game.harm_hazard.collection.splice(own_index, 1);
 				}
 			});
@@ -450,21 +445,6 @@
 					}
 				},
 				
-				bulletVSEnemy: function(){
-					if(!self){ var self = this; }
-					for (var player = window.game.allied_factions.collection.length - 1; player >= 0; player--){
-						window.game.damage_control.hitTest(window.game.allied_factions.collection[player].gun.collection, window.game.harm_hazard.collection, function(bullet_index,enemy_index){
-							// Entering the process of deleting the object and all its references:
-							_bullet = window.game.allied_factions.collection[player].gun.collection[bullet_index];
-							_bullet.remove(bullet_index,player);
-							
-							// Do the same thing for the hit enemy:
-							_enemy = window.game.harm_hazard.collection[enemy_index];
-							_enemy.remove(enemy_index);
-						});
-					}
-				},
-				
 				playerVSEnemy: function(){
 					if(!self){ var self = this; }
 					window.game.damage_control.hitTest(window.game.allied_factions.collection, window.game.harm_hazard.collection, function(player_index,enemy_index){
@@ -501,7 +481,6 @@
 					
 					// Add update functions to the updating loop:
 					this.render_tick_engine.addUpdatable(this.harm_hazard.periodic_action);
-					this.render_tick_engine.addUpdatable(this.damage_control.bulletVSEnemy);
 					this.render_tick_engine.addUpdatable(this.damage_control.playerVSEnemy);
 				},
 				
