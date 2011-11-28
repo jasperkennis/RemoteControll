@@ -67,10 +67,6 @@
 				
 				draw: function($super, name, score){
 					$super();
-					context.fillStyle    = '#00f';
-					context.font         = 'italic 12px sans-serif';
-					context.textBaseline = 'top';
-					context.fillText  (name + ': ' + score.toString(), 0, 0);
 				}
 			});
 
