@@ -353,11 +353,11 @@
 						if(data.id == self.id){
 							if(this.second){
 								window.game.allied_factions.collection.each(function(player){
-									player.direction.h = window.game.allied_factions.collection[self.id].direction.h - 4;
+									player.direction.h = player.direction.h - 4;
 								});
 							} else {
 								window.game.allied_factions.collection.each(function(player){
-									player.direction.h = window.game.allied_factions.collection[self.id].direction.h + 4;
+									player.direction.h = player.direction.h + 4;
 								});
 							}
 							self.is_down = true;
@@ -371,11 +371,11 @@
 						if(data.id == self.id){	
 							if(this.second){
 								window.game.allied_factions.collection.each(function(player){
-									player.direction.h = window.game.allied_factions.collection[self.id].direction.h + 4;
+									player.direction.h = player.direction.h + 4;
 								});
 							} else {
 								window.game.allied_factions.collection.each(function(player){
-									player.direction.h = window.game.allied_factions.collection[self.id].direction.h - 4;
+									player.direction.h = player.direction.h - 4;
 								});
 							}
 							self.is_down = false;
