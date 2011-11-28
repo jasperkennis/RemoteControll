@@ -87,13 +87,13 @@
 
 
 			var Player = Class.create(Drawable, {
-				initialize: function($super, size, position, direction, color, name, canvas, id){
+				initialize: function($super, size, position, direction, color, name, canvas, id, second){
 					$super.call(this, size, position, direction, color, name, canvas);
 					this.fire_rate = 1;
 					this.gun = new Gun(null, this.fire_rate, id);
 					this.gun.registerPeriodicAction();
 					this.id = id;
-					this.controller = new Controller(id);
+					this.controller = new Controller(id,second);
 				},
 				
 				draw: function($super){
@@ -225,6 +225,8 @@
 				},
 				
 				addEntity: function(data){
+					var second = false;
+					if(window.game.allied_factions.collection.length > 1){ second = true; }
 					var _player = new Player(
 						{h: 20, w: 40},
 						{x: 20, y: window.game.height - 30},
@@ -232,7 +234,8 @@
 						"rgb(" + Math.floor( ( Math.random() * 155 ) + 100 ).toString() + " , " + Math.floor( ( Math.random() * 155 ) + 100 ).toString() + " , " + Math.floor( ( Math.random() * 155 ) + 100 ).toString() + ")",
 						data.name,
 						window.game.canvas,
-						data.id
+						data.id,
+						second
 					);
 					this.collection[data.id] = _player;
 					this.collection.push(_player);
@@ -334,11 +337,12 @@
 
 
 			var Controller = Class.create({
-				initialize: function(id){
+				initialize: function(id,second){
 					this.right_is_pressed = false;
 					this.left_is_pressed = false;
 					this.space_bar_is_pressed = false;
 					this.id = id;
+					this.second = false;
 					this.key_down_listener = this.listenForKeyDown();
 					this.key_up_listener = this.listenForKeyUp();
 				},
@@ -347,7 +351,11 @@
 					if(!self){ var self = this; }
 					window.game.connection.onKeyDown(function(data){
 						if(data.id == self.id){
-							window.game.allied_factions.collection[self.id].direction.h = -4;
+							if(this.second){
+								window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h - 4;
+							} else {
+								window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h + 4;
+							}
 							self.is_down = true;
 						}
 					});
@@ -357,7 +365,7 @@
 					if(!self){ var self = this; }
 					window.game.connection.onKeyUp(function(data){
 						if(data.id == self.id){	
-							window.game.allied_factions.collection[self.id].direction.h = 4;
+							window.game.allied_factions.collection[self.id].direction.h = window.game.allied_factions.collection[self.id].direction.h + 0;
 							self.is_down = false;
 						}
 					});
