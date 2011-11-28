@@ -337,12 +337,12 @@
 
 
 			var Controller = Class.create({
-				initialize: function(id,second){
+				initialize: function(id,_second){
 					this.right_is_pressed = false;
 					this.left_is_pressed = false;
 					this.space_bar_is_pressed = false;
 					this.id = id;
-					this.second = false;
+					this.second = _second;
 					this.key_down_listener = this.listenForKeyDown();
 					this.key_up_listener = this.listenForKeyUp();
 				},
