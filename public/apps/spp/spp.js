@@ -348,7 +348,6 @@
 					window.game.connection.onKeyDown(function(data){
 						if(data.id == self.id){
 							alert("down");
-							}
 						}
 					});
 				},
